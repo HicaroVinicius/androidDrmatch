@@ -32,7 +32,7 @@ public class Preferencias {
     }
 
     public String getCHAVE_TIPO_FILTRO(){
-        return preferences.getString(CHAVE_TIPO_FILTRO,null);
+        return preferences.getString(CHAVE_TIPO_FILTRO,"ESPECIALIDADE");
     }
 
     public void setCHAVE_TIPO_BUSCA(String origem){

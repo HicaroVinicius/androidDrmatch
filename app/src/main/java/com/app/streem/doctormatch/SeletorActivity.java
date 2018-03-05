@@ -12,7 +12,11 @@ import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import com.app.streem.doctormatch.DAO.Firebase;
 import com.app.streem.doctormatch.DAO.Preferencias;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -23,7 +27,7 @@ public class SeletorActivity extends AppCompatActivity {
     private ArrayAdapter<String> adapterList;
     private ListView listView;
     private AutoCompleteTextView autoCompleteCity;
-    private String[] itens = {"Clinco Geral", "Cardiologista", "Nutricionista", "Infectologia", "Neurologia"};
+    private String[] itens;
     private Preferencias preferencias;
 
     @Override
@@ -37,65 +41,81 @@ public class SeletorActivity extends AppCompatActivity {
 
         listView = findViewById(R.id.listviewCity);
         autoCompleteCity = findViewById(R.id.autoCompleteCity);
+        String caminho = "";
 
-        //definir o titulo da barra e hint do edittext dinamicamento
-        // Qual seu estado?
-        // Qual sua cidade?
-        if(preferencias.getCHAVE_TIPO_BUSCA().equals("1")){
-            autoCompleteCity.setHint("  "+"O que você procura?");
-            getSupportActionBar().setTitle("Especialidades");
+        switch (preferencias.getCHAVE_TIPO_BUSCA()){
+            case "1":
+                autoCompleteCity.setHint("  "+"O que você procura?");
+                getSupportActionBar().setTitle("Especialidades");
+                caminho = "ESPECIALIDADE";
+                break;
+            case "2":
+                autoCompleteCity.setHint("  "+"Qual seu estado?");
+                getSupportActionBar().setTitle("Estado");
+                caminho = "ESTADO";
+                break;
+            case "3":
+                autoCompleteCity.setHint("  "+"Qual sua cidade?");
+                getSupportActionBar().setTitle("Especialidades");
+                caminho = "CIDADE/"+preferencias.getCHAVE_ESTADO().replace(" ","");
+                break;
         }
 
-        final ArrayAdapter adapter = new ArrayAdapter(this, android.R.layout.simple_list_item_checked, itens);
-        autoCompleteCity.setDropDownHeight(0);
-        autoCompleteCity.setThreshold(1);
-        autoCompleteCity.setAdapter(adapter);
-        autoCompleteCity.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        Firebase.getDatabaseReference().child("ATUACAO").child(caminho).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Toast.makeText(SeletorActivity.this,adapter.getItem(position).toString(),Toast.LENGTH_LONG).show();
-                retornarCidade(adapter.getItem(position).toString());
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                ArrayList<String> temp = new ArrayList();
+                for(DataSnapshot data : dataSnapshot.getChildren()){
+                    temp.add(data.getValue().toString());
+                }
+
+                final ArrayAdapter adapter = new ArrayAdapter(SeletorActivity.this, android.R.layout.simple_list_item_checked, temp);
+                autoCompleteCity.setDropDownHeight(0);
+                autoCompleteCity.setThreshold(1);
+                autoCompleteCity.setAdapter(adapter);
+                autoCompleteCity.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                    @Override
+                    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                        Toast.makeText(SeletorActivity.this,adapter.getItem(position).toString(),Toast.LENGTH_LONG).show();
+                        setValor(adapter.getItem(position).toString());
+
+                    }
+                });
+
+                adapterList = new ArrayAdapter<String>(SeletorActivity.this, android.R.layout.simple_list_item_checked, temp);
+                listView.setAdapter(adapter);
+
+
+                listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                    @Override
+                    public void onItemClick(AdapterView<?> parent, View view, int position,
+                                            long id) {
+                        String cidade = adapter.getItem(position).toString();//correção para pegar valor do listview
+                        setValor(cidade);
+                    }
+                });
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
 
             }
         });
 
-        listItens = new ArrayList<>(Arrays.asList(itens));
-        adapterList = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_checked, listItens);
-        listView.setAdapter(adapter);
-
-
-        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position,
-                                    long id) {
-                String cidade = adapter.getItem(position).toString();//correção para pegar valor do listview
-                retornarCidade(cidade);
-            }
-        });
-
-
     }
 
-
-    private void disableEditTextCity(AutoCompleteTextView editText) {
-        editText.setFocusable(false);
-        editText.setEnabled(false);
-        editText.setCursorVisible(false);
-        // listenerCity = editText.getKeyListener();
-        editText.setKeyListener(null);
-        //editText.setBackgroundColor(Color.TRANSPARENT);
-    }
-
-    private void enableEditTextCity(AutoCompleteTextView editText) {
-        editText.setFocusableInTouchMode(true);
-        editText.setEnabled(true);
-        editText.setCursorVisible(true);
-        editText.setKeyListener(new EditText(getApplicationContext()).getKeyListener());
-    }
-
-
-    public void retornarCidade(String cidade) {
-        preferencias.setCHAVE_CIDADE(cidade);
+    private void setValor(String cidade) {
+        switch (preferencias.getCHAVE_TIPO_BUSCA()){
+            case "1":
+                preferencias.setCHAVE_ESPECIALIDADE(cidade);
+                break;
+            case "2":
+                preferencias.setCHAVE_ESTADO(cidade);
+                break;
+            case "3":
+               preferencias.setCHAVE_CIDADE(cidade);
+                break;
+        }
         Intent intent = new Intent(this, MainActivity.class);
         startActivity(intent);
         finish();

@@ -22,8 +22,7 @@
             android:focusable="false"
             android:drawableLeft="@drawable/ic_note_add_black_24dp"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="Qual especialidade você procura?" />
+            android:layout_height="wrap_content" />
     </android.support.design.widget.TextInputLayout>
 
     <android.support.design.widget.TextInputLayout
