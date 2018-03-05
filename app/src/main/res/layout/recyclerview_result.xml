@@ -25,7 +25,7 @@
             android:layout_height="match_parent">
 
             <com.makeramen.roundedimageview.RoundedImageView xmlns:app="http://schemas.android.com/apk/res-auto"
-                android:id="@+id/imageView4"
+                android:id="@+id/fotoResultID"
                 android:layout_width="80dp"
                 android:layout_height="100dp"
                 android:layout_marginEnd="8dp"
@@ -43,7 +43,7 @@
                 app:riv_tile_mode="repeat" />
 
             <ImageView
-                android:id="@+id/imageView8"
+                android:id="@+id/avalicacao3ResultID"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 app:layout_constraintBottom_toTopOf="@+id/textView2"
@@ -51,19 +51,19 @@
                 app:srcCompat="@drawable/ic_favorite_border_blue_grey_100_24dp" />
 
             <ImageView
-                android:id="@+id/imageView9"
+                android:id="@+id/avaliacao2ResultID"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 app:layout_constraintBottom_toTopOf="@+id/textView2"
-                app:layout_constraintEnd_toStartOf="@+id/imageView8"
+                app:layout_constraintEnd_toStartOf="@+id/avalicacao3ResultID"
                 app:srcCompat="@drawable/ic_favorite_border_blue_grey_100_24dp" />
 
             <ImageView
-                android:id="@+id/imageView10"
+                android:id="@+id/avaliacao1ResultID"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 app:layout_constraintBottom_toTopOf="@+id/textView2"
-                app:layout_constraintEnd_toStartOf="@+id/imageView9"
+                app:layout_constraintEnd_toStartOf="@+id/avaliacao2ResultID"
                 app:srcCompat="@drawable/ic_favorite_black_24dp" />
 
             <TextView
@@ -75,12 +75,12 @@
                 android:background="@color/colorAccent"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toStartOf="@+id/constraintLayout"
-                app:layout_constraintStart_toEndOf="@+id/imageView4"
+                app:layout_constraintStart_toEndOf="@+id/fotoResultID"
                 app:layout_constraintTop_toTopOf="@+id/constraintLayout"
                 app:layout_constraintVertical_bias="0.0" />
 
             <TextView
-                android:id="@+id/textView4"
+                android:id="@+id/medicoResultID"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="8dp"
@@ -94,12 +94,12 @@
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.0"
-                app:layout_constraintStart_toEndOf="@+id/imageView4"
+                app:layout_constraintStart_toEndOf="@+id/fotoResultID"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintVertical_bias="0.0" />
 
             <TextView
-                android:id="@+id/textView6"
+                android:id="@+id/localResultID"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="8dp"
@@ -112,7 +112,7 @@
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.0"
-                app:layout_constraintStart_toEndOf="@+id/imageView4"
+                app:layout_constraintStart_toEndOf="@+id/fotoResultID"
                 app:layout_constraintTop_toBottomOf="@+id/textView2"
                 app:layout_constraintVertical_bias="0.0" />
 
@@ -154,15 +154,15 @@
             </android.support.constraint.ConstraintLayout>
 
             <TextView
-                android:id="@+id/textView13"
+                android:id="@+id/crmResultID"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="4dp"
                 android:text="CRM 9999-9"
                 android:textSize="10sp"
                 app:layout_constraintStart_toStartOf="@+id/textView2"
-                app:layout_constraintTop_toBottomOf="@+id/textView4" />
-
+                app:layout_constraintTop_toBottomOf="@+id/medicoResultID" />
+        <!--
             <TextView
                 android:id="@+id/textView15"
                 android:layout_width="wrap_content"
@@ -178,10 +178,10 @@
                 android:text="Ver"
                 android:textColor="@android:color/white"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent" />
+                app:layout_constraintEnd_toEndOf="parent" />-->
 
             <TextView
-                android:id="@+id/textView16"
+                android:id="@+id/endereco1ResultID"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="8dp"
@@ -192,10 +192,10 @@
                 app:layout_constraintEnd_toStartOf="@+id/textView15"
                 app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="@+id/textView2"
-                app:layout_constraintTop_toBottomOf="@+id/textView6" />
+                app:layout_constraintTop_toBottomOf="@+id/localResultID" />
 
             <TextView
-                android:id="@+id/textView16"
+                android:id="@+id/endereco2ResultID"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="8dp"
@@ -208,7 +208,7 @@
                 app:layout_constraintEnd_toStartOf="@+id/textView15"
                 app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="@+id/textView2"
-                app:layout_constraintTop_toBottomOf="@+id/textView6" />
+                app:layout_constraintTop_toBottomOf="@+id/localResultID" />
 
         </android.support.constraint.ConstraintLayout>
     </android.support.v7.widget.CardView>
