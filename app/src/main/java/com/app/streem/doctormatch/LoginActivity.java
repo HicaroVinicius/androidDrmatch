@@ -62,6 +62,7 @@ public class LoginActivity extends AppCompatActivity {
             imageButtonGoogle.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
+                    showLoadingAnimation();
                     signIn();
                 }
             });
@@ -187,6 +188,7 @@ public class LoginActivity extends AppCompatActivity {
                             Toast.makeText(LoginActivity.this, "Authentication failed.",
                                     Toast.LENGTH_SHORT).show();
                         }else {
+                            hideLoadingAnimation();
                             FirebaseUser user = task.getResult().getUser();
                             preferencias.setUsuarioLogado(user.getUid(),user.getDisplayName(),user.getPhoneNumber());
                             Intent intent = new Intent(LoginActivity.this, MainActivity.class);

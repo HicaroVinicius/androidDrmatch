@@ -45,10 +45,10 @@ public class FiltroBuscaActivity extends AppCompatActivity {
 
         if(!preferencias.getCHAVE_TIPO_FILTRO().equals("EXAME")){
             getSupportActionBar().setTitle("Consultas");
-            especialidade.setHint("Qual especialidade você procura?");
+            buttonBuscar.setText("BUSCAR CONSULTAS");
         }else{
             getSupportActionBar().setTitle("Exames");
-            especialidade.setHint("Qual exame você procura?");
+            buttonBuscar.setText("BUSCAR EXAMES");
         }
 
         especialidade.setText(preferencias.getCHAVE_ESPECIALIDADE());
@@ -90,6 +90,7 @@ public class FiltroBuscaActivity extends AppCompatActivity {
                     Toast.makeText(FiltroBuscaActivity.this,"Preencha todos os dados!",Toast.LENGTH_LONG).show();
                 }else{
                     //chamada do metodo da tela com resultados da busca
+                    estado.setText("");
                 }
             }
         });
@@ -158,4 +159,5 @@ public class FiltroBuscaActivity extends AppCompatActivity {
         }
         return true;
     }
+
 }

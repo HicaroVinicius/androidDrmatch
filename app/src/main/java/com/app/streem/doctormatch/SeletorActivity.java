@@ -10,6 +10,7 @@ import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import com.app.streem.doctormatch.DAO.Firebase;
@@ -43,6 +44,8 @@ public class SeletorActivity extends AppCompatActivity {
         autoCompleteCity = findViewById(R.id.autoCompleteCity);
         String caminho = "";
 
+        showLoadingAnimation();
+
         switch (preferencias.getCHAVE_TIPO_BUSCA()){
             case "1":
                 autoCompleteCity.setHint("  "+"O que você procura?");
@@ -69,6 +72,7 @@ public class SeletorActivity extends AppCompatActivity {
                     temp.add(data.getValue().toString());
                 }
 
+                hideLoadingAnimation();
                 final ArrayAdapter adapter = new ArrayAdapter(SeletorActivity.this, android.R.layout.simple_list_item_checked, temp);
                 autoCompleteCity.setDropDownHeight(0);
                 autoCompleteCity.setThreshold(1);
@@ -132,5 +136,20 @@ public class SeletorActivity extends AppCompatActivity {
             default:break;
         }
         return true;
+    }
+
+    //show
+    public void showLoadingAnimation()
+    {
+        RelativeLayout pageLoading = (RelativeLayout) findViewById(R.id.main_layoutPageLoading);
+        pageLoading.setVisibility(View.VISIBLE);
+    }
+
+
+    //hide
+    public void hideLoadingAnimation()
+    {
+        RelativeLayout pageLoading = (RelativeLayout) findViewById(R.id.main_layoutPageLoading);
+        pageLoading.setVisibility(View.GONE);
     }
 }

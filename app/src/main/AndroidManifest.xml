@@ -33,7 +33,8 @@
         </activity>
         <activity android:name=".CadastroActivity" />
         <activity android:name=".FiltroBuscaActivity" />
-        <activity android:name=".SeletorActivity"></activity>
+        <activity android:name=".SeletorActivity" />
+        <activity android:name=".ResultActivity"></activity>
     </application>
 
 </manifest>
