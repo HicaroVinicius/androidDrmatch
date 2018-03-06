@@ -162,7 +162,7 @@
                 android:textSize="10sp"
                 app:layout_constraintStart_toStartOf="@+id/textView2"
                 app:layout_constraintTop_toBottomOf="@+id/medicoResultID" />
-        <!--
+
             <TextView
                 android:id="@+id/textView15"
                 android:layout_width="wrap_content"
@@ -175,10 +175,10 @@
                 android:paddingRight="15dp"
                 android:paddingTop="5dp"
                 android:shadowRadius=""
-                android:text="Ver"
+                android:text="Valor"
                 android:textColor="@android:color/white"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent" />-->
+                app:layout_constraintEnd_toEndOf="parent" />
 
             <TextView
                 android:id="@+id/endereco1ResultID"
