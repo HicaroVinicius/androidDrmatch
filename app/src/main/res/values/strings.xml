@@ -11,6 +11,8 @@
     <string name="dummy_content">DUMMY\nCONTENT</string>
     <string name="title_activity_select__city_">Select_City_Activity</string>
     <string name="search">Search</string>
+    <string name="facebook_app_id">339095896583817</string>
+    <string name="fb_login_protocol_scheme">fb339095896583817</string>
 
 
 </resources>
