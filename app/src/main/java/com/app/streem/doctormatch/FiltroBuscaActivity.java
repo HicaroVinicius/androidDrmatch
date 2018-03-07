@@ -124,9 +124,12 @@ public class FiltroBuscaActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 if(!preferencias.getCHAVE_TIPO_FILTRO().equals("EXAME")){
-                    //consulta medico
+                    Intent i = new Intent(FiltroBuscaActivity.this, ResultActivity.class);
+                    startActivity(i);
                 }else{
                     //consulta exames
+                    Intent i = new Intent(FiltroBuscaActivity.this, ResultActivity.class);
+                    startActivity(i);
                 }
             }
         });

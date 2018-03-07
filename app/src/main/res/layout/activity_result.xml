@@ -6,4 +6,8 @@
     android:layout_height="match_parent"
     tools:context="com.app.streem.doctormatch.ResultActivity">
 
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/RecyclerViewMedico"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"></android.support.v7.widget.RecyclerView>
 </android.support.constraint.ConstraintLayout>

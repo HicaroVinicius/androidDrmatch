@@ -11,6 +11,7 @@
     <string name="dummy_content">DUMMY\nCONTENT</string>
     <string name="title_activity_select__city_">Select_City_Activity</string>
     <string name="search">Search</string>
+    <string name="valor">Valor</string>
 
 
 </resources>
