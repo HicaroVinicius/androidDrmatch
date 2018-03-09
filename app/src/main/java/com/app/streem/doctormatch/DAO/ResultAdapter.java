@@ -38,7 +38,6 @@ public class ResultAdapter extends RecyclerView.Adapter<ResultAdapter.ResultView
     public void onBindViewHolder(ResultViewHolder holder, int position) {
 
         ResultMedicos medicos = listaMedicos.get(position);
-        holder.valor.setText("R$ "+String.valueOf(medicos.getValor()));
       holder.crmResultID.setText(String.valueOf(medicos.getRegistro()));
       holder.endereco1ResultID.setText(String.valueOf(medicos.getEndereco1()));
       holder.endereco2ResultID.setText(String.valueOf(medicos.getEndereco2()));
