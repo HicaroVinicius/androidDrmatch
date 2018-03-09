@@ -8,7 +8,10 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.app.streem.doctormatch.R;
+import com.daimajia.androidanimations.library.Techniques;
+import com.daimajia.androidanimations.library.YoYo;
 import com.makeramen.roundedimageview.RoundedImageView;
+import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
@@ -35,14 +38,24 @@ public class ResultAdapter extends RecyclerView.Adapter<ResultAdapter.ResultView
     }
 
     @Override
-    public void onBindViewHolder(ResultViewHolder holder, int position) {
-
+    public void onBindViewHolder(final ResultViewHolder holder, final int position) {
         ResultMedicos medicos = listaMedicos.get(position);
-      holder.crmResultID.setText(String.valueOf(medicos.getRegistro()));
-      holder.endereco1ResultID.setText(String.valueOf(medicos.getEndereco1()));
-      holder.endereco2ResultID.setText(String.valueOf(medicos.getEndereco2()));
-      holder.medicoResultID.setText(String.valueOf(medicos.getTitular()));
-      holder.localResultID.setText(String.valueOf(medicos.getLocal()));
+        holder.crmResultID.setText(String.valueOf(medicos.getRegistro()));
+        holder.endereco1ResultID.setText(String.valueOf(medicos.getEndereco1()));
+        holder.endereco2ResultID.setText(String.valueOf(medicos.getEndereco2()));
+        holder.medicoResultID.setText(String.valueOf(medicos.getTitular()));
+        holder.localResultID.setText(String.valueOf(medicos.getLocal()));
+        Picasso.with(context).load(medicos.getUrl()).into(holder.fotoResultID);
+        holder.valor.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                holder.valor.setText("R$ "+listaMedicos.get(position).getValor());
+                YoYo.with(Techniques.Tada)
+                        .duration(500)
+                        .repeat(1)
+                        .playOn(holder.valor);
+            }
+        });
     }
 
     @Override
