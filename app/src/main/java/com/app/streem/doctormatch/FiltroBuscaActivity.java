@@ -125,10 +125,12 @@ public class FiltroBuscaActivity extends AppCompatActivity {
             public void onClick(View view) {
                 if(!preferencias.getCHAVE_TIPO_FILTRO().equals("EXAME")){
                     Intent i = new Intent(FiltroBuscaActivity.this, ResultActivity.class);
+                    i.putExtra("tipo","consulta");
                     startActivity(i);
                 }else{
                     //consulta exames
                     Intent i = new Intent(FiltroBuscaActivity.this, ResultActivity.class);
+                    i.putExtra("tipo","exame");
                     startActivity(i);
                 }
             }

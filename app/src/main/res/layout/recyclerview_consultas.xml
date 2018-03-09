@@ -60,12 +60,12 @@
             </RelativeLayout>
 
             <TextView
-                android:id="@+id/textView12"
+                android:id="@+id/nomeConsultaID"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
                 android:layout_marginTop="8dp"
-                android:text="Dr. Carlos Lima Sousa"
+                android:text="Dr. Josué Medeiros"
                 android:textColor="@color/colorAccent"
                 android:textSize="18sp"
                 app:layout_constraintBottom_toBottomOf="@+id/relativeLayout"
@@ -80,11 +80,11 @@
                 android:layout_marginStart="8dp"
                 android:layout_marginTop="8dp"
                 app:layout_constraintStart_toEndOf="@+id/relativeLayout"
-                app:layout_constraintTop_toBottomOf="@+id/textView12"
+                app:layout_constraintTop_toBottomOf="@+id/nomeConsultaID"
                 app:srcCompat="@drawable/ic_date_range_black_24dp" />
 
             <TextView
-                android:id="@+id/textView14"
+                android:id="@+id/dataConsultaID"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="10/02/2018 às 08:00"

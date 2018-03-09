@@ -13,6 +13,7 @@
     <string name="search">Search</string>
     <string name="facebook_app_id">339095896583817</string>
     <string name="fb_login_protocol_scheme">fb339095896583817</string>
+    <string name="nomeConsultaID">nomeConsultaID</string>
 
 
 </resources>
