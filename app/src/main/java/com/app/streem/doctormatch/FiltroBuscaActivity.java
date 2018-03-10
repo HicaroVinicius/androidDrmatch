@@ -84,6 +84,7 @@ public class FiltroBuscaActivity extends AppCompatActivity {
             public void onClick(View view) {
                 if (especialidade.getText().toString().isEmpty() |
                         estado.getText().toString().isEmpty() |
+                        estado.getText().toString().isEmpty() |
                         cidade.getText().toString().isEmpty() |
                         data.getText().toString().isEmpty()){
 

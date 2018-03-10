@@ -1,11 +1,14 @@
 package com.app.streem.doctormatch;
 
+import android.app.DatePickerDialog;
+import android.support.design.widget.TextInputEditText;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
+import android.widget.DatePicker;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -25,6 +28,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 public class ResultActivity extends AppCompatActivity {
 
@@ -39,13 +43,54 @@ public class ResultActivity extends AppCompatActivity {
     private ResultModel med;
     private List<Consulta> consultas = new ArrayList<>();
     private Preferencias preferencias;
+    private Calendar myCalendar;
+    private TextView data;
+
+    private void updateLabel() {
+
+        String myFormat = "dd/MM/yyyy"; //In which you need put here
+        SimpleDateFormat sdf = new SimpleDateFormat(myFormat, new Locale("pt","BR"));
+
+        data.setText(sdf.format(myCalendar.getTime()));
+        preferencias.setCHAVE_DATA(sdf.format(myCalendar.getTime()));
+        try {
+            buscarMedicos(cidade,estado,espec);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+    }
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_result);
 
-        TextView dataSel = findViewById(R.id.dataSelResultID);
+        data = findViewById(R.id.dataSelResultID);
+
+        myCalendar = Calendar.getInstance();
+
+        final DatePickerDialog.OnDateSetListener date = new DatePickerDialog.OnDateSetListener() {
+
+            @Override
+            public void onDateSet(DatePicker view, int year, int monthOfYear,
+                                  int dayOfMonth) {
+                myCalendar.set(Calendar.YEAR, year);
+                myCalendar.set(Calendar.MONTH, monthOfYear);
+                myCalendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
+                updateLabel();
+            }
+
+        };
+
+        data.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                new DatePickerDialog(ResultActivity.this, date, myCalendar.get(Calendar.YEAR), myCalendar.get(Calendar.MONTH),
+                        myCalendar.get(Calendar.DAY_OF_MONTH)).show();
+            }
+        });
 
         semRegistro = findViewById(R.id.semRegistroResultID);
 
@@ -65,7 +110,7 @@ public class ResultActivity extends AppCompatActivity {
         } catch (ParseException e) {
             e.printStackTrace();
         }
-        dataSel.setText(preferencias.getCHAVE_DATA());
+        data.setText(preferencias.getCHAVE_DATA());
     }
 
     //show
@@ -86,7 +131,15 @@ public class ResultActivity extends AppCompatActivity {
     //carrega lista
     public void buscarMedicos(String cidade,String estado,String espec) throws ParseException {
 
+        showLoadingAnimation();
+        Toast.makeText(this,"Carregando... Aguarde",Toast.LENGTH_LONG).show();
+        medicos.clear();
+
+        medicos.clear();
+
         adapter = new ResultAdapter(medicos, this);
+
+        adapter.notifyDataSetChanged();
 
         recyclerView.setAdapter(adapter);
 
@@ -94,13 +147,15 @@ public class ResultActivity extends AppCompatActivity {
         Date d = format.parse(preferencias.getCHAVE_DATA());
        // final SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
         //Toast.makeText(this,"busca",Toast.LENGTH_SHORT).show();
+        Log.i("dataTESTE",String.valueOf(d.getTime()));
         Firebase.getDatabaseReference().child("VAGAS").child(estado).child(cidade).child(espec).child(String.valueOf(d.getTime())).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
 
                 if (!dataSnapshot.hasChildren()){
-                    Toast.makeText(getApplicationContext(),"Nenhum Médico encontrado",Toast.LENGTH_LONG).show();
-                }
+                    semRegistro.setVisibility(View.VISIBLE);
+                   // Toast.makeText(getApplicationContext(),"Nenhum Médico encontrado",Toast.LENGTH_LONG).show();
+                }else{
 
                 for (DataSnapshot data : dataSnapshot.getChildren()){
 
@@ -123,7 +178,9 @@ public class ResultActivity extends AppCompatActivity {
 
                 }
                 hideLoadingAnimation();
-                semRegistro.setVisibility(View.VISIBLE);
+                semRegistro.setVisibility(View.INVISIBLE);
+
+                }
 
             }
 
