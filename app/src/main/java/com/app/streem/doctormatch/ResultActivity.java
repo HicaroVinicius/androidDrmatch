@@ -149,15 +149,17 @@ public class ResultActivity extends AppCompatActivity {
 
         if(!dataAtual()){
             Toast.makeText(this,"Selecione uma data válida",Toast.LENGTH_LONG).show();
+            data.setText("  Selecione uma data");
+            //medicos.clear();
+            //adapter = new ResultAdapter(medicos, this);
+            //adapter.notifyDataSetChanged();
+            //semRegistro.setVisibility(View.VISIBLE);
             return;
         }
 
         showLoadingAnimation();
         Toast.makeText(this,"Carregando... Aguarde",Toast.LENGTH_LONG).show();
         medicos.clear();
-
-        medicos.clear();
-
         adapter = new ResultAdapter(medicos, this);
 
         adapter.notifyDataSetChanged();
