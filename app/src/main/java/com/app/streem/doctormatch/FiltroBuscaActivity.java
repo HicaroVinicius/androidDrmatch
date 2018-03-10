@@ -89,8 +89,9 @@ public class FiltroBuscaActivity extends AppCompatActivity {
 
                     Toast.makeText(FiltroBuscaActivity.this,"Preencha todos os dados!",Toast.LENGTH_LONG).show();
                 }else{
-                    //chamada do metodo da tela com resultados da busca
-                    estado.setText("");
+                    preferencias.setCHAVE_DATA(data.getText().toString());
+                    Intent i = new Intent(FiltroBuscaActivity.this, ResultActivity.class);
+                    startActivity(i);
                 }
             }
         });
@@ -119,24 +120,6 @@ public class FiltroBuscaActivity extends AppCompatActivity {
                 }
             }
         });
-
-        buttonBuscar.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if(!preferencias.getCHAVE_TIPO_FILTRO().equals("EXAME")){
-                    Intent i = new Intent(FiltroBuscaActivity.this, ResultActivity.class);
-                    i.putExtra("tipo","consulta");
-                    startActivity(i);
-                }else{
-                    //consulta exames
-                    Intent i = new Intent(FiltroBuscaActivity.this, ResultActivity.class);
-                    i.putExtra("tipo","exame");
-                    startActivity(i);
-                }
-            }
-        });
-
-
     }
 
     private void activitySelecao(String filtro){

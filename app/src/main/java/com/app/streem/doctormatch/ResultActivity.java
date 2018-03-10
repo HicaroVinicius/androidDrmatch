@@ -1,30 +1,28 @@
 package com.app.streem.doctormatch;
 
-import android.content.Intent;
-import android.graphics.Color;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
-import android.view.animation.Transformation;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
-import com.app.streem.doctormatch.DAO.AdapterConsultas;
-import com.app.streem.doctormatch.DAO.Consulta;
+import com.app.streem.doctormatch.Modelo.Consulta;
 import com.app.streem.doctormatch.DAO.Firebase;
 import com.app.streem.doctormatch.DAO.Preferencias;
-import com.app.streem.doctormatch.DAO.ResultAdapter;
-import com.app.streem.doctormatch.DAO.ResultMedicos;
+import com.app.streem.doctormatch.Adapter.ResultAdapter;
+import com.app.streem.doctormatch.Modelo.ResultModel;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.ValueEventListener;
-import com.makeramen.roundedimageview.RoundedTransformationBuilder;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -33,11 +31,12 @@ public class ResultActivity extends AppCompatActivity {
 
     private RecyclerView recyclerView;
     private RecyclerView.Adapter adapter;
+    private TextView semRegistro;
 
     private String cidade,espec,estado,n;
 
-    private List<ResultMedicos> medicos = new ArrayList<>();
-    private ResultMedicos med;
+    private List<ResultModel> medicos = new ArrayList<>();
+    private ResultModel med;
     private List<Consulta> consultas = new ArrayList<>();
     private Preferencias preferencias;
 
@@ -45,6 +44,12 @@ public class ResultActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_result);
+
+        TextView dataSel = findViewById(R.id.dataSelResultID);
+
+        semRegistro = findViewById(R.id.semRegistroResultID);
+
+        showLoadingAnimation();
         preferencias = new Preferencias(this);
         recyclerView = findViewById(R.id.RecyclerViewMedico);
         recyclerView.setHasFixedSize(true);
@@ -55,20 +60,41 @@ public class ResultActivity extends AppCompatActivity {
         estado = preferencias.getCHAVE_ESTADO().replace(" ","");
         espec = preferencias.getCHAVE_ESPECIALIDADE().replace(" ","");
 
-        buscarMedicos(cidade,estado,espec);
+        try {
+            buscarMedicos(cidade,estado,espec);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        dataSel.setText(preferencias.getCHAVE_DATA());
+    }
 
+    //show
+    public void showLoadingAnimation()
+    {
+        RelativeLayout pageLoading = (RelativeLayout) findViewById(R.id.main_layoutPageLoading);
+        pageLoading.setVisibility(View.VISIBLE);
+    }
+
+
+    //hide
+    public void hideLoadingAnimation()
+    {
+        RelativeLayout pageLoading = (RelativeLayout) findViewById(R.id.main_layoutPageLoading);
+        pageLoading.setVisibility(View.GONE);
     }
 
     //carrega lista
-    public void buscarMedicos(String cidade,String estado,String espec) {
+    public void buscarMedicos(String cidade,String estado,String espec) throws ParseException {
 
         adapter = new ResultAdapter(medicos, this);
 
         recyclerView.setAdapter(adapter);
 
+        SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy");
+        Date d = format.parse(preferencias.getCHAVE_DATA());
        // final SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
         //Toast.makeText(this,"busca",Toast.LENGTH_SHORT).show();
-        Firebase.getDatabaseReference().child("VAGAS").child(estado).child(cidade).child(espec).child("DATA_EM_SEGS").addListenerForSingleValueEvent(new ValueEventListener() {
+        Firebase.getDatabaseReference().child("VAGAS").child(estado).child(cidade).child(espec).child(String.valueOf(d.getTime())).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
 
@@ -84,13 +110,9 @@ public class ResultActivity extends AppCompatActivity {
                     Firebase.getDatabaseReference().child("CLIENTES").child(key).child("DADOS").addListenerForSingleValueEvent(new ValueEventListener() {
                         @Override
                         public void onDataChange(DataSnapshot dataSnapshot) {
-
-
-                                   ResultMedicos med = dataSnapshot.getValue(ResultMedicos.class);
-                                   medicos.add(med);
-                                   adapter.notifyDataSetChanged();
-
-
+                            ResultModel med = dataSnapshot.getValue(ResultModel.class);
+                            medicos.add(med);
+                            adapter.notifyDataSetChanged();
                         }
 
                         @Override
@@ -100,6 +122,8 @@ public class ResultActivity extends AppCompatActivity {
                     });
 
                 }
+                hideLoadingAnimation();
+                semRegistro.setVisibility(View.VISIBLE);
 
             }
 

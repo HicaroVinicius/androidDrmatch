@@ -25,6 +25,16 @@ public class Preferencias {
     private final String CHAVE_ESPECIALIDADE = "especSelect";
     private final String CHAVE_ESTADO = "estadoSelect";
     private final String CHAVE_CIDADE = "cidadeSelect";
+    private final String CHAVE_DATA = "dataSelect";
+
+    public void setCHAVE_DATA(String origem){
+        editor.putString(CHAVE_DATA, origem);
+        editor.commit();
+    }
+
+    public String getCHAVE_DATA(){
+        return preferences.getString(CHAVE_DATA,"");
+    }
 
     public void setCHAVE_TIPO_FILTRO(String origem){
         editor.putString(CHAVE_TIPO_FILTRO, origem);
