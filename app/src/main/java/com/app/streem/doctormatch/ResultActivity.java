@@ -53,6 +53,7 @@ public class ResultActivity extends AppCompatActivity {
 
         data.setText(sdf.format(myCalendar.getTime()));
         preferencias.setCHAVE_DATA(sdf.format(myCalendar.getTime()));
+        dataAtual();
         try {
             buscarMedicos(cidade,estado,espec);
         } catch (ParseException e) {
@@ -76,6 +77,7 @@ public class ResultActivity extends AppCompatActivity {
             @Override
             public void onDateSet(DatePicker view, int year, int monthOfYear,
                                   int dayOfMonth) {
+
                 myCalendar.set(Calendar.YEAR, year);
                 myCalendar.set(Calendar.MONTH, monthOfYear);
                 myCalendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
@@ -128,8 +130,27 @@ public class ResultActivity extends AppCompatActivity {
         pageLoading.setVisibility(View.GONE);
     }
 
+    public Boolean dataAtual(){
+        Calendar calendar1 = Calendar.getInstance();
+        SimpleDateFormat formatter1 = new SimpleDateFormat("dd/MM/yyyy");
+        String currentDate = formatter1.format(calendar1.getTime());
+       // String dataSel = formatter1.format(preferencias.getCHAVE_DATA());
+
+        if(currentDate.compareTo(preferencias.getCHAVE_DATA()) <= 0 ){
+           return true;
+        }else{
+            return false;
+        }
+
+            }
+
     //carrega lista
     public void buscarMedicos(String cidade,String estado,String espec) throws ParseException {
+
+        if(!dataAtual()){
+            Toast.makeText(this,"Selecione uma data válida",Toast.LENGTH_LONG).show();
+            return;
+        }
 
         showLoadingAnimation();
         Toast.makeText(this,"Carregando... Aguarde",Toast.LENGTH_LONG).show();

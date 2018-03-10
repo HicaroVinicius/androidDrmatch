@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.support.design.widget.TextInputEditText;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
@@ -12,6 +13,7 @@ import android.widget.DatePicker;
 import android.widget.Toast;
 
 import com.app.streem.doctormatch.DAO.Preferencias;
+import com.google.firebase.database.ServerValue;
 
 import org.w3c.dom.Text;
 
@@ -62,6 +64,7 @@ public class FiltroBuscaActivity extends AppCompatActivity {
             @Override
             public void onDateSet(DatePicker view, int year, int monthOfYear,
                                   int dayOfMonth) {
+
                 myCalendar.set(Calendar.YEAR, year);
                 myCalendar.set(Calendar.MONTH, monthOfYear);
                 myCalendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
@@ -91,8 +94,13 @@ public class FiltroBuscaActivity extends AppCompatActivity {
                     Toast.makeText(FiltroBuscaActivity.this,"Preencha todos os dados!",Toast.LENGTH_LONG).show();
                 }else{
                     preferencias.setCHAVE_DATA(data.getText().toString());
-                    Intent i = new Intent(FiltroBuscaActivity.this, ResultActivity.class);
-                    startActivity(i);
+                    if(dataAtual()) {
+                        Intent i = new Intent(FiltroBuscaActivity.this, ResultActivity.class);
+                        startActivity(i);
+                    }else{
+                        Toast.makeText(FiltroBuscaActivity.this,"Selecione uma data válida",Toast.LENGTH_LONG).show();
+                        return;
+                    }
                 }
             }
         });
@@ -147,6 +155,20 @@ public class FiltroBuscaActivity extends AppCompatActivity {
             default:break;
         }
         return true;
+    }
+
+    public Boolean dataAtual(){
+        Calendar calendar1 = Calendar.getInstance();
+        SimpleDateFormat formatter1 = new SimpleDateFormat("dd/MM/yyyy");
+        String currentDate = formatter1.format(calendar1.getTime());
+        //String dataSel = formatter1.format(preferencias.getCHAVE_DATA());
+
+        if(currentDate.compareTo(preferencias.getCHAVE_DATA()) <= 0 ){
+            return true;
+        }else{
+            return false;
+        }
+
     }
 
 }
