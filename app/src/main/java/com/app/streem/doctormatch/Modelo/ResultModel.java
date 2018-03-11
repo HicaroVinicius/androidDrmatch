@@ -15,6 +15,16 @@ public class ResultModel {
     private String endereco1;
     private String endereco2;
 
+    public String getKey() {
+        return key;
+    }
+
+    public void setKey(String key) {
+        this.key = key;
+    }
+
+    private String key;
+
     public ResultModel(){
 
     }

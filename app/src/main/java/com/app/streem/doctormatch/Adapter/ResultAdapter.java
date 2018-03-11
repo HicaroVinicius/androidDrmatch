@@ -4,11 +4,13 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.app.streem.doctormatch.Modelo.ResultModel;
 import com.app.streem.doctormatch.R;
+import com.app.streem.doctormatch.ResultActivity;
 import com.daimajia.androidanimations.library.Techniques;
 import com.daimajia.androidanimations.library.YoYo;
 import com.makeramen.roundedimageview.RoundedImageView;
@@ -24,10 +26,16 @@ public class ResultAdapter extends RecyclerView.Adapter<ResultAdapter.ResultView
 
     private List<ResultModel> listaMedicos;
     private Context context;
+    private OnItemClickListener listener;
 
-    public ResultAdapter(List<ResultModel> listaMedicos, Context context) {
+    public interface OnItemClickListener {
+        void onItemClick(ResultModel item);
+    }
+
+    public ResultAdapter(List<ResultModel> listaMedicos, Context context,OnItemClickListener listener) {
         this.listaMedicos = listaMedicos;
         this.context = context;
+        this.listener = listener;
     }
 
     @Override
@@ -41,6 +49,7 @@ public class ResultAdapter extends RecyclerView.Adapter<ResultAdapter.ResultView
     @Override
     public void onBindViewHolder(final ResultViewHolder holder, final int position) {
         ResultModel medicos = listaMedicos.get(position);
+        holder.bind(listaMedicos.get(position), (OnItemClickListener) listener);
         holder.crmResultID.setText(String.valueOf(medicos.getRegistro()));
         holder.endereco1ResultID.setText(String.valueOf(medicos.getEndereco1()));
         holder.endereco2ResultID.setText(String.valueOf(medicos.getEndereco2()));
@@ -96,5 +105,19 @@ public class ResultAdapter extends RecyclerView.Adapter<ResultAdapter.ResultView
             endereco1ResultID = itemView.findViewById(R.id.endereco1ResultID);
             endereco2ResultID = itemView.findViewById(R.id.endereco2ResultID);
         }
+
+        public void bind(final ResultModel item, final OnItemClickListener listener) {
+            itemView.setOnClickListener(new View.OnClickListener() {
+
+                @Override
+                public void onClick(View v) {
+
+                    listener.onItemClick(item);
+
+                }
+
+            });
+        }
+
     }
 }

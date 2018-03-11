@@ -155,9 +155,13 @@ public class ResultActivity extends AppCompatActivity {
 
 
         showLoadingAnimation();
-        Toast.makeText(this,"Carregando... Aguarde",Toast.LENGTH_LONG).show();
         medicos.clear();
-        adapter = new ResultAdapter(medicos, this);
+        adapter = new ResultAdapter(medicos, this, new ResultAdapter.OnItemClickListener() {
+            @Override public void onItemClick(ResultModel item) {
+
+           Toast.makeText(getApplicationContext(),"KEY: "+item.getKey()+"/DATA: "+preferencias.getCHAVE_DATA(),Toast.LENGTH_SHORT).show();
+
+            }} );
 
         adapter.notifyDataSetChanged();
 
@@ -176,16 +180,18 @@ public class ResultActivity extends AppCompatActivity {
                     semRegistro.setVisibility(View.VISIBLE);
                    // Toast.makeText(getApplicationContext(),"Nenhum Médico encontrado",Toast.LENGTH_LONG).show();
                 }else{
+                    Toast.makeText(getApplicationContext(),"Carregando... Aguarde",Toast.LENGTH_LONG).show();
 
                 for (DataSnapshot data : dataSnapshot.getChildren()){
 
-                    String key = data.getKey();
+                    final String key = data.getKey();
                     Log.i("TESTEMED",data.getKey().concat("fora"));
 
                     Firebase.getDatabaseReference().child("CLIENTES").child(key).child("DADOS").addListenerForSingleValueEvent(new ValueEventListener() {
                         @Override
                         public void onDataChange(DataSnapshot dataSnapshot) {
                             ResultModel med = dataSnapshot.getValue(ResultModel.class);
+                            med.setKey(key);
                             medicos.add(med);
                             adapter.notifyDataSetChanged();
                         }
