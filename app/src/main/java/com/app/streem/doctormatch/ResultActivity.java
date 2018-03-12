@@ -1,6 +1,7 @@
 package com.app.streem.doctormatch;
 
 import android.app.DatePickerDialog;
+import android.content.Intent;
 import android.support.design.widget.TextInputEditText;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -45,6 +46,7 @@ public class ResultActivity extends AppCompatActivity {
     private Preferencias preferencias;
     private Calendar myCalendar;
     private TextView data;
+    private DatePickerDialog dataPicker;
 
     private void updateLabel() {
         String myFormat = "dd/MM/yyyy"; //In which you need put here
@@ -95,8 +97,11 @@ public class ResultActivity extends AppCompatActivity {
         data.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                new DatePickerDialog(ResultActivity.this, date, myCalendar.get(Calendar.YEAR), myCalendar.get(Calendar.MONTH),
-                        myCalendar.get(Calendar.DAY_OF_MONTH)).show();
+                dataPicker = new DatePickerDialog(ResultActivity.this, date, myCalendar
+                        .get(Calendar.YEAR), myCalendar.get(Calendar.MONTH),
+                        myCalendar.get(Calendar.DAY_OF_MONTH));
+                dataPicker.getDatePicker().setMinDate(System.currentTimeMillis() - 1000);
+                dataPicker.show();
             }
         });
 
@@ -159,7 +164,15 @@ public class ResultActivity extends AppCompatActivity {
         adapter = new ResultAdapter(medicos, this, new ResultAdapter.OnItemClickListener() {
             @Override public void onItemClick(ResultModel item) {
 
-           Toast.makeText(getApplicationContext(),"KEY: "+item.getKey()+"/DATA: "+preferencias.getCHAVE_DATA(),Toast.LENGTH_SHORT).show();
+           //Toast.makeText(getApplicationContext(),"KEY: "+item.getKey()+"/DATA: "+preferencias.getCHAVE_DATA(),Toast.LENGTH_SHORT).show();
+            Intent newPage = new Intent(ResultActivity.this,DetailActivity.class);
+            newPage.putExtra("titular",item.getTitular().toString());
+            newPage.putExtra("end1",item.getEndereco1().toString());
+            newPage.putExtra("end2",item.getEndereco2().toString());
+            newPage.putExtra("registro",item.getRegistro().toString());
+            newPage.putExtra("classif",item.getClassif().toString());
+            newPage.putExtra("url",item.getUrl());
+            startActivity(newPage);
 
             }} );
 

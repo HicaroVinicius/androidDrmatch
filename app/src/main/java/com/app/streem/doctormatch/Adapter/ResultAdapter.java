@@ -4,13 +4,11 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.app.streem.doctormatch.Modelo.ResultModel;
 import com.app.streem.doctormatch.R;
-import com.app.streem.doctormatch.ResultActivity;
 import com.daimajia.androidanimations.library.Techniques;
 import com.daimajia.androidanimations.library.YoYo;
 import com.makeramen.roundedimageview.RoundedImageView;
@@ -91,7 +89,7 @@ public class ResultAdapter extends RecyclerView.Adapter<ResultAdapter.ResultView
         TextView clinica;
         public ResultViewHolder(View itemView) {
             super(itemView);
-            fotoResultID = itemView.findViewById(R.id.fotoResultID);
+            fotoResultID = itemView.findViewById(R.id.fotoDetails);
             avaliacao1ResultID = itemView.findViewById(R.id.avaliacao1ResultID);
             avaliacao2ResultID = itemView.findViewById(R.id.avaliacao2ResultID);
             avaliacao3ResultID = itemView.findViewById(R.id.avalicacao3ResultID);
