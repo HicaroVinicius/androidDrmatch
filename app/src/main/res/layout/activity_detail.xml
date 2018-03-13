@@ -31,7 +31,7 @@
             android:layout_height="wrap_content">
 
             <com.makeramen.roundedimageview.RoundedImageView xmlns:app="http://schemas.android.com/apk/res-auto"
-                android:id="@+id/fotoResultID"
+                android:id="@+id/fotoDetails"
                 android:layout_width="100dp"
                 android:layout_height="100dp"
                 android:layout_marginBottom="16dp"
@@ -54,7 +54,7 @@
                 app:riv_tile_mode="repeat" />
 
         <TextView
-            android:id="@+id/textView4"
+            android:id="@+id/titularDetails"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="8dp"
@@ -66,7 +66,7 @@
             android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toEndOf="@+id/fotoResultID"
+            app:layout_constraintStart_toEndOf="@+id/fotoDetails"
             app:layout_constraintTop_toTopOf="parent" />
 
             <android.support.constraint.ConstraintLayout
@@ -89,7 +89,7 @@
                     app:srcCompat="@drawable/ic_favorite_white_24dp" />
 
                 <TextView
-                    android:id="@+id/textView13"
+                    android:id="@+id/classifDetails"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="8dp"
@@ -105,7 +105,7 @@
             </android.support.constraint.ConstraintLayout>
 
             <TextView
-                android:id="@+id/textView6"
+                android:id="@+id/registroDetails"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="8dp"
@@ -114,8 +114,8 @@
                 android:text="CRM 9999"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.0"
-                app:layout_constraintStart_toEndOf="@+id/fotoResultID"
-                app:layout_constraintTop_toBottomOf="@+id/textView4" />
+                app:layout_constraintStart_toEndOf="@+id/fotoDetails"
+                app:layout_constraintTop_toBottomOf="@+id/titularDetails" />
 
         </android.support.constraint.ConstraintLayout>
 
@@ -164,7 +164,7 @@
                 app:layout_constraintTop_toBottomOf="@+id/textView12" />
 
             <TextView
-                android:id="@+id/textView15"
+                android:id="@+id/end1Details"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="8dp"
@@ -177,7 +177,7 @@
                 app:layout_constraintTop_toBottomOf="@+id/textView14" />
 
             <TextView
-                android:id="@+id/textView16"
+                android:id="@+id/end2Details"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="8dp"
@@ -187,20 +187,8 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/textView15" />
+                app:layout_constraintTop_toBottomOf="@+id/end1Details" />
 
-            <TextView
-                android:id="@+id/textView17"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginEnd="8dp"
-                android:layout_marginStart="8dp"
-                android:layout_marginTop="16dp"
-                android:text="TextView"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.0"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/textView16" />
         </android.support.constraint.ConstraintLayout>
     </android.support.v7.widget.CardView>
 </android.support.constraint.ConstraintLayout>

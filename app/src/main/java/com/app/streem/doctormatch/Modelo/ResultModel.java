@@ -1,10 +1,12 @@
 package com.app.streem.doctormatch.Modelo;
 
+import java.io.Serializable;
+
 /**
  * Created by Hicaro on 06/03/2018.
  */
 
-public class ResultModel {
+public class ResultModel implements Serializable {
 
     private String registro;
     private String titular;

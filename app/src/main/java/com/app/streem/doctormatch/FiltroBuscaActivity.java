@@ -29,6 +29,7 @@ public class FiltroBuscaActivity extends AppCompatActivity {
     private TextInputEditText especialidade;
     private TextInputEditText estado;
     private TextInputEditText cidade;
+    private DatePickerDialog dataPicker;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -76,9 +77,11 @@ public class FiltroBuscaActivity extends AppCompatActivity {
         data.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                new DatePickerDialog(FiltroBuscaActivity.this, date, myCalendar
+                dataPicker = new DatePickerDialog(FiltroBuscaActivity.this, date, myCalendar
                         .get(Calendar.YEAR), myCalendar.get(Calendar.MONTH),
-                        myCalendar.get(Calendar.DAY_OF_MONTH)).show();
+                        myCalendar.get(Calendar.DAY_OF_MONTH));
+                dataPicker.getDatePicker().setMinDate(System.currentTimeMillis() - 1000);
+                dataPicker.show();
             }
         });
 
