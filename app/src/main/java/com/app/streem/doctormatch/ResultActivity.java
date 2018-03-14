@@ -158,6 +158,8 @@ public class ResultActivity extends AppCompatActivity {
     //carrega lista
     public void buscarMedicos(String cidade,String estado,String espec) throws ParseException {
 
+        SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy");
+        final Date d = format.parse(preferencias.getCHAVE_DATA());
 
         showLoadingAnimation();
         medicos.clear();
@@ -172,6 +174,9 @@ public class ResultActivity extends AppCompatActivity {
             newPage.putExtra("registro",item.getRegistro().toString());
             newPage.putExtra("classif",item.getClassif().toString());
             newPage.putExtra("url",item.getUrl());
+            newPage.putExtra("key",item.getKey());
+
+            newPage.putExtra("data",String.valueOf(d.getTime()));
             startActivity(newPage);
 
             }} );
@@ -180,10 +185,7 @@ public class ResultActivity extends AppCompatActivity {
 
         recyclerView.setAdapter(adapter);
 
-        SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy");
-        Date d = format.parse(preferencias.getCHAVE_DATA());
-       // final SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
-        //Toast.makeText(this,"busca",Toast.LENGTH_SHORT).show();
+
         Log.i("dataTESTE",String.valueOf(d.getTime()));
         Firebase.getDatabaseReference().child("VAGAS").child(estado).child(cidade).child(espec).child(String.valueOf(d.getTime())).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
@@ -204,6 +206,7 @@ public class ResultActivity extends AppCompatActivity {
                         @Override
                         public void onDataChange(DataSnapshot dataSnapshot) {
                             ResultModel med = dataSnapshot.getValue(ResultModel.class);
+                            Log.i("TESTE RESULT",dataSnapshot.getValue().toString());
                             med.setKey(key);
                             medicos.add(med);
                             adapter.notifyDataSetChanged();
