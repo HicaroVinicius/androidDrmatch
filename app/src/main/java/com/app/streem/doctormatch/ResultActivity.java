@@ -157,6 +157,8 @@ public class ResultActivity extends AppCompatActivity {
 
     //carrega lista
     public void buscarMedicos(String cidade,String estado,String espec) throws ParseException {
+        Toast.makeText(getApplicationContext(),"Carregando... Aguarde",Toast.LENGTH_LONG).show();
+
 
         SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy");
         final Date d = format.parse(preferencias.getCHAVE_DATA());
@@ -195,7 +197,6 @@ public class ResultActivity extends AppCompatActivity {
                     semRegistro.setVisibility(View.VISIBLE);
                    // Toast.makeText(getApplicationContext(),"Nenhum Médico encontrado",Toast.LENGTH_LONG).show();
                 }else{
-                    Toast.makeText(getApplicationContext(),"Carregando... Aguarde",Toast.LENGTH_LONG).show();
 
                 for (DataSnapshot data : dataSnapshot.getChildren()){
 

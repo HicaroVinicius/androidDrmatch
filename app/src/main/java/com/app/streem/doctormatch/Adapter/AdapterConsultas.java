@@ -53,7 +53,7 @@ public class AdapterConsultas extends RecyclerView.Adapter<AdapterConsultas.Resu
 
         public ResultViewHolder(View itemView) {
             super(itemView);
-            nome = itemView.findViewById(R.id.nomeConsultaID);
+            nome = itemView.findViewById(R.id.horaRecID);
             data = itemView.findViewById(R.id.dataConsultaID);
 
         }
