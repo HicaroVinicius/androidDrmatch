@@ -76,6 +76,8 @@ public class DetailActivity extends AppCompatActivity {
         registroDetails.setText(registro);
         classifDetails.setText(classif);
 
+        Toast.makeText(getApplicationContext(),"Carregando... Aguarde",Toast.LENGTH_SHORT).show();
+
         adapter = new VagasAdapter(vagasList, getApplicationContext(), new VagasAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(VagasModel item) {
@@ -87,7 +89,7 @@ public class DetailActivity extends AppCompatActivity {
 
         horaView.setAdapter(adapter);
 
-        Firebase.getDatabaseReference().child("CLIENTES").child(key).child("AGENDAMENTO").child(data).addListenerForSingleValueEvent(new ValueEventListener() {
+        Firebase.getDatabaseReference().child("CLIENTES").child(key).child("AGENDAMENTO").child(data).orderByChild("status").equalTo("Disponível").addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
 
@@ -96,20 +98,15 @@ public class DetailActivity extends AppCompatActivity {
                     Log.i("TESTE","sem filho");
                 }
 
+
+
                 for (DataSnapshot data : dataSnapshot.getChildren()) {
 
-                    if(data.child("status").getValue().toString().equals("Disponível")){
+
                         Log.i("TESTE",data.getValue().toString());
                         VagasModel vaga = data.getValue(VagasModel.class);
-                        Log.i("TESTE",data.child("status").getValue().toString());
                         vagasList.add(vaga);
                         adapter.notifyDataSetChanged();
-                    }else{
-                        Log.i("TESTE Disponivel",data.toString());
-                    }
-
-
-
 
                 }
             }

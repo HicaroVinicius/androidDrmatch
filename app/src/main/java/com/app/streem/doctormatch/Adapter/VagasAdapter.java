@@ -5,6 +5,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.app.streem.doctormatch.Modelo.ResultModel;
@@ -56,10 +57,14 @@ public class VagasAdapter extends RecyclerView.Adapter<VagasAdapter.ResultViewHo
     class ResultViewHolder extends RecyclerView.ViewHolder{
 
         TextView horas;
+        ImageView img1;
+        ImageView img2;
         public ResultViewHolder(View itemView) {
             super(itemView);
 
             horas = itemView.findViewById(R.id.horaRecID);
+            img1 = itemView.findViewById(R.id.img1Details);
+            img2 = itemView.findViewById(R.id.img2Details);
         }
 
         public void bind(final VagasModel item, final VagasAdapter.OnItemClickListener listener) {
