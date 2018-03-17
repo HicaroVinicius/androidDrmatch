@@ -3,6 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
+    android:orientation="vertical"
     android:layout_height="wrap_content">
 
 
@@ -30,9 +31,8 @@
                 android:layout_height="37dp"
                 android:layout_marginBottom="8dp"
                 android:layout_marginEnd="300dp"
-                android:layout_marginLeft="16dp"
                 android:layout_marginTop="8dp"
-                android:contentDescription="TODO"
+                android:contentDescription="@string/clock"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintLeft_toLeftOf="parent"
@@ -47,7 +47,7 @@
                 android:layout_marginEnd="8dp"
                 android:layout_marginStart="8dp"
                 android:layout_marginTop="8dp"
-                android:text="8:00"
+                android:text="@string/_8_00"
                 android:textAppearance="@android:style/TextAppearance.DeviceDefault.Large"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -61,6 +61,7 @@
                 android:layout_marginBottom="8dp"
                 android:layout_marginEnd="16dp"
                 android:layout_marginTop="8dp"
+                android:contentDescription="@string/check"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent"

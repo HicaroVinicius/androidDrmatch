@@ -7,13 +7,15 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
+import android.widget.ArrayAdapter;
+import android.widget.LinearLayout;
+import android.widget.RadioGroup;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.app.streem.doctormatch.Adapter.ResultAdapter;
 import com.app.streem.doctormatch.Adapter.VagasAdapter;
 import com.app.streem.doctormatch.DAO.Firebase;
-import com.app.streem.doctormatch.Modelo.ResultModel;
 import com.app.streem.doctormatch.Modelo.VagasModel;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -21,14 +23,11 @@ import com.google.firebase.database.ValueEventListener;
 import com.makeramen.roundedimageview.RoundedImageView;
 import com.squareup.picasso.Picasso;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 public class DetailActivity extends AppCompatActivity {
-
+    private RadioGroup radio;
     private TextView end1Details;
     private TextView end2Details;
     private TextView titularDetails;
@@ -39,16 +38,38 @@ public class DetailActivity extends AppCompatActivity {
     private RecyclerView horaView;
     private RecyclerView.Adapter adapter;
     private List<VagasModel> vagasList = new ArrayList<>();
+    private ArrayList<String> arrayDependentes = new ArrayList<>();
+    private LinearLayout novoCliente;
 
+
+
+
+    RadioGroup.OnCheckedChangeListener onCheckedChangeListener = new RadioGroup.OnCheckedChangeListener() {
+
+        @Override
+        public void onCheckedChanged(RadioGroup group, int checkedId) {
+            switch (checkedId) {
+                case R.id.proprioUser:
+                    novoCliente.setVisibility(View.GONE);
+                    break;
+                case R.id.outroUser:
+                    novoCliente.setVisibility(View.VISIBLE);
+                    break;
+            }
+        }
+    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_detail);
 
+        novoCliente = findViewById(R.id.novoCliente);
+
+        radio =  findViewById(R.id.radioGroupUser);
+        radio.setOnCheckedChangeListener(onCheckedChangeListener);
+
         titularDetails = findViewById(R.id.titularDetails);
-        end1Details = findViewById(R.id.end1Details);
-        end2Details = findViewById(R.id.end2Details);
         registroDetails = findViewById(R.id.registroDetails);
         classifDetails = findViewById(R.id.classifDetails);
         fotoMedico = findViewById(R.id.fotoDetails);
@@ -57,22 +78,24 @@ public class DetailActivity extends AppCompatActivity {
         horaView.setHasFixedSize(true);
         horaView.setLayoutManager(new LinearLayoutManager(this));
 
+
+
         Intent dados = getIntent();
-        String titular = dados.getStringExtra("titular");
-        String end1 = dados.getStringExtra("end1");
-        String end2 = dados.getStringExtra("end2");
-        String registro = dados.getStringExtra("registro");
-        String classif = dados.getStringExtra("classif");
+        final String titular = dados.getStringExtra("titular");
+        final String end1 = dados.getStringExtra("end1");
+        final String end2 = dados.getStringExtra("end2");
+        final String registro = dados.getStringExtra("registro");
+        final String classif = dados.getStringExtra("classif");
         final String key = dados.getStringExtra("key");
         final String data = dados.getStringExtra("data");
+        final String dataFormatt = dados.getStringExtra("dataFormatt");
+        final String url = dados.getStringExtra("url");
 
-        urlFoto = dados.getStringExtra("url");
+        urlFoto = url;
 
         Picasso.with(getApplicationContext()).load(urlFoto).into(fotoMedico);
 
         titularDetails.setText(titular);
-        end1Details.setText(end1);
-        end2Details.setText(end2);
         registroDetails.setText(registro);
         classifDetails.setText(classif);
 
@@ -82,6 +105,20 @@ public class DetailActivity extends AppCompatActivity {
             @Override
             public void onItemClick(VagasModel item) {
                 Toast.makeText(getApplicationContext(),item.getHora(),Toast.LENGTH_SHORT).show();
+                Intent confirmar = new Intent(DetailActivity.this,ConfirmActivity.class);
+                confirmar.putExtra("titular",titular);
+                confirmar.putExtra("end1",end1);
+                confirmar.putExtra("end2",end2);
+                confirmar.putExtra("registro",registro);
+                confirmar.putExtra("classif",classif);
+                confirmar.putExtra("url",url);
+                confirmar.putExtra("key",key);
+
+                confirmar.putExtra("data",data);
+                confirmar.putExtra("dataFormatt",dataFormatt);
+
+                confirmar.putExtra("hora",item.getHora());
+                startActivity(confirmar);
             }
         });
 

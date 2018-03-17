@@ -177,6 +177,7 @@ public class ResultActivity extends AppCompatActivity {
             newPage.putExtra("classif",item.getClassif().toString());
             newPage.putExtra("url",item.getUrl());
             newPage.putExtra("key",item.getKey());
+            newPage.putExtra("dataFormatt",d);
 
             newPage.putExtra("data",String.valueOf(d.getTime()));
             startActivity(newPage);
