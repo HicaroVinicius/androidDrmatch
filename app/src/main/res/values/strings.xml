@@ -14,6 +14,10 @@
     <string name="facebook_app_id">339095896583817</string>
     <string name="fb_login_protocol_scheme">fb339095896583817</string>
     <string name="nomeConsultaID">nomeConsultaID</string>
+    <string name="title_activity_main2">Main2Activity</string>
+    <string name="title_home">Agendamento</string>
+    <string name="title_dashboard">Consultas</string>
+    <string name="title_notifications">Exames</string>
 
 
 </resources>

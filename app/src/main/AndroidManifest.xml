@@ -51,15 +51,22 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".CadastroActivity"
-            android:screenOrientation="portrait"/>
-        <activity android:name=".FiltroBuscaActivity"
-            android:screenOrientation="portrait"/>
-        <activity android:name=".SeletorActivity"
-            android:screenOrientation="portrait"/>
-        <activity android:name=".ResultActivity"
-            android:screenOrientation="portrait"/>
-        <activity android:name=".DetailActivity"></activity>
+        <activity
+            android:name=".CadastroActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".FiltroBuscaActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".SeletorActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ResultActivity"
+            android:screenOrientation="portrait" />
+        <activity android:name=".DetailActivity" />
+        <activity
+            android:name=".Main2Activity"
+            android:label="@string/title_activity_main2"></activity>
     </application>
 
 </manifest>
