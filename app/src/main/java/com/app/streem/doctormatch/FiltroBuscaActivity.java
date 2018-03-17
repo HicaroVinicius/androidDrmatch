@@ -35,8 +35,8 @@ public class FiltroBuscaActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_filtro_busca);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true); //Mostrar o botão
-        getSupportActionBar().setHomeButtonEnabled(true);
+        //getSupportActionBar().setDisplayHomeAsUpEnabled(true); //Mostrar o botão
+        //getSupportActionBar().setHomeButtonEnabled(true);
 
         preferencias = new Preferencias(this);
 
