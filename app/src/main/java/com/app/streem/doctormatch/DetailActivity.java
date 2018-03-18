@@ -7,6 +7,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.LinearLayout;
 import android.widget.RadioGroup;
@@ -41,6 +42,9 @@ public class DetailActivity extends AppCompatActivity {
     private ArrayList<String> arrayDependentes = new ArrayList<>();
     private LinearLayout novoCliente;
 
+    private String[] dependentes = new String[]{"Josue","Hicaro"};
+
+    private Spinner spinner;
 
 
 
@@ -153,7 +157,24 @@ public class DetailActivity extends AppCompatActivity {
         });
 
 
+        ArrayAdapter<String> adapterSpinner = new ArrayAdapter<String>(this,android.R.layout.simple_spinner_dropdown_item,dependentes);
+        adapterSpinner.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 
+        spinner = findViewById(R.id.spinnerDependentes);
+
+        spinner.setAdapter(adapterSpinner);
+
+        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                Toast.makeText(DetailActivity.this, parent.getItemAtPosition(position).toString(), Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
 
 
 

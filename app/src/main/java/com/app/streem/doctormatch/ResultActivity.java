@@ -162,6 +162,7 @@ public class ResultActivity extends AppCompatActivity {
 
         SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy");
         final Date d = format.parse(preferencias.getCHAVE_DATA());
+        final String dataFormatt = format.format(d.getTime());
 
         showLoadingAnimation();
         medicos.clear();
@@ -177,7 +178,7 @@ public class ResultActivity extends AppCompatActivity {
             newPage.putExtra("classif",item.getClassif().toString());
             newPage.putExtra("url",item.getUrl());
             newPage.putExtra("key",item.getKey());
-            newPage.putExtra("dataFormatt",d);
+            newPage.putExtra("dataFormatt",dataFormatt);
 
             newPage.putExtra("data",String.valueOf(d.getTime()));
             startActivity(newPage);
@@ -189,6 +190,7 @@ public class ResultActivity extends AppCompatActivity {
         recyclerView.setAdapter(adapter);
 
 
+        Log.i("dataTESTE",String.valueOf(d.getTime()));
         Log.i("dataTESTE",String.valueOf(d.getTime()));
         Firebase.getDatabaseReference().child("VAGAS").child(estado).child(cidade).child(espec).child(String.valueOf(d.getTime())).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override

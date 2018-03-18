@@ -1,12 +1,17 @@
 package com.app.streem.doctormatch;
 
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.res.Resources;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.RadioGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.makeramen.roundedimageview.RoundedImageView;
 
@@ -18,8 +23,10 @@ public class ConfirmActivity extends AppCompatActivity {
     private TextView classifDetails;
     private TextView horaConfirm;
     private TextView dataConfirm;
+    private TextView nomeCliente;
     private String urlFoto;
     private RoundedImageView fotoMedico;
+    private Button confirmarButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,6 +42,9 @@ public class ConfirmActivity extends AppCompatActivity {
         fotoMedico = findViewById(R.id.fotoConfirm);
         horaConfirm = findViewById(R.id.horaConfirm);
         dataConfirm = findViewById(R.id.dataConfirm);
+        nomeCliente = findViewById(R.id.nomeConfirm);
+        confirmarButton = findViewById(R.id.buttonConfirmID);
+
 
         Intent dados = getIntent();
         final String titular = dados.getStringExtra("titular");
@@ -54,7 +64,39 @@ public class ConfirmActivity extends AppCompatActivity {
         registroDetails.setText(registro);
         classifDetails.setText(classif);
         horaConfirm.setText("Hora: ".concat(hora));
-        dataConfirm.setText("Dia: ".concat(data));
+        dataConfirm.setText("Dia: ".concat(dataFormatt));
+        nomeCliente.setText("Josué Medeiros");
+
+        confirmarButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                AlertDialog.Builder confirm = new AlertDialog.Builder(ConfirmActivity.this);
+                confirm.setTitle("Confirmar Agendamento");
+                confirm.setIcon(R.drawable.ic_done_black_24dp).setMessage("Deseja confirmar o agendamento?").setCancelable(true);
+                confirm.setNegativeButton("Cancelar", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                       return;
+                    }
+                });
+
+                confirm.setPositiveButton("Confirmar", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        confirmar();
+                    }
+                });
+
+                AlertDialog alertDialog = confirm.create();
+                alertDialog.show();
+            }
+        });
+
+
+    }
+
+    public void confirmar(){
+        Toast.makeText(ConfirmActivity.this, "Confirmar", Toast.LENGTH_SHORT).show();
     }
 
 
