@@ -169,7 +169,7 @@ public class ResultActivity extends AppCompatActivity {
         adapter = new ResultAdapter(medicos, this, new ResultAdapter.OnItemClickListener() {
             @Override public void onItemClick(ResultModel item) {
 
-           //Toast.makeText(getApplicationContext(),"KEY: "+item.getKey()+"/DATA: "+preferencias.getCHAVE_DATA(),Toast.LENGTH_SHORT).show();
+           //Toast.makeText(getApplicationContext(),"KEY: "+item.getKEY()+"/DATA: "+preferencias.getCHAVE_DATA(),Toast.LENGTH_SHORT).show();
             Intent newPage = new Intent(ResultActivity.this,DetailActivity.class);
             newPage.putExtra("titular",item.getTitular().toString());
             newPage.putExtra("end1",item.getEndereco1().toString());
@@ -224,7 +224,7 @@ public class ResultActivity extends AppCompatActivity {
 
                 }
                 hideLoadingAnimation();
-                semRegistro.setVisibility(View.INVISIBLE);
+                semRegistro.setVisibility(View.GONE);
 
                 }
 

@@ -8,15 +8,18 @@ import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.LinearLayout;
+import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.app.streem.doctormatch.Adapter.SpinnerDependenteAdapter;
 import com.app.streem.doctormatch.Adapter.VagasAdapter;
 import com.app.streem.doctormatch.DAO.Firebase;
+import com.app.streem.doctormatch.DAO.Preferencias;
+import com.app.streem.doctormatch.Modelo.DependenteModel;
 import com.app.streem.doctormatch.Modelo.VagasModel;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -29,22 +32,30 @@ import java.util.List;
 
 public class DetailActivity extends AppCompatActivity {
     private RadioGroup radio;
+    private RadioButton buttonProprio;
+    private RadioButton buttonDependente;
     private TextView end1Details;
     private TextView end2Details;
     private TextView titularDetails;
     private TextView registroDetails;
     private TextView classifDetails;
+    private TextView semHorario;
     private String urlFoto;
     private RoundedImageView fotoMedico;
     private RecyclerView horaView;
     private RecyclerView.Adapter adapter;
     private List<VagasModel> vagasList = new ArrayList<>();
-    private ArrayList<String> arrayDependentes = new ArrayList<>();
+    private List<DependenteModel> arrayDependentes = new ArrayList<>();
     private LinearLayout novoCliente;
 
-    private String[] dependentes = new String[]{"Josue","Hicaro"};
 
     private Spinner spinner;
+    private Preferencias preferencias;
+
+    private String nome;
+    private String nomeDependente = null;
+
+    private boolean hasDependente = false;
 
 
 
@@ -54,10 +65,14 @@ public class DetailActivity extends AppCompatActivity {
         public void onCheckedChanged(RadioGroup group, int checkedId) {
             switch (checkedId) {
                 case R.id.proprioUser:
+                    nome = preferencias.getCHAVE_NOME_USUARIO();
+                    //Toast.makeText(DetailActivity.this, nome, Toast.LENGTH_SHORT).show();
                     novoCliente.setVisibility(View.GONE);
                     break;
                 case R.id.outroUser:
-                    novoCliente.setVisibility(View.VISIBLE);
+                        nome = nomeDependente;
+                        //Toast.makeText(DetailActivity.this, nome, Toast.LENGTH_SHORT).show();
+                        novoCliente.setVisibility(View.VISIBLE);
                     break;
             }
         }
@@ -67,6 +82,16 @@ public class DetailActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_detail);
+
+        buttonProprio = findViewById( R.id.proprioUser);
+        buttonDependente = findViewById(R.id.outroUser);
+
+
+        semHorario = findViewById(R.id.semRegistroResultID);
+
+        preferencias =  new Preferencias(this);
+
+        nome = preferencias.getCHAVE_NOME_USUARIO();
 
         novoCliente = findViewById(R.id.novoCliente);
 
@@ -103,12 +128,12 @@ public class DetailActivity extends AppCompatActivity {
         registroDetails.setText(registro);
         classifDetails.setText(classif);
 
-        Toast.makeText(getApplicationContext(),"Carregando... Aguarde",Toast.LENGTH_SHORT).show();
+       // Toast.makeText(getApplicationContext(),"Carregando... Aguarde",Toast.LENGTH_SHORT).show();
 
         adapter = new VagasAdapter(vagasList, getApplicationContext(), new VagasAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(VagasModel item) {
-                Toast.makeText(getApplicationContext(),item.getHora(),Toast.LENGTH_SHORT).show();
+                //Toast.makeText(getApplicationContext(),nome,Toast.LENGTH_SHORT).show();
                 Intent confirmar = new Intent(DetailActivity.this,ConfirmActivity.class);
                 confirmar.putExtra("titular",titular);
                 confirmar.putExtra("end1",end1);
@@ -118,8 +143,12 @@ public class DetailActivity extends AppCompatActivity {
                 confirmar.putExtra("url",url);
                 confirmar.putExtra("key",key);
 
+                confirmar.putExtra("nome",nome);
+
                 confirmar.putExtra("data",data);
                 confirmar.putExtra("dataFormatt",dataFormatt);
+
+
 
                 confirmar.putExtra("hora",item.getHora());
                 startActivity(confirmar);
@@ -137,15 +166,23 @@ public class DetailActivity extends AppCompatActivity {
 
                 if (!dataSnapshot.hasChildren()){
                     Log.i("TESTE","sem filho");
+                    buttonDependente.setEnabled(false);
+                    buttonProprio.setEnabled(false);
+                    semHorario.setVisibility(View.VISIBLE);
+
                 }
 
 
 
                 for (DataSnapshot data : dataSnapshot.getChildren()) {
 
+                    semHorario.setVisibility(View.GONE);
+
+                        buttonProprio.setEnabled(true);
 
                         Log.i("TESTE",data.getValue().toString());
                         VagasModel vaga = data.getValue(VagasModel.class);
+                        Log.i("TESTEVAGA",vaga.getHora());
                         vagasList.add(vaga);
                         adapter.notifyDataSetChanged();
 
@@ -156,18 +193,51 @@ public class DetailActivity extends AppCompatActivity {
             }
         });
 
-
-        ArrayAdapter<String> adapterSpinner = new ArrayAdapter<String>(this,android.R.layout.simple_spinner_dropdown_item,dependentes);
-        adapterSpinner.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-
         spinner = findViewById(R.id.spinnerDependentes);
 
-        spinner.setAdapter(adapterSpinner);
+        final SpinnerDependenteAdapter spinnerAdapter = new SpinnerDependenteAdapter(this,arrayDependentes);
+
+        spinner.setAdapter(spinnerAdapter);
+
+        Firebase.getDatabaseReference().child("USUARIO").child(preferencias.getCHAVE_INDENTIFICADOR()).child("DEPENDENTES").addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+
+
+                if (!dataSnapshot.hasChildren()){
+                    buttonDependente.setEnabled(false);
+                }
+
+
+
+                for (DataSnapshot data : dataSnapshot.getChildren()) {
+
+                    if(buttonProprio.isEnabled()) {
+                        buttonDependente.setEnabled(true);
+                    }
+
+                    Log.i("TESTE",data.getValue().toString());
+                    DependenteModel dep = data.getValue(DependenteModel.class);
+                    Log.i("TESTEDEP",dep.getKEY()+"-"+dep.getNOME());
+                    arrayDependentes.add(dep);
+                    nomeDependente = dep.getNOME();
+                    spinnerAdapter.notifyDataSetChanged();
+
+                }
+            }
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+
+
 
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                Toast.makeText(DetailActivity.this, parent.getItemAtPosition(position).toString(), Toast.LENGTH_SHORT).show();
+                nomeDependente = arrayDependentes.get(position).getNOME();
+                nome = nomeDependente;
+               // Toast.makeText(DetailActivity.this,nome, Toast.LENGTH_SHORT).show();
             }
 
             @Override

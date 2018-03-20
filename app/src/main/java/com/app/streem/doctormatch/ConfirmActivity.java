@@ -57,6 +57,7 @@ public class ConfirmActivity extends AppCompatActivity {
         final String dataFormatt = dados.getStringExtra("dataFormatt");
         final String url = dados.getStringExtra("url");
         final String hora = dados.getStringExtra("hora");
+        final String nome = dados.getStringExtra("nome");
 
         titularDetails.setText(titular);
         end1Details.setText(end1);
@@ -65,7 +66,7 @@ public class ConfirmActivity extends AppCompatActivity {
         classifDetails.setText(classif);
         horaConfirm.setText("Hora: ".concat(hora));
         dataConfirm.setText("Dia: ".concat(dataFormatt));
-        nomeCliente.setText("Josué Medeiros");
+        nomeCliente.setText(nome);
 
         confirmarButton.setOnClickListener(new View.OnClickListener() {
             @Override
