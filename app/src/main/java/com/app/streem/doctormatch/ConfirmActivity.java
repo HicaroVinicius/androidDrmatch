@@ -25,6 +25,7 @@ import com.makeramen.roundedimageview.RoundedImageView;
 public class ConfirmActivity extends AppCompatActivity {
     private TextView end1Details;
     private TextView end2Details;
+    private TextView end3Details;
     private TextView titularDetails;
     private TextView registroDetails;
     private TextView classifDetails;
@@ -44,6 +45,7 @@ public class ConfirmActivity extends AppCompatActivity {
         titularDetails = findViewById(R.id.titularConfirm);
         end1Details = findViewById(R.id.end1Confirm);
         end2Details = findViewById(R.id.end2Confirm);
+        end3Details = findViewById(R.id.end3Confirm);
         registroDetails = findViewById(R.id.registroConfirm);
         classifDetails = findViewById(R.id.classifConfirm);
         fotoMedico = findViewById(R.id.fotoConfirm);
@@ -73,6 +75,7 @@ public class ConfirmActivity extends AppCompatActivity {
         titularDetails.setText(titular);
         end1Details.setText(end1);
         end2Details.setText(end2);
+        end3Details.setText(cidade+", "+estado+".");
         registroDetails.setText(registro);
         classifDetails.setText(classif);
         horaConfirm.setText("Hora: ".concat(hora));
@@ -111,9 +114,6 @@ public class ConfirmActivity extends AppCompatActivity {
         Toast.makeText(ConfirmActivity.this, "Agendando...", Toast.LENGTH_SHORT).show();
 
         Firebase.getDatabaseReference().child("VAGAS").child(estado).child(cidade).child(espec).child(data).child(keyMedico).child(keyHora).removeValue();
-
-
-
     }
 
 
