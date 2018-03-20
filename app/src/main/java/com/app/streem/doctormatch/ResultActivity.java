@@ -114,9 +114,9 @@ public class ResultActivity extends AppCompatActivity {
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
 
-        cidade = preferencias.getCHAVE_CIDADE().replace(" ","");
-        estado = preferencias.getCHAVE_ESTADO().replace(" ","");
-        espec = preferencias.getCHAVE_ESPECIALIDADE().replace(" ","");
+        final String cidade = preferencias.getCHAVE_CIDADE().replace(" ","");
+        final String estado = preferencias.getCHAVE_ESTADO().replace(" ","");
+        final String espec = preferencias.getCHAVE_ESPECIALIDADE().replace(" ","");
 
         try {
             buscarMedicos(cidade,estado,espec);
@@ -156,7 +156,7 @@ public class ResultActivity extends AppCompatActivity {
             }
 
     //carrega lista
-    public void buscarMedicos(String cidade,String estado,String espec) throws ParseException {
+    public void buscarMedicos(final String cidade, final String estado, final String espec) throws ParseException {
         Toast.makeText(getApplicationContext(),"Carregando... Aguarde",Toast.LENGTH_LONG).show();
 
 
@@ -179,6 +179,9 @@ public class ResultActivity extends AppCompatActivity {
             newPage.putExtra("url",item.getUrl());
             newPage.putExtra("key",item.getKey());
             newPage.putExtra("dataFormatt",dataFormatt);
+            newPage.putExtra("cidade",cidade);
+            newPage.putExtra("estado",estado);
+            newPage.putExtra("espec",espec);
 
             newPage.putExtra("data",String.valueOf(d.getTime()));
             startActivity(newPage);

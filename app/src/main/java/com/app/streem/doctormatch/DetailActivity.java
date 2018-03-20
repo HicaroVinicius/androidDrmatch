@@ -119,6 +119,9 @@ public class DetailActivity extends AppCompatActivity {
         final String data = dados.getStringExtra("data");
         final String dataFormatt = dados.getStringExtra("dataFormatt");
         final String url = dados.getStringExtra("url");
+        final String cidade = dados.getStringExtra("cidade");
+        final String estado = dados.getStringExtra("estado");
+        final String espec = dados.getStringExtra("espec");
 
         urlFoto = url;
 
@@ -147,10 +150,14 @@ public class DetailActivity extends AppCompatActivity {
 
                 confirmar.putExtra("data",data);
                 confirmar.putExtra("dataFormatt",dataFormatt);
+                confirmar.putExtra("cidade",cidade);
+                confirmar.putExtra("estado",estado);
+                confirmar.putExtra("espec",espec);
 
 
 
                 confirmar.putExtra("hora",item.getHora());
+                confirmar.putExtra("keyHora",item.getKey());
                 startActivity(confirmar);
             }
         });

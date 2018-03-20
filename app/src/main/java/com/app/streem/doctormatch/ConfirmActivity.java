@@ -6,6 +6,7 @@ import android.content.res.Resources;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
@@ -13,6 +14,12 @@ import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.app.streem.doctormatch.DAO.Firebase;
+import com.app.streem.doctormatch.Modelo.ResultModel;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.ValueEventListener;
 import com.makeramen.roundedimageview.RoundedImageView;
 
 public class ConfirmActivity extends AppCompatActivity {
@@ -52,12 +59,16 @@ public class ConfirmActivity extends AppCompatActivity {
         final String end2 = dados.getStringExtra("end2");
         final String registro = dados.getStringExtra("registro");
         final String classif = dados.getStringExtra("classif");
-        final String key = dados.getStringExtra("key");
+        final String keyMedico = dados.getStringExtra("key");
         final String data = dados.getStringExtra("data");
         final String dataFormatt = dados.getStringExtra("dataFormatt");
         final String url = dados.getStringExtra("url");
         final String hora = dados.getStringExtra("hora");
+        final String keyHora = dados.getStringExtra("keyHora");
         final String nome = dados.getStringExtra("nome");
+        final String cidade = dados.getStringExtra("cidade");
+        final String estado = dados.getStringExtra("estado");
+        final String espec = dados.getStringExtra("espec");
 
         titularDetails.setText(titular);
         end1Details.setText(end1);
@@ -84,7 +95,7 @@ public class ConfirmActivity extends AppCompatActivity {
                 confirm.setPositiveButton("Confirmar", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        confirmar();
+                        confirmar(data,keyMedico,cidade,estado,espec,keyHora);
                     }
                 });
 
@@ -96,8 +107,13 @@ public class ConfirmActivity extends AppCompatActivity {
 
     }
 
-    public void confirmar(){
-        Toast.makeText(ConfirmActivity.this, "Confirmar", Toast.LENGTH_SHORT).show();
+    public void confirmar(String data,String keyMedico,String cidade,String estado,String espec,String keyHora){
+        Toast.makeText(ConfirmActivity.this, "Agendando...", Toast.LENGTH_SHORT).show();
+
+        Firebase.getDatabaseReference().child("VAGAS").child(estado).child(cidade).child(espec).child(data).child(keyMedico).child(keyHora).removeValue();
+
+
+
     }
 
 
