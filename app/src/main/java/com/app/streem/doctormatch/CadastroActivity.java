@@ -10,7 +10,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.DatePicker;
-import android.widget.ImageView;
 import android.widget.RadioGroup;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
@@ -49,7 +48,7 @@ public class CadastroActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_cadastro);
         getSupportActionBar().hide();
-        ImageView botaoVoltar = findViewById(R.id.botaoVoltarCadastroID);
+        /*
         sexo = "null";
         preferencias = new Preferencias(this);
         auth = Firebase.getFirebaseAuth();
@@ -63,13 +62,6 @@ public class CadastroActivity extends AppCompatActivity {
         MaskEditTextChangedListener maskTel = new MaskEditTextChangedListener("(##)#########", telefone);
         dataNasc.addTextChangedListener(maskData);
         telefone.addTextChangedListener(maskTel);
-
-        botaoVoltar.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                finish();
-            }
-        });
 
         myCalendar = Calendar.getInstance();
 
@@ -161,7 +153,7 @@ public class CadastroActivity extends AppCompatActivity {
                             });
                 }
             }
-        });
+        });*/
 
     }
 
