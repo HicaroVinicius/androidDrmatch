@@ -63,8 +63,6 @@ public class VagasAdapter extends RecyclerView.Adapter<VagasAdapter.ResultViewHo
             super(itemView);
 
             horas = itemView.findViewById(R.id.horaRecID);
-            img1 = itemView.findViewById(R.id.img1Details);
-            img2 = itemView.findViewById(R.id.img2Details);
         }
 
         public void bind(final VagasModel item, final VagasAdapter.OnItemClickListener listener) {

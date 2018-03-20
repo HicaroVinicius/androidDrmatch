@@ -162,13 +162,14 @@ public class ResultActivity extends AppCompatActivity {
 
         SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy");
         final Date d = format.parse(preferencias.getCHAVE_DATA());
+        final String dataFormatt = format.format(d.getTime());
 
         showLoadingAnimation();
         medicos.clear();
         adapter = new ResultAdapter(medicos, this, new ResultAdapter.OnItemClickListener() {
             @Override public void onItemClick(ResultModel item) {
 
-           //Toast.makeText(getApplicationContext(),"KEY: "+item.getKey()+"/DATA: "+preferencias.getCHAVE_DATA(),Toast.LENGTH_SHORT).show();
+           //Toast.makeText(getApplicationContext(),"KEY: "+item.getKEY()+"/DATA: "+preferencias.getCHAVE_DATA(),Toast.LENGTH_SHORT).show();
             Intent newPage = new Intent(ResultActivity.this,DetailActivity.class);
             newPage.putExtra("titular",item.getTitular().toString());
             newPage.putExtra("end1",item.getEndereco1().toString());
@@ -177,6 +178,7 @@ public class ResultActivity extends AppCompatActivity {
             newPage.putExtra("classif",item.getClassif().toString());
             newPage.putExtra("url",item.getUrl());
             newPage.putExtra("key",item.getKey());
+            newPage.putExtra("dataFormatt",dataFormatt);
 
             newPage.putExtra("data",String.valueOf(d.getTime()));
             startActivity(newPage);
@@ -188,6 +190,7 @@ public class ResultActivity extends AppCompatActivity {
         recyclerView.setAdapter(adapter);
 
 
+        Log.i("dataTESTE",String.valueOf(d.getTime()));
         Log.i("dataTESTE",String.valueOf(d.getTime()));
         Firebase.getDatabaseReference().child("VAGAS").child(estado).child(cidade).child(espec).child(String.valueOf(d.getTime())).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
@@ -221,7 +224,7 @@ public class ResultActivity extends AppCompatActivity {
 
                 }
                 hideLoadingAnimation();
-                semRegistro.setVisibility(View.INVISIBLE);
+                semRegistro.setVisibility(View.GONE);
 
                 }
 

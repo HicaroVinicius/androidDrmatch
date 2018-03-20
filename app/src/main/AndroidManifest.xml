@@ -64,6 +64,13 @@
             android:name=".ResultActivity"
             android:screenOrientation="portrait" />
         <activity android:name=".DetailActivity" />
+<<<<<<< HEAD
+=======
+        <activity android:name=".ConfirmActivity" />
+        <activity
+            android:name=".Main2Activity"
+            android:label="@string/title_activity_main2"></activity>
+>>>>>>> 47d19495c9d3b1d58657caad2a1cc8f3339fc4d0
     </application>
 
 </manifest>
