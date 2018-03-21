@@ -10,7 +10,10 @@ import android.widget.TextView;
 import com.app.streem.doctormatch.Modelo.Consulta;
 import com.app.streem.doctormatch.R;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 /**
  * Created by Hicaro on 07/03/2018.
@@ -30,15 +33,15 @@ public class AdapterConsultas extends RecyclerView.Adapter<AdapterConsultas.Resu
     public ResultViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
 
         LayoutInflater inflater = LayoutInflater.from(context);
-        View view = inflater.inflate(R.layout.recyclerview_result,null);
+        View view = inflater.inflate(R.layout.recyclerview_consultas,null);
         return new AdapterConsultas.ResultViewHolder(view);
     }
 
     @Override
     public void onBindViewHolder(ResultViewHolder holder, int position) {
         Consulta consultas = consulta.get(position);
-        holder.nome.setText(String.valueOf(consultas.getMedico()));
-        holder.data.setText(String.valueOf(consultas.getData())+" ás "+String.valueOf(consultas.getHora()));
+        holder.nome.setText(String.valueOf(consultas.getNomeMedico()));
+        holder.data.setText(String.valueOf(consultas.getDataFormat())+" ás "+String.valueOf(consultas.getHoraFormat()));
     }
 
     @Override

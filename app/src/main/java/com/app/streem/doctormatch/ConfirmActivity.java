@@ -103,7 +103,7 @@ public class ConfirmActivity extends AppCompatActivity {
                 confirm.setPositiveButton("Confirmar", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        confirmar(data,keyMedico,cidade,estado,espec,keyHora,nome);
+                        confirmar(data,keyMedico,cidade,estado,espec,keyHora,nome,titular,hora,dataFormatt);
                     }
                 });
 
@@ -115,7 +115,7 @@ public class ConfirmActivity extends AppCompatActivity {
 
     }
 
-    public void confirmar(String data, String keyMedico, String cidade, String estado, String espec, String keyHora, final String nomeUser){
+    public void confirmar(String data, String keyMedico, String cidade, String estado, String espec, String keyHora, final String nomeUser,String nomeMedico, String horaFormat,String dataFormat){
 
         Firebase.getDatabaseReference().child("VAGAS").child(estado).child(cidade).child(espec).child(data).child(keyMedico).child(keyHora).removeValue();
 
@@ -159,10 +159,10 @@ public class ConfirmActivity extends AppCompatActivity {
         });
 
         String key = Firebase.getDatabaseReference().child("USUARIO").child(preferencias.getCHAVE_INDENTIFICADOR()).child("CONSULTA").push().getKey();
-        Consulta nova = new Consulta(keyMedico,data,keyHora,nomeUser);
+        Consulta nova = new Consulta(keyMedico,data,keyHora,nomeUser,nomeMedico,horaFormat,dataFormat);
         Firebase.getDatabaseReference().child("USUARIO").child(preferencias.getCHAVE_INDENTIFICADOR()).child("CONSULTA").child(key).setValue(nova);
 
-        Intent intent = new Intent(ConfirmActivity.this,AgendConcluido.class);
+        Intent intent = new Intent(ConfirmActivity.this,MainActivity.class);
         startActivity(intent);
         finish();
     }
