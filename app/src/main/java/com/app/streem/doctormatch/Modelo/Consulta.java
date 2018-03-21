@@ -5,20 +5,23 @@ package com.app.streem.doctormatch.Modelo;
  */
 
 public class Consulta {
-    public Consulta(String nome, String data, String hora) {
-        this.nome = nome;
+
+    public Consulta(String medico, String data, String hora,String nome) {
+        this.medico = medico;
         this.data = data;
         this.hora = hora;
-    }
-
-    private String nome;
-
-    public String getNome() {
-        return nome;
-    }
-
-    public void setNome(String nome) {
         this.nome = nome;
+    }
+
+
+    private String medico;
+
+    public String getMedico() {
+        return medico;
+    }
+
+    public void setMedico(String medico) {
+        this.medico = medico;
     }
 
     public String getData() {
@@ -39,4 +42,14 @@ public class Consulta {
 
     private String data;
     private String hora;
+
+    public String getNome() {
+        return nome;
+    }
+
+    public void setNome(String nome) {
+        this.nome = nome;
+    }
+
+    private String nome;
 }

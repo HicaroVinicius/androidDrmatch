@@ -64,8 +64,8 @@
             android:name=".ResultActivity"
             android:screenOrientation="portrait" />
         <activity android:name=".DetailActivity" />
-
         <activity android:name=".ConfirmActivity" />
+        <activity android:name=".AgendConcluido"></activity>
     </application>
 
 </manifest>

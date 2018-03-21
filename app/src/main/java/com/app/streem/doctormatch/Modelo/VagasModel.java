@@ -59,4 +59,14 @@ public class VagasModel {
     private String hora;
     private String key;
     private String data;
+
+    public String getNome() {
+        return nome;
+    }
+
+    public void setNome(String nome) {
+        this.nome = nome;
+    }
+
+    private String nome;
 }
