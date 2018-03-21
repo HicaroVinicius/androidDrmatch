@@ -37,7 +37,7 @@ public class AdapterConsultas extends RecyclerView.Adapter<AdapterConsultas.Resu
     @Override
     public void onBindViewHolder(ResultViewHolder holder, int position) {
         Consulta consultas = consulta.get(position);
-        holder.nome.setText(String.valueOf(consultas.getNome()));
+        holder.nome.setText(String.valueOf(consultas.getMedico()));
         holder.data.setText(String.valueOf(consultas.getData())+" ás "+String.valueOf(consultas.getHora()));
     }
 
