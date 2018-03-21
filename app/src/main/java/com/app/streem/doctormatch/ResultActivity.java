@@ -38,8 +38,6 @@ public class ResultActivity extends AppCompatActivity {
     private RecyclerView.Adapter adapter;
     private TextView semRegistro;
 
-    private String cidade,espec,estado,n;
-
     private List<ResultModel> medicos = new ArrayList<>();
     private ResultModel med;
     private List<Consulta> consultas = new ArrayList<>();
@@ -47,6 +45,8 @@ public class ResultActivity extends AppCompatActivity {
     private Calendar myCalendar;
     private TextView data;
     private DatePickerDialog dataPicker;
+
+
 
     private void updateLabel() {
         String myFormat = "dd/MM/yyyy"; //In which you need put here
@@ -61,7 +61,7 @@ public class ResultActivity extends AppCompatActivity {
             preferencias.setCHAVE_DATA(sdf.format(myCalendar.getTime()));
 
             try {
-                buscarMedicos(cidade,estado,espec);
+                buscarMedicos(preferencias.getCHAVE_CIDADE().replace(" ",""),preferencias.getCHAVE_ESTADO().replace(" ",""), preferencias.getCHAVE_ESPECIALIDADE().replace(" ",""));
             } catch (ParseException e) {
                 e.printStackTrace();
             }
@@ -75,6 +75,8 @@ public class ResultActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_result);
+
+
 
         data = findViewById(R.id.dataSelResultID);
 
@@ -114,12 +116,10 @@ public class ResultActivity extends AppCompatActivity {
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
 
-        final String cidade = preferencias.getCHAVE_CIDADE().replace(" ","");
-        final String estado = preferencias.getCHAVE_ESTADO().replace(" ","");
-        final String espec = preferencias.getCHAVE_ESPECIALIDADE().replace(" ","");
+
 
         try {
-            buscarMedicos(cidade,estado,espec);
+            buscarMedicos(preferencias.getCHAVE_CIDADE().replace(" ",""),preferencias.getCHAVE_ESTADO().replace(" ",""), preferencias.getCHAVE_ESPECIALIDADE().replace(" ",""));
         } catch (ParseException e) {
             e.printStackTrace();
         }
@@ -193,7 +193,7 @@ public class ResultActivity extends AppCompatActivity {
         recyclerView.setAdapter(adapter);
 
 
-        Log.i("dataTESTE",String.valueOf(d.getTime()));
+        Log.i("dataTESTE",String.valueOf(estado+cidade+espec));
         Log.i("dataTESTE",String.valueOf(d.getTime()));
         Firebase.getDatabaseReference().child("VAGAS").child(estado).child(cidade).child(espec).child(String.valueOf(d.getTime())).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override

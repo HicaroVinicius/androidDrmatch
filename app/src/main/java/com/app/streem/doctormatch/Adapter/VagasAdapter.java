@@ -57,8 +57,6 @@ public class VagasAdapter extends RecyclerView.Adapter<VagasAdapter.ResultViewHo
     class ResultViewHolder extends RecyclerView.ViewHolder{
 
         TextView horas;
-        ImageView img1;
-        ImageView img2;
         public ResultViewHolder(View itemView) {
             super(itemView);
 
