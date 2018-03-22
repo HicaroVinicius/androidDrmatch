@@ -73,36 +73,8 @@ public class MainActivity extends AppCompatActivity
 
         BottomNavigationView navigationView =  findViewById(R.id.navigation);
         navigationView.setOnNavigationItemSelectedListener(this);
-        navigationView.setSelectedItemId(R.id.navigation_consultas);
-        carregarFragment(new ConsultaFragment());
-
-        /*
-
-
-       Firebase.getDatabaseReference().child("USUARIO").child(preferencias.getCHAVE_INDENTIFICADOR()).child("CONSULTA").addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-
-
-                if (!dataSnapshot.hasChildren()){
-                    Log.i("TESTE","sem filho");
-                }
-
-                for (DataSnapshot data : dataSnapshot.getChildren()) {
-
-                    Log.i("TESTE",data.getValue().toString());
-                    Consulta consulta = data.getValue(Consulta.class);
-                    consultaList.add(consulta);
-                    adapter.notifyDataSetChanged();
-
-                }
-            }
-            public void onCancelled(DatabaseError databaseError) {
-
-            }
-        });
-
-        */
+        navigationView.setSelectedItemId(R.id.navigation_agendamento);
+        carregarFragment(new AgendamentoFragment());
 
 
 

@@ -69,4 +69,13 @@ public class VagasModel {
     }
 
     private String nome;
+
+    public VagasModel(String key_cliente, String status, String hora, String key, String data, String nome) {
+        this.key_cliente = key_cliente;
+        this.status = status;
+        this.hora = hora;
+        this.key = key;
+        this.data = data;
+        this.nome = nome;
+    }
 }

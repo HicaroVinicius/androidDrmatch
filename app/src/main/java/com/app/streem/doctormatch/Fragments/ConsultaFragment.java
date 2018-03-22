@@ -9,11 +9,13 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.app.streem.doctormatch.Adapter.AdapterConsultas;
 import com.app.streem.doctormatch.DAO.Firebase;
 import com.app.streem.doctormatch.DAO.Preferencias;
 import com.app.streem.doctormatch.Modelo.Consulta;
+import com.app.streem.doctormatch.Modelo.ResultModel;
 import com.app.streem.doctormatch.R;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -51,7 +53,11 @@ public class ConsultaFragment extends Fragment {
         consultaView.setHasFixedSize(true);
         consultaView.setLayoutManager(new LinearLayoutManager(view.getContext()));
 
-        adapter = new AdapterConsultas(consultaList,getApplicationContext());
+        adapter = new AdapterConsultas(consultaList,getApplicationContext(),new AdapterConsultas.OnItemLongClickListener(){
+            @Override public void onItemLongClick(Consulta item) {
+                Toast.makeText(getApplicationContext(), "Longo Clique...", Toast.LENGTH_SHORT).show();
+            }
+        });
 
         adapter.notifyDataSetChanged();
 
@@ -79,6 +85,7 @@ public class ConsultaFragment extends Fragment {
 
             }
         });
+
 
         return view;
     }
