@@ -9,6 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 
+import com.app.streem.doctormatch.cadastraVagaActivity;
 import com.app.streem.doctormatch.FiltroBuscaActivity;
 import com.app.streem.doctormatch.R;
 
@@ -30,6 +31,14 @@ public class AgendamentoFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(v.getContext(), FiltroBuscaActivity.class);
+                startActivity(intent);
+            }
+        });
+        Button add = view.findViewById(R.id.addVagaID);
+        add.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(v.getContext(), cadastraVagaActivity.class);
                 startActivity(intent);
             }
         });

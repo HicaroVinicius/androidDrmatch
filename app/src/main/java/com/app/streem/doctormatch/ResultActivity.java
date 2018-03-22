@@ -202,6 +202,7 @@ public class ResultActivity extends AppCompatActivity {
 
                 if (!dataSnapshot.hasChildren()){
                     semRegistro.setVisibility(View.VISIBLE);
+                    Log.i("dataTesteLo",dataSnapshot.toString());
                    // Toast.makeText(getApplicationContext(),"Nenhum Médico encontrado",Toast.LENGTH_LONG).show();
                 }else{
 
