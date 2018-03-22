@@ -120,7 +120,7 @@ public class SeletorActivity extends AppCompatActivity {
                preferencias.setCHAVE_CIDADE(cidade);
                 break;
         }
-        Intent intent = new Intent(this, MainActivity.class);
+        Intent intent = new Intent(this, FiltroBuscaActivity.class);
         startActivity(intent);
         finish();
 

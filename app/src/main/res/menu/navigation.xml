@@ -3,19 +3,19 @@
 
     <item
         android:id="@+id/navigation_consultas"
-        android:icon="@drawable/ic_dashboard_black_24dp"
+        android:icon="@drawable/ic_note_add_black_24dp"
         android:title="@string/title_dashboard" />
 
     <item
         android:id="@+id/navigation_agendamento"
-        android:icon="@drawable/ic_home_black_24dp"
+        android:icon="@drawable/ic_alarm_add_black_24dp"
         android:title="@string/title_home" />
 
 
 
     <item
         android:id="@+id/navigation_exames"
-        android:icon="@drawable/ic_notifications_black_24dp"
+        android:icon="@drawable/ic_dashboard_black_24dp"
         android:title="@string/title_notifications" />
 
 </menu>
