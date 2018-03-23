@@ -122,6 +122,8 @@ public class ConfirmActivity extends AppCompatActivity {
 
     public void confirmar(String data, String keyMedico, String cidade, String estado, String espec, String keyHora, final String nomeUser,String nomeMedico, String horaFormat,String dataFormat){
 
+        Log.i("testeRemove",estado+"-"+cidade+"-"+espec+"-"+data+"-"+keyMedico+"-"+keyHora);
+
         Firebase.getDatabaseReference().child("VAGAS").child(estado).child(cidade).child(espec).child(data).child(keyMedico).child(keyHora).removeValue();
 
         Firebase.getDatabaseReference().child("CLIENTES").child(keyMedico).child("AGENDAMENTO").child(data).child(keyHora).child("status").addListenerForSingleValueEvent(new ValueEventListener() {
