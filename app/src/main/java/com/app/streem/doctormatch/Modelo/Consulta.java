@@ -6,7 +6,7 @@ package com.app.streem.doctormatch.Modelo;
 
 public class Consulta {
 
-    public Consulta(String medico, String data, String hora,String nome,String nomeMedico,String horaFormat, String dataFormat) {
+    public Consulta(String medico, String data, String hora,String nome,String nomeMedico,String horaFormat, String dataFormat,String keyConsulta) {
         this.medico = medico;
         this.data = data;
         this.hora = hora;
@@ -14,6 +14,7 @@ public class Consulta {
         this.nomeMedico = nomeMedico;
         this.horaFormat = horaFormat;
         this.dataFormat = dataFormat;
+        this.keyConsulta = keyConsulta;
     }
 
     public Consulta(){
@@ -88,4 +89,14 @@ public class Consulta {
     }
 
     private String dataFormat;
+
+    public String getKeyConsulta() {
+        return keyConsulta;
+    }
+
+    public void setKeyConsulta(String keyConsulta) {
+        this.keyConsulta = keyConsulta;
+    }
+
+    private String keyConsulta;
 }

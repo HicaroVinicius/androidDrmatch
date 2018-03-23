@@ -164,7 +164,7 @@ public class ConfirmActivity extends AppCompatActivity {
         });
 
         String key = Firebase.getDatabaseReference().child("USUARIO").child(preferencias.getCHAVE_INDENTIFICADOR()).child("CONSULTA").push().getKey();
-        Consulta nova = new Consulta(keyMedico,data,keyHora,nomeUser,nomeMedico,horaFormat,dataFormat);
+        Consulta nova = new Consulta(keyMedico,data,keyHora,nomeUser,nomeMedico,horaFormat,dataFormat,key);
         Firebase.getDatabaseReference().child("USUARIO").child(preferencias.getCHAVE_INDENTIFICADOR()).child("CONSULTA").child(key).setValue(nova);
 
         Intent intent = new Intent(ConfirmActivity.this,MainActivity.class);

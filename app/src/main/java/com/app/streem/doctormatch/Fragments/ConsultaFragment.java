@@ -45,6 +45,8 @@ public class ConsultaFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_consulta,null);
 
+        Toast.makeText(getApplicationContext(), "Carregando...", Toast.LENGTH_SHORT).show();
+
         preferencias = new Preferencias(view.getContext());
 
 
@@ -55,7 +57,13 @@ public class ConsultaFragment extends Fragment {
 
         adapter = new AdapterConsultas(consultaList,getApplicationContext(),new AdapterConsultas.OnItemLongClickListener(){
             @Override public void onItemLongClick(Consulta item) {
-                Toast.makeText(getApplicationContext(), "Longo Clique...", Toast.LENGTH_SHORT).show();
+                Log.i("testedata",item.getMedico());
+                Toast.makeText(getApplicationContext(), "Removendo Consulta...", Toast.LENGTH_SHORT).show();
+                Firebase.getDatabaseReference().child("CLIENTES").child(item.getMedico()).child("AGENDAMENTO").child(item.getData()).child(item.getHora()).removeValue();
+                Firebase.getDatabaseReference().child("USUARIO").child(preferencias.getCHAVE_INDENTIFICADOR()).child("CONSULTA").child(item.getKeyConsulta()).removeValue();
+                consultaList.remove(item);
+                adapter.notifyDataSetChanged();
+
             }
         });
 
