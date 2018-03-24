@@ -3,12 +3,14 @@ package com.app.streem.doctormatch.Fragments;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.app.streem.doctormatch.Adapter.AdapterConsultas;
@@ -38,6 +40,10 @@ public class ConsultaFragment extends Fragment {
     private List<Consulta> consultaList = new ArrayList<>();
     private Preferencias preferencias;
 
+    private TextView semRegistro;
+    private CardView cardViewConsulta;
+
+
 
 
     @Nullable
@@ -45,8 +51,12 @@ public class ConsultaFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_consulta,null);
 
+        Toast.makeText(getApplicationContext(), "Carregando...", Toast.LENGTH_SHORT).show();
+
         preferencias = new Preferencias(view.getContext());
 
+        semRegistro = view.findViewById(R.id.semRegistroResultIdConsulta);
+        cardViewConsulta = view.findViewById(R.id.cardViewConsulta);
 
         consultaView = view.findViewById(R.id.recyclerConsulta);
 
@@ -55,7 +65,17 @@ public class ConsultaFragment extends Fragment {
 
         adapter = new AdapterConsultas(consultaList,getApplicationContext(),new AdapterConsultas.OnItemLongClickListener(){
             @Override public void onItemLongClick(Consulta item) {
-                Toast.makeText(getApplicationContext(), "Longo Clique...", Toast.LENGTH_SHORT).show();
+                Log.i("testedata",item.getMedico());
+                Toast.makeText(getApplicationContext(), "Removendo Consulta...", Toast.LENGTH_SHORT).show();
+                Firebase.getDatabaseReference().child("CLIENTES").child(item.getMedico()).child("AGENDAMENTO").child(item.getData()).child(item.getHora()).removeValue();
+                Firebase.getDatabaseReference().child("USUARIO").child(preferencias.getCHAVE_INDENTIFICADOR()).child("CONSULTA").child(item.getKeyConsulta()).removeValue();
+                consultaList.remove(item);
+                if(consultaList.size()==0){
+                    semRegistro.setVisibility(View.VISIBLE);
+                    cardViewConsulta.setVisibility(View.GONE);
+                }
+                adapter.notifyDataSetChanged();
+
             }
         });
 
@@ -69,15 +89,22 @@ public class ConsultaFragment extends Fragment {
 
 
                 if (!dataSnapshot.hasChildren()){
+                    semRegistro.setVisibility(View.VISIBLE);
+                    cardViewConsulta.setVisibility(View.GONE);
                     Log.i("TESTE","sem filho");
-                }
+                }else {
 
-                for (DataSnapshot data : dataSnapshot.getChildren()) {
+                    semRegistro.setVisibility(View.GONE);
+                    cardViewConsulta.setVisibility(View.VISIBLE);
 
-                    Log.i("TESTE",data.getValue().toString());
-                    Consulta consulta = data.getValue(Consulta.class);
-                    consultaList.add(consulta);
-                    adapter.notifyDataSetChanged();
+                    for (DataSnapshot data : dataSnapshot.getChildren()) {
+
+                        Log.i("TESTE", data.getValue().toString());
+                        Consulta consulta = data.getValue(Consulta.class);
+                        consultaList.add(consulta);
+                        adapter.notifyDataSetChanged();
+
+                    }
 
                 }
             }
