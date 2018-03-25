@@ -58,7 +58,7 @@ public class DetailActivity extends AppCompatActivity {
 
     private boolean hasDependente = false;
 
-
+    /*
 
     RadioGroup.OnCheckedChangeListener onCheckedChangeListener = new RadioGroup.OnCheckedChangeListener() {
 
@@ -77,19 +77,13 @@ public class DetailActivity extends AppCompatActivity {
                     break;
             }
         }
-    };
+    };*/
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_detail);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true); //Mostrar o botão
-        getSupportActionBar().setHomeButtonEnabled(true);
-        getSupportActionBar().setTitle("Consultas");
-
-        getSupportActionBar().setTitle("Doctor Match");
-
-
+    /*
         buttonProprio = findViewById( R.id.proprioUser);
         buttonDependente = findViewById(R.id.outroUser);
 
@@ -259,23 +253,9 @@ public class DetailActivity extends AppCompatActivity {
 
             }
         });
-
+*/
 
 
     }
-
-    //botao voltar
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) { //Botão adicional na ToolBar
-        switch (item.getItemId()) {
-            case android.R.id.home:  //ID do seu botão (gerado automaticamente pelo android, usando como está, deve funcionar
-                finish();
-                break;
-            default:break;
-        }
-        return true;
-    }
-
-
 
 }

@@ -53,7 +53,6 @@ public class LoginActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_login);
-        getSupportActionBar().hide();
 
         if(FirebaseAuth.getInstance().getCurrentUser() == null) {
             preferencias = new Preferencias(this);

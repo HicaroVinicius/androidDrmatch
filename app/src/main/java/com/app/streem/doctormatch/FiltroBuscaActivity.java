@@ -35,22 +35,22 @@ public class FiltroBuscaActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_filtro_busca);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true); //Mostrar o botão
-        getSupportActionBar().setHomeButtonEnabled(true);
 
         preferencias = new Preferencias(this);
 
         especialidade = findViewById(R.id.especialidadesFiltroID);
         estado = findViewById(R.id.estadoFiltroID);
+
+
         cidade = findViewById(R.id.cidadeFiltroID);
         Button buttonBuscar = findViewById(R.id.buttonBuscarFiltroID);
         data = findViewById(R.id.dataFiltroID);
 
         if(!preferencias.getCHAVE_TIPO_FILTRO().equals("EXAME")){
-            getSupportActionBar().setTitle("Consultas");
+           // getSupportActionBar().setTitle("Consultas");
             buttonBuscar.setText("BUSCAR CONSULTAS");
         }else{
-            getSupportActionBar().setTitle("Exames");
+       //     getSupportActionBar().setTitle("Exames");
             buttonBuscar.setText("BUSCAR EXAMES");
         }
 
@@ -173,7 +173,5 @@ public class FiltroBuscaActivity extends AppCompatActivity {
         }
 
     }
-
-
 
 }

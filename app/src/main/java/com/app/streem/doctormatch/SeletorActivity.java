@@ -37,9 +37,6 @@ public class SeletorActivity extends AppCompatActivity {
         setContentView(R.layout.activity_seletor);
         preferencias = new Preferencias(this);
 
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true); //Mostrar o botão
-        getSupportActionBar().setHomeButtonEnabled(true);
-
         listView = findViewById(R.id.listviewCity);
         autoCompleteCity = findViewById(R.id.autoCompleteCity);
         String caminho = "";
@@ -49,17 +46,17 @@ public class SeletorActivity extends AppCompatActivity {
         switch (preferencias.getCHAVE_TIPO_BUSCA()){
             case "1":
                 autoCompleteCity.setHint("  "+"O que você procura?");
-                getSupportActionBar().setTitle("Especialidades");
+              //  getSupportActionBar().setTitle("Especialidades");
                 caminho = "ESPECIALIDADE";
                 break;
             case "2":
                 autoCompleteCity.setHint("  "+"Qual seu estado?");
-                getSupportActionBar().setTitle("Estado");
+              //  getSupportActionBar().setTitle("Estado");
                 caminho = "ESTADO";
                 break;
             case "3":
                 autoCompleteCity.setHint("  "+"Qual sua cidade?");
-                getSupportActionBar().setTitle("Especialidades");
+               // getSupportActionBar().setTitle("Especialidades");
                 caminho = "CIDADE/"+preferencias.getCHAVE_ESTADO().replace(" ","");
                 break;
         }
@@ -72,7 +69,7 @@ public class SeletorActivity extends AppCompatActivity {
                     temp.add(data.getValue().toString());
                 }
 
-                hideLoadingAnimation();
+
                 final ArrayAdapter adapter = new ArrayAdapter(SeletorActivity.this, android.R.layout.simple_list_item_checked, temp);
                 autoCompleteCity.setDropDownHeight(0);
                 autoCompleteCity.setThreshold(1);
@@ -98,6 +95,7 @@ public class SeletorActivity extends AppCompatActivity {
                         setValor(cidade);
                     }
                 });
+                hideLoadingAnimation();
             }
 
             @Override
@@ -120,10 +118,15 @@ public class SeletorActivity extends AppCompatActivity {
                preferencias.setCHAVE_CIDADE(cidade);
                 break;
         }
-        Intent intent = new Intent(this, FiltroBuscaActivity.class);
-        startActivity(intent);
-        finish();
-
+        if(preferencias.getCHAVE_TIPO_BUSCA().equals("2")){
+            preferencias.setCHAVE_TIPO_BUSCA("3");
+            Intent i = new Intent(SeletorActivity.this, SeletorActivity.class);
+            startActivity(i);
+        }else {
+            Intent intent = new Intent(this, FiltroBuscaActivity.class);
+            startActivity(intent);
+            finish();
+        }
     }
 
     //botao voltar

@@ -2,59 +2,87 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:focusableInTouchMode="true"
-    tools:context="com.app.streem.doctormatch.SeletorActivity">
+    android:orientation="vertical"
+    tools:context="com.app.streem.doctormatch.ResultActivity">
 
-    <android.support.v7.widget.CardView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-    <android.support.v7.widget.CardView
+    <android.support.constraint.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:elevation="5dp"
-        android:background="@drawable/sombra_shape"
-        android:layout_marginLeft="12dp"
-        android:layout_marginRight="12dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginBottom="8dp"
-        >
+        android:background="@color/colorPrimaryDark">
+
         <AutoCompleteTextView
             android:id="@+id/autoCompleteCity"
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="12dp"
-            android:layout_marginLeft="8dp"
-            android:drawableLeft="@drawable/ic_search_indigo_50_24dp"
-            android:layout_marginRight="8dp"
-            android:textColor="@color/colorAccent"
-            android:textColorHint="@color/colorAccent"
-            app:layout_constraintTop_toTopOf="parent"
-            tools:layout_editor_absoluteX="0dp" />
-    </android.support.v7.widget.CardView>
-    </android.support.v7.widget.CardView>
+            android:layout_marginBottom="8dp"
+            android:layout_marginEnd="16dp"
+            android:layout_marginTop="8dp"
+            android:backgroundTint="@android:color/white"
+            android:drawableLeft="@drawable/app_busca_banco_34dp"
+            android:textColor="@android:color/white"
+            android:textColorHint="@android:color/white"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/imageView10"
+            app:layout_constraintTop_toTopOf="parent" />
 
-    <android.support.v7.widget.CardView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
-    <ListView
-        android:id="@+id/listviewCity"
-        android:elevation="2dp"
-        android:layout_marginLeft="8dp"
-        android:layout_marginRight="8dp"
+        <ImageView
+            android:id="@+id/imageView10"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="8dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@drawable/app_actionbar_24dp" />
+    </android.support.constraint.ConstraintLayout>
+
+    <android.support.constraint.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:layout_editor_absoluteY="173dp" />
-    </android.support.v7.widget.CardView>
+        android:background="@drawable/backgroud_app_shape">
 
+        <TextView
+            android:id="@+id/semRegistroResultID"
+            android:layout_width="270dp"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="8dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:drawableTop="@drawable/app_cocacao_white_24dp"
+            android:text="Não temos vagas para a data escolhida. Que tal selecionar uma nova data?"
+            android:textAlignment="center"
+            android:visibility="gone"
+            android:textColor="@android:color/white"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <ListView
+            android:id="@+id/listviewCity"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginEnd="8dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:elevation="2dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+    </android.support.constraint.ConstraintLayout>
     <RelativeLayout
         android:id="@+id/main_layoutPageLoading"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="#7bffffff"
         android:gravity="center"
+
         android:visibility="gone">
 
         <ProgressBar

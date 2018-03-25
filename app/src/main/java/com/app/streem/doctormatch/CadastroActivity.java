@@ -47,7 +47,6 @@ public class CadastroActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_cadastro);
-        getSupportActionBar().hide();
         /*
         sexo = "null";
         preferencias = new Preferencias(this);
@@ -168,7 +167,7 @@ public class CadastroActivity extends AppCompatActivity {
     //show
     public void showLoadingAnimation()
     {
-        RelativeLayout pageLoading = (RelativeLayout) findViewById(R.id.main_layoutPageLoading2);
+        RelativeLayout pageLoading = (RelativeLayout) findViewById(R.id.main_layoutPageLoading);
         pageLoading.setVisibility(View.VISIBLE);
     }
 
@@ -176,7 +175,7 @@ public class CadastroActivity extends AppCompatActivity {
     //hide
     public void hideLoadingAnimation()
     {
-        RelativeLayout pageLoading = (RelativeLayout) findViewById(R.id.main_layoutPageLoading2);
+        RelativeLayout pageLoading = (RelativeLayout) findViewById(R.id.main_layoutPageLoading);
         pageLoading.setVisibility(View.GONE);
     }
 
