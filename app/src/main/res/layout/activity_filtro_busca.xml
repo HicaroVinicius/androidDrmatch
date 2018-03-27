@@ -180,12 +180,12 @@
             app:layout_constraintStart_toStartOf="parent" />
 
         <Button
-            android:id="@+id/button3"
+            android:id="@+id/buttonBuscar"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:background="@color/colorPrimaryDark"
             android:text="Buscar"
             android:textColor="@android:color/white"
-            android:background="@color/colorPrimaryDark"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent" />

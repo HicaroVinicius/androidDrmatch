@@ -35,6 +35,16 @@ public class FiltroBuscaActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_filtro_busca);
+
+        Button buttonBuscara = findViewById(R.id.buttonBuscar);
+
+        buttonBuscara.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent i = new Intent(FiltroBuscaActivity.this, DetailActivity.class);
+                startActivity(i);
+            }
+        });
         /*
         preferencias = new Preferencias(this);
 

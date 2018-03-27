@@ -47,7 +47,7 @@ public class ConfirmActivity extends AppCompatActivity {
         setContentView(R.layout.activity_confirm);
 
         preferencias = new Preferencias(this);
-
+        /*
         titularDetails = findViewById(R.id.titularConfirm);
         end1Details = findViewById(R.id.end1Confirm);
         end2Details = findViewById(R.id.end2Confirm);
@@ -168,19 +168,7 @@ public class ConfirmActivity extends AppCompatActivity {
         Intent intent = new Intent(ConfirmActivity.this,MainActivity.class);
         startActivity(intent);
         finish();
+        */
     }
-
-    //botao voltar
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) { //Botão adicional na ToolBar
-        switch (item.getItemId()) {
-            case android.R.id.home:  //ID do seu botão (gerado automaticamente pelo android, usando como está, deve funcionar
-                finish();
-                break;
-            default:break;
-        }
-        return true;
-    }
-
 
 }

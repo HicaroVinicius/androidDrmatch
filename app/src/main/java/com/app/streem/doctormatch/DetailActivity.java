@@ -9,6 +9,7 @@ import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
@@ -83,6 +84,17 @@ public class DetailActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_detail);
+        fotoMedico = findViewById(R.id.fotoDetails);
+
+        Button buttonAgendar = findViewById(R.id.buttonBuscar);
+
+        buttonAgendar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent i = new Intent(DetailActivity.this, ConfirmActivity.class);
+                startActivity(i);
+            }
+        });
     /*
         buttonProprio = findViewById( R.id.proprioUser);
         buttonDependente = findViewById(R.id.outroUser);
@@ -125,9 +137,9 @@ public class DetailActivity extends AppCompatActivity {
         final String espec = dados.getStringExtra("espec");
 
         urlFoto = url;
-
-        Picasso.with(getApplicationContext()).load(urlFoto).into(fotoMedico);
-
+        */
+        Picasso.with(getApplicationContext()).load("http://doctormatch.com.br/app_files/manasses.jpg").into(fotoMedico);
+        /*
         titularDetails.setText(titular);
         registroDetails.setText(registro);
         classifDetails.setText(classif);
