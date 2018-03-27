@@ -34,14 +34,6 @@ public class AgendamentoFragment extends Fragment {
                 startActivity(intent);
             }
         });
-        Button add = view.findViewById(R.id.addVagaID);
-        add.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(v.getContext(), cadastraVagaActivity.class);
-                startActivity(intent);
-            }
-        });
         return view;
     }
 

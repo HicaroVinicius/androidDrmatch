@@ -52,7 +52,7 @@ public class ConsultaFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_consulta,null);
 
         Toast.makeText(getApplicationContext(), "Carregando...", Toast.LENGTH_SHORT).show();
-
+        /*
         preferencias = new Preferencias(view.getContext());
 
         semRegistro = view.findViewById(R.id.semRegistroResultIdConsulta);
@@ -112,7 +112,7 @@ public class ConsultaFragment extends Fragment {
 
             }
         });
-
+    */
 
         return view;
     }

@@ -9,7 +9,7 @@
         android:topLeftRadius="50dp"
         android:topRightRadius="50dp"
         />
-    <stroke android:color="@color/colorPrimary" android:width="2dp"/>
+    <stroke android:color="@android:color/white" android:width="2dp"/>
     <!-- Use these attributes for the rest of the corners
         android:topLeftRadius="integer"
         android:topRightRadius="integer"

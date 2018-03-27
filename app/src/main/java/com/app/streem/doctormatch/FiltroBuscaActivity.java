@@ -35,7 +35,7 @@ public class FiltroBuscaActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_filtro_busca);
-
+        /*
         preferencias = new Preferencias(this);
 
         especialidade = findViewById(R.id.especialidadesFiltroID);
@@ -171,6 +171,8 @@ public class FiltroBuscaActivity extends AppCompatActivity {
         }else{
             return false;
         }
+
+    }*/
 
     }
 
