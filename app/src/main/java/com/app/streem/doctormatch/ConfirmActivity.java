@@ -1,42 +1,22 @@
 package com.app.streem.doctormatch;
 
-import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.res.Resources;
-import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
-import android.widget.LinearLayout;
-import android.widget.RadioGroup;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import com.app.streem.doctormatch.DAO.Firebase;
 import com.app.streem.doctormatch.DAO.Preferencias;
-import com.app.streem.doctormatch.Modelo.Consulta;
-import com.app.streem.doctormatch.Modelo.ResultModel;
-import com.google.firebase.database.ChildEventListener;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.ValueEventListener;
 import com.makeramen.roundedimageview.RoundedImageView;
 import com.squareup.picasso.Picasso;
 
 public class ConfirmActivity extends AppCompatActivity {
-    private TextView end1Details;
-    private TextView end2Details;
-    private TextView end3Details;
+
     private TextView titularDetails;
-    private TextView registroDetails;
-    private TextView classifDetails;
-    private TextView horaConfirm;
-    private TextView dataConfirm;
-    private TextView nomeCliente;
+    private TextView especialidade;
+    private TextView info;
+    private TextView valorView;
     private String urlFoto;
     private RoundedImageView fotoMedico;
     private Button confirmarButton;
@@ -46,10 +26,9 @@ public class ConfirmActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_confirm);
-        fotoMedico = findViewById(R.id.fotoDetails);
-        Picasso.with(getApplicationContext()).load("http://doctormatch.com.br/app_files/manasses.jpg").into(fotoMedico);
+        fotoMedico = findViewById(R.id.fotoMedicoConfirm);
 
-        RoundedImageView fotoPac = findViewById(R.id.fotoPac);
+        RoundedImageView fotoPac = findViewById(R.id.fotoPacienteConfirm);
         Picasso.with(getApplicationContext()).load("http://doctormatch.com.br/app_files/hicaro.jpg").into(fotoPac);
 
         Button buttonConfirmar = findViewById(R.id.buttonConfirmar);
@@ -62,18 +41,11 @@ public class ConfirmActivity extends AppCompatActivity {
         });
 
         preferencias = new Preferencias(this);
-        /*
-        titularDetails = findViewById(R.id.titularConfirm);
-        end1Details = findViewById(R.id.end1Confirm);
-        end2Details = findViewById(R.id.end2Confirm);
-        end3Details = findViewById(R.id.end3Confirm);
-        registroDetails = findViewById(R.id.registroConfirm);
-        classifDetails = findViewById(R.id.classifConfirm);
-        fotoMedico = findViewById(R.id.fotoConfirm);
-        horaConfirm = findViewById(R.id.horaConfirm);
-        dataConfirm = findViewById(R.id.dataConfirm);
-        nomeCliente = findViewById(R.id.nomeConfirm);
-        confirmarButton = findViewById(R.id.buttonConfirmID);
+
+        titularDetails = findViewById(R.id.nomeMedicoConfirm);
+        especialidade = findViewById(R.id.especialidadeConfirm);
+        info = findViewById(R.id.infoConfirm);
+        valorView = findViewById(R.id.valorConfirm);
 
 
         Intent dados = getIntent();
@@ -92,17 +64,18 @@ public class ConfirmActivity extends AppCompatActivity {
         final String cidade = dados.getStringExtra("cidade");
         final String estado = dados.getStringExtra("estado");
         final String espec = dados.getStringExtra("espec");
+        final String valor = dados.getStringExtra("valor");
+
+        Picasso.with(getApplicationContext()).load(url).into(fotoMedico);
 
         titularDetails.setText(titular);
-        end1Details.setText(end1);
-        end2Details.setText(end2);
-        end3Details.setText(cidade+", "+estado+".");
-        registroDetails.setText(registro);
-        classifDetails.setText(classif);
-        horaConfirm.setText("Hora: ".concat(hora));
-        dataConfirm.setText("Dia: ".concat(dataFormatt));
-        nomeCliente.setText(nome);
+        especialidade.setText(preferencias.getCHAVE_ESPECIALIDADE());
+        info.setText(dataFormatt+" às "+hora);
+        valorView.setText(valor);
 
+
+
+/*
         confirmarButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

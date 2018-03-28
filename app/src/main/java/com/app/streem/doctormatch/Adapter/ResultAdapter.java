@@ -54,7 +54,7 @@ public class ResultAdapter extends RecyclerView.Adapter<ResultAdapter.ResultView
         holder.medicoResultID.setText(String.valueOf(medicos.getTitular()));
         holder.localResultID.setText(String.valueOf(medicos.getLocal()));
         Picasso.with(context).load(medicos.getUrl()).into(holder.fotoResultID);
-        holder.valor.setOnClickListener(new View.OnClickListener() {
+      /*  holder.valor.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 holder.valor.setText("R$ "+listaMedicos.get(position).getValor());
@@ -64,6 +64,7 @@ public class ResultAdapter extends RecyclerView.Adapter<ResultAdapter.ResultView
                         .playOn(holder.valor);
             }
         });
+         */
     }
 
     @Override

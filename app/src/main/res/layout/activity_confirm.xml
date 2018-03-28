@@ -85,7 +85,7 @@
             app:layout_constraintEnd_toEndOf="@+id/imageView25"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="@+id/imageView25"
-            app:layout_constraintTop_toBottomOf="@+id/fotoPac"
+            app:layout_constraintTop_toBottomOf="@+id/fotoPacienteConfirm"
             app:srcCompat="@drawable/app_conf_prof_24dp" />
 
         <TextView
@@ -121,7 +121,7 @@
             app:srcCompat="@drawable/app_data_conf_branca_48dp" />
 
         <TextView
-            android:id="@+id/textView4"
+            android:id="@+id/especialidadeConfirm"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginBottom="32dp"
@@ -135,14 +135,14 @@
             app:layout_constraintTop_toTopOf="@+id/imageView4" />
 
         <TextView
-            android:id="@+id/textView6"
+            android:id="@+id/infoConfirm"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
             android:text="Quarta, 28/03 às 15:30"
             android:textColor="@android:color/white"
-            app:layout_constraintStart_toStartOf="@+id/textView4"
-            app:layout_constraintTop_toBottomOf="@+id/textView4" />
+            app:layout_constraintStart_toStartOf="@+id/especialidadeConfirm"
+            app:layout_constraintTop_toBottomOf="@+id/especialidadeConfirm" />
 
         <RadioGroup
             android:id="@+id/radioGroup"
@@ -156,14 +156,14 @@
             app:layout_constraintTop_toBottomOf="@+id/textView21">
 
             <RadioButton
-                android:id="@+id/radioButton3"
+                android:id="@+id/proprioConfirm"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:text="Eu sou o paciente" />
 
             <RadioButton
-                android:id="@+id/radioButton2"
+                android:id="@+id/outroConfirm"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
@@ -171,7 +171,7 @@
         </RadioGroup>
 
         <com.makeramen.roundedimageview.RoundedImageView xmlns:app="http://schemas.android.com/apk/res-auto"
-            android:id="@+id/fotoPac"
+            android:id="@+id/fotoPacienteConfirm"
             android:layout_width="60dp"
             android:layout_height="60dp"
             android:layout_marginTop="8dp"
@@ -198,17 +198,17 @@
             app:srcCompat="@drawable/app_novo_dep_24dp" />
 
         <Spinner
-            android:id="@+id/spinner"
+            android:id="@+id/spinnerDependenteConfirm"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginBottom="8dp"
             android:layout_marginEnd="8dp"
             android:layout_marginStart="8dp"
             android:layout_marginTop="8dp"
-            app:layout_constraintBottom_toBottomOf="@+id/fotoPac"
+            app:layout_constraintBottom_toBottomOf="@+id/fotoPacienteConfirm"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/fotoPac"
-            app:layout_constraintTop_toTopOf="@+id/fotoPac" />
+            app:layout_constraintStart_toEndOf="@+id/fotoPacienteConfirm"
+            app:layout_constraintTop_toTopOf="@+id/fotoPacienteConfirm" />
 
         <TextView
             android:id="@+id/textView12"
@@ -223,7 +223,7 @@
             app:layout_constraintTop_toTopOf="@+id/imageView26" />
 
         <com.makeramen.roundedimageview.RoundedImageView xmlns:app="http://schemas.android.com/apk/res-auto"
-            android:id="@+id/fotoDetails"
+            android:id="@+id/fotoMedicoConfirm"
             android:layout_width="60dp"
             android:layout_height="60dp"
             android:layout_marginTop="8dp"
@@ -238,25 +238,25 @@
             app:riv_oval="true" />
 
         <TextView
-            android:id="@+id/textView14"
+            android:id="@+id/nomeMedicoConfirm"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
             android:layout_marginTop="8dp"
             android:text="Dr. Carlos Henrique"
             android:textStyle="bold"
-            app:layout_constraintStart_toEndOf="@+id/fotoDetails"
-            app:layout_constraintTop_toTopOf="@+id/fotoDetails" />
+            app:layout_constraintStart_toEndOf="@+id/fotoMedicoConfirm"
+            app:layout_constraintTop_toTopOf="@+id/fotoMedicoConfirm" />
 
         <TextView
-            android:id="@+id/textView37"
+            android:id="@+id/valorConfirm"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
             android:layout_marginTop="8dp"
             android:text="Preço: R$ 130,00"
-            app:layout_constraintStart_toEndOf="@+id/fotoDetails"
-            app:layout_constraintTop_toBottomOf="@+id/textView14" />
+            app:layout_constraintStart_toEndOf="@+id/fotoMedicoConfirm"
+            app:layout_constraintTop_toBottomOf="@+id/nomeMedicoConfirm" />
 
         <ImageView
             android:id="@+id/imageView28"

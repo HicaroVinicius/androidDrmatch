@@ -60,7 +60,7 @@ public class VagasAdapter extends RecyclerView.Adapter<VagasAdapter.ResultViewHo
         public ResultViewHolder(View itemView) {
             super(itemView);
 
-            horas = itemView.findViewById(R.id.horaRecID);
+            horas = itemView.findViewById(R.id.horaRecyclerView);
         }
 
         public void bind(final VagasModel item, final VagasAdapter.OnItemClickListener listener) {

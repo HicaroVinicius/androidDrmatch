@@ -73,7 +73,7 @@
             app:srcCompat="@drawable/logolocalizacao" />
 
         <TextView
-            android:id="@+id/textView28"
+            android:id="@+id/textoFiltroBusca"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginBottom="8dp"
@@ -127,8 +127,8 @@
             app:layout_constraintTop_toTopOf="@+id/textView31"
             app:srcCompat="@drawable/app_localizacao_36dp" />
 
-        <EditText
-            android:id="@+id/editText"
+        <TextView
+            android:id="@+id/cidadeFiltro"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginEnd="16dp"
@@ -155,8 +155,8 @@
             app:layout_constraintTop_toBottomOf="@+id/imageView23"
             app:srcCompat="@drawable/app_data_filtro_36dp" />
 
-        <EditText
-            android:id="@+id/editText2"
+        <TextView
+            android:id="@+id/dataFiltro"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginEnd="16dp"

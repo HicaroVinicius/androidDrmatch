@@ -1,6 +1,7 @@
 package com.app.streem.doctormatch;
 
 import android.content.Intent;
+import android.icu.util.Calendar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -29,13 +30,25 @@ import com.google.firebase.database.ValueEventListener;
 import com.makeramen.roundedimageview.RoundedImageView;
 import com.squareup.picasso.Picasso;
 
+import org.joda.time.DateTime;
+import org.joda.time.format.DateTimeFormat;
+import org.joda.time.format.DateTimeFormatter;
+
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
+
+import noman.weekcalendar.WeekCalendar;
+import noman.weekcalendar.listener.OnDateClickListener;
 
 public class DetailActivity extends AppCompatActivity {
     private RadioGroup radio;
     private RadioButton buttonProprio;
     private RadioButton buttonDependente;
+    private TextView especialidade;
     private TextView end1Details;
     private TextView end2Details;
     private TextView titularDetails;
@@ -49,6 +62,7 @@ public class DetailActivity extends AppCompatActivity {
     private List<VagasModel> vagasList = new ArrayList<>();
     private List<DependenteModel> arrayDependentes = new ArrayList<>();
     private LinearLayout novoCliente;
+    private WeekCalendar weekCalendar;
 
 
     private Spinner spinner;
@@ -80,13 +94,42 @@ public class DetailActivity extends AppCompatActivity {
         }
     };*/
 
+    public void atualizarHorarios(String data,String key){
+        Firebase.getDatabaseReference().child("CLIENTES").child(key).child("AGENDAMENTO").child(data).orderByChild("status").equalTo("Disponível").addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+
+
+                if (!dataSnapshot.hasChildren()){
+                    Log.i("TESTE","sem filho");
+                    Toast.makeText(DetailActivity.this, "Nenhum Horário Disponível", Toast.LENGTH_SHORT).show();
+                }
+
+
+                for (DataSnapshot data : dataSnapshot.getChildren()) {
+
+                    Log.i("TESTE",data.getValue().toString());
+                    VagasModel vaga = data.getValue(VagasModel.class);
+                    Log.i("TESTEVAGA",vaga.getHora());
+                    vagasList.add(vaga);
+                    adapter.notifyDataSetChanged();
+
+                }
+            }
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_detail);
         fotoMedico = findViewById(R.id.fotoDetails);
 
-        Button buttonAgendar = findViewById(R.id.buttonBuscar);
+        Button buttonAgendar = findViewById(R.id.buttonDetails);
 
         buttonAgendar.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -95,6 +138,118 @@ public class DetailActivity extends AppCompatActivity {
                 startActivity(i);
             }
         });
+
+        preferencias = new Preferencias(this);
+
+        titularDetails = findViewById(R.id.nomeDetails);
+        registroDetails = findViewById(R.id.registroDetails);
+        fotoMedico = findViewById(R.id.fotoDetails);
+        end1Details = findViewById(R.id.end1Details);
+        end2Details = findViewById(R.id.end2Details);
+        especialidade = findViewById(R.id.especialidadeDetails);
+
+        horaView = findViewById(R.id.recyclerViewHoraDetails);
+
+        weekCalendar = findViewById(R.id.weekCalendarDetails);
+
+        horaView.setHasFixedSize(true);
+        horaView.setLayoutManager(new LinearLayoutManager(this));
+
+
+
+        Intent dados = getIntent();
+        final String titular = dados.getStringExtra("titular");
+        final String end1 = dados.getStringExtra("end1");
+        final String end2 = dados.getStringExtra("end2");
+        final String registro = dados.getStringExtra("registro");
+        final String classif = dados.getStringExtra("classif");
+        final String key = dados.getStringExtra("key");
+        final String data = dados.getStringExtra("data");
+        final String dataFormatt = dados.getStringExtra("dataFormatt");
+        final String url = dados.getStringExtra("url");
+        final String cidade = dados.getStringExtra("cidade");
+        final String estado = dados.getStringExtra("estado");
+        final String espec = dados.getStringExtra("espec");
+        final String valor = dados.getStringExtra("valor");
+
+        DateTimeFormatter formatter = DateTimeFormat.forPattern("dd/MM/yyyy");
+        DateTime dt = formatter.parseDateTime(dataFormatt);
+
+        weekCalendar.setStartDate(dt);
+
+        urlFoto = url;
+
+        Picasso.with(getApplicationContext()).load(urlFoto).into(fotoMedico);
+
+        titularDetails.setText(titular);
+        registroDetails.setText(registro);
+        end1Details.setText(end1);
+        end2Details.setText(end2);
+        especialidade.setText(preferencias.getCHAVE_ESPECIALIDADE());
+
+       // Toast.makeText(getApplicationContext(),"Carregando... Aguarde",Toast.LENGTH_SHORT).show();
+
+        adapter = new VagasAdapter(vagasList, getApplicationContext(), new VagasAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(VagasModel item) {
+                //Toast.makeText(getApplicationContext(),nome,Toast.LENGTH_SHORT).show();
+                Intent confirmar = new Intent(DetailActivity.this,ConfirmActivity.class);
+                confirmar.putExtra("titular",titular);
+                confirmar.putExtra("end1",end1);
+                confirmar.putExtra("end2",end2);
+                confirmar.putExtra("registro",registro);
+                confirmar.putExtra("classif",classif);
+                confirmar.putExtra("url",url);
+                confirmar.putExtra("key",key);
+                confirmar.putExtra("valor",valor);
+
+                confirmar.putExtra("nome",nome);
+
+                confirmar.putExtra("data",data);
+                confirmar.putExtra("dataFormatt",dataFormatt);
+                confirmar.putExtra("cidade",cidade);
+                confirmar.putExtra("estado",estado);
+                confirmar.putExtra("espec",espec);
+
+
+
+                confirmar.putExtra("hora",item.getHora());
+                confirmar.putExtra("keyHora",item.getKey());
+                startActivity(confirmar);
+            }
+        });
+
+        adapter.notifyDataSetChanged();
+
+        horaView.setAdapter(adapter);
+
+        atualizarHorarios(data,key);
+
+        weekCalendar.setOnDateClickListener(new OnDateClickListener() {
+            @Override
+            public void onDateClick(DateTime dateTime) {
+                String myFormat = "dd/MM/yyyy"; //In which you need put here
+                SimpleDateFormat sdf = new SimpleDateFormat(myFormat, new Locale("pt","BR"));
+                String dataFormat = sdf.format(dateTime.toDate());
+
+                SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy");
+                Date d = null;
+                try {
+                    d = format.parse(dataFormat);
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
+                Log.i("teste1",String.valueOf(d.getTime()));
+                //Toast.makeText(DetailActivity.this,"Procurando Vagas para: "+dataFormat, Toast.LENGTH_SHORT).show();
+                vagasList.clear();
+                adapter.notifyDataSetChanged();
+                atualizarHorarios(String.valueOf(d.getTime()),key);
+
+            }
+
+        });
+
+
     /*
         buttonProprio = findViewById( R.id.proprioUser);
         buttonDependente = findViewById(R.id.outroUser);
@@ -138,7 +293,7 @@ public class DetailActivity extends AppCompatActivity {
 
         urlFoto = url;
         */
-        Picasso.with(getApplicationContext()).load("http://doctormatch.com.br/app_files/manasses.jpg").into(fotoMedico);
+        //Picasso.with(getApplicationContext()).load("http://doctormatch.com.br/app_files/manasses.jpg").into(fotoMedico);
         /*
         titularDetails.setText(titular);
         registroDetails.setText(registro);
@@ -269,5 +424,6 @@ public class DetailActivity extends AppCompatActivity {
 
 
     }
+
 
 }

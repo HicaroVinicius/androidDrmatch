@@ -107,7 +107,7 @@ public class ResultActivity extends AppCompatActivity {
 
         semRegistro = findViewById(R.id.semRegistroResultID);
 
-        showLoadingAnimation();
+//        showLoadingAnimation();
         preferencias = new Preferencias(this);
         recyclerView = findViewById(R.id.RecyclerViewMedico);
         recyclerView.setHasFixedSize(true);
@@ -162,7 +162,7 @@ public class ResultActivity extends AppCompatActivity {
         final Date d = format.parse(preferencias.getCHAVE_DATA());
         final String dataFormatt = format.format(d.getTime());
 
-        showLoadingAnimation();
+//        showLoadingAnimation();
         medicos.clear();
         adapter = new ResultAdapter(medicos, this, new ResultAdapter.OnItemClickListener() {
             @Override public void onItemClick(ResultModel item) {
@@ -176,6 +176,7 @@ public class ResultActivity extends AppCompatActivity {
             newPage.putExtra("classif",item.getClassif().toString());
             newPage.putExtra("url",item.getUrl());
             newPage.putExtra("key",item.getKey());
+            newPage.putExtra("valor",item.getValor());
             newPage.putExtra("dataFormatt",dataFormatt);
             newPage.putExtra("cidade",cidade);
             newPage.putExtra("estado",estado);
@@ -191,9 +192,11 @@ public class ResultActivity extends AppCompatActivity {
         recyclerView.setAdapter(adapter);
 
 
-        Log.i("dataTESTE",String.valueOf(estado+cidade+espec));
+        Log.i("dataTESTE",String.valueOf(estado));
+        Log.i("dataTESTE",String.valueOf(espec));
+        Log.i("dataTESTE",String.valueOf(cidade));
         Log.i("dataTESTE",String.valueOf(d.getTime()));
-        Firebase.getDatabaseReference().child("VAGAS").child(estado).child(cidade).child(espec).child(String.valueOf(d.getTime())).addListenerForSingleValueEvent(new ValueEventListener() {
+        Firebase.getDatabaseReference().child("MEDICOS").child(String.valueOf(espec)).child(String.valueOf(estado)).child(String.valueOf(cidade)).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
 
@@ -205,27 +208,49 @@ public class ResultActivity extends AppCompatActivity {
 
                 for (DataSnapshot data : dataSnapshot.getChildren()){
 
-                    final String key = data.getKey();
-                    Log.i("TESTEMED",data.getKey().concat("fora"));
+                    final String key = data.getValue().toString();
+                    Log.i("TESTEMED",data.getValue().toString().concat("fora"));
 
-                    Firebase.getDatabaseReference().child("CLIENTES").child(key).child("DADOS").addListenerForSingleValueEvent(new ValueEventListener() {
+                    Firebase.getDatabaseReference().child("CLIENTES").child(key).child("AGENDAMENTO").child(String.valueOf(d.getTime())).orderByChild("status").equalTo("Disponível").addListenerForSingleValueEvent(new ValueEventListener() {
                         @Override
                         public void onDataChange(DataSnapshot dataSnapshot) {
-                            ResultModel med = dataSnapshot.getValue(ResultModel.class);
-                            Log.i("TESTE RESULT",dataSnapshot.getValue().toString());
-                            med.setKey(key);
-                            medicos.add(med);
-                            adapter.notifyDataSetChanged();
+                            if (!dataSnapshot.hasChildren()){
+                                semRegistro.setVisibility(View.VISIBLE);
+                                Log.i("TESTEMED","semFilho");
+                               // Firebase.getDatabaseReference().child("CLIENTES").child(key).child("AGENDAMENTO").orderByChild().orderByChild()
+                            }else{
+
+                                Firebase.getDatabaseReference().child("CLIENTES").child(key).child("DADOS").addListenerForSingleValueEvent(new ValueEventListener() {
+                                    @Override
+                                    public void onDataChange(DataSnapshot dataSnapshot) {
+                                        ResultModel med = dataSnapshot.getValue(ResultModel.class);
+                                        Log.i("TESTERESULT",dataSnapshot.getValue().toString());
+                                        med.setKey(key);
+                                        medicos.add(med);
+                                        adapter.notifyDataSetChanged();
+                                    }
+
+                                    @Override
+                                    public void onCancelled(DatabaseError databaseError) {
+                                        Log.i("TESTEMED",databaseError.getDetails());
+                                    }
+                                });
+
+
+                            }
                         }
 
                         @Override
                         public void onCancelled(DatabaseError databaseError) {
-                            Log.i("TESTEMED",databaseError.getDetails());
+
                         }
                     });
 
+
+
+
                 }
-                hideLoadingAnimation();
+             //   hideLoadingAnimation();
                 semRegistro.setVisibility(View.GONE);
 
                 }

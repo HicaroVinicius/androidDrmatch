@@ -13,7 +13,7 @@
         android:background="@color/colorPrimaryDark">
 
         <TextView
-            android:id="@+id/titularDetails"
+            android:id="@+id/especialidadeDetails"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginBottom="16dp"
@@ -72,7 +72,7 @@
             app:riv_oval="true" />
 
         <TextView
-            android:id="@+id/textView18"
+            android:id="@+id/nomeDetails"
             android:layout_width="wrap_content"
             android:layout_height="24dp"
             android:layout_marginBottom="32dp"
@@ -87,14 +87,14 @@
             app:layout_constraintTop_toTopOf="@+id/fotoDetails" />
 
         <TextView
-            android:id="@+id/textView19"
+            android:id="@+id/registroDetails"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
             android:text="CRM 998989"
             android:textColor="@android:color/white"
-            app:layout_constraintStart_toStartOf="@+id/textView18"
-            app:layout_constraintTop_toBottomOf="@+id/textView18" />
+            app:layout_constraintStart_toStartOf="@+id/nomeDetails"
+            app:layout_constraintTop_toBottomOf="@+id/nomeDetails" />
 
         <ImageView
             android:id="@+id/imageView8"
@@ -159,7 +159,7 @@
             app:layout_constraintTop_toTopOf="@+id/imageView25" />
 
         <TextView
-            android:id="@+id/textView23"
+            android:id="@+id/end1Details"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
@@ -168,16 +168,16 @@
             app:layout_constraintTop_toBottomOf="@+id/textView21" />
 
         <TextView
-            android:id="@+id/textView32"
+            android:id="@+id/end2Details"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
             android:text="N. 300, Centro, 62.340-000"
-            app:layout_constraintStart_toStartOf="@+id/textView23"
-            app:layout_constraintTop_toBottomOf="@+id/textView23" />
+            app:layout_constraintStart_toStartOf="@+id/end1Details"
+            app:layout_constraintTop_toBottomOf="@+id/end1Details" />
 
         <noman.weekcalendar.WeekCalendar
-            android:id="@+id/weekCalendar"
+            android:id="@+id/weekCalendarDetails"
             android:layout_width="match_parent"
             android:layout_height="65dp"
             android:layout_marginEnd="8dp"
@@ -200,7 +200,7 @@
             android:layout_marginTop="24dp"
             app:layout_constraintEnd_toEndOf="@+id/imageView25"
             app:layout_constraintStart_toStartOf="@+id/imageView25"
-            app:layout_constraintTop_toBottomOf="@+id/textView32"
+            app:layout_constraintTop_toBottomOf="@+id/end2Details"
             app:srcCompat="@drawable/app_data_filtro_24dp" />
 
         <TextView
@@ -227,7 +227,7 @@
             app:layout_constraintStart_toStartOf="parent" />
 
         <Button
-            android:id="@+id/buttonBuscar"
+            android:id="@+id/buttonDetails"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:background="@color/colorPrimaryDark"
@@ -237,39 +237,18 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent" />
 
-        <TextView
-            android:id="@+id/textView35"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="24dp"
-            android:background="@drawable/hora_shape"
-            android:paddingBottom="10dp"
-            android:paddingLeft="20dp"
-            android:paddingRight="20dp"
-            android:paddingTop="10dp"
-            android:text="08:00"
-            android:textColor="@color/colorPrimaryDark"
-            android:textSize="18sp"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/weekCalendar" />
-
-        <TextView
-            android:id="@+id/textView36"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/recyclerViewHoraDetails"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_marginBottom="8dp"
+            android:layout_marginEnd="8dp"
             android:layout_marginStart="8dp"
-            android:layout_marginTop="24dp"
-            android:background="@drawable/hora_select_shape"
-            android:paddingBottom="10dp"
-            android:paddingLeft="20dp"
-            android:paddingRight="20dp"
-            android:paddingTop="10dp"
-            android:text="08:00"
-            android:textColor="@android:color/white"
-            android:textSize="18sp"
-            app:layout_constraintStart_toEndOf="@+id/textView35"
-            app:layout_constraintTop_toBottomOf="@+id/weekCalendar" />
+            android:layout_marginTop="8dp"
+            app:layout_constraintBottom_toTopOf="@+id/buttonDetails"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/weekCalendarDetails" />
 
 
     </android.support.constraint.ConstraintLayout>

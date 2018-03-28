@@ -3,6 +3,7 @@ package com.app.streem.doctormatch;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
@@ -43,21 +44,27 @@ public class SeletorActivity extends AppCompatActivity {
 
         showLoadingAnimation();
 
-        switch (preferencias.getCHAVE_TIPO_BUSCA()){
+        Intent dados = getIntent();
+        final String tipo = dados.getStringExtra("tipo");
+        final String estado = dados.getStringExtra("estado");
+        Log.i("testetipo",tipo);
+
+        switch (tipo){
             case "1":
                 autoCompleteCity.setHint("  "+"O que você procura?");
               //  getSupportActionBar().setTitle("Especialidades");
                 caminho = "ESPECIALIDADE";
                 break;
-            case "2":
+            case "estado":
                 autoCompleteCity.setHint("  "+"Qual seu estado?");
               //  getSupportActionBar().setTitle("Estado");
                 caminho = "ESTADO";
                 break;
-            case "3":
+            case "cidade":
                 autoCompleteCity.setHint("  "+"Qual sua cidade?");
                // getSupportActionBar().setTitle("Especialidades");
-                caminho = "CIDADE/"+preferencias.getCHAVE_ESTADO().replace(" ","");
+                caminho = "CIDADE/"+estado.replace(" ","");
+                Log.i("testeCaminho",caminho);
                 break;
         }
 
@@ -67,6 +74,8 @@ public class SeletorActivity extends AppCompatActivity {
                 ArrayList<String> temp = new ArrayList();
                 for(DataSnapshot data : dataSnapshot.getChildren()){
                     temp.add(data.getValue().toString());
+
+                    Log.i("testeCaminhoData",data.getValue().toString());
                 }
 
 
@@ -78,7 +87,7 @@ public class SeletorActivity extends AppCompatActivity {
                     @Override
                     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                         Toast.makeText(SeletorActivity.this,adapter.getItem(position).toString(),Toast.LENGTH_LONG).show();
-                        setValor(adapter.getItem(position).toString());
+                        setValor(adapter.getItem(position).toString(),tipo,estado);
 
                     }
                 });
@@ -92,7 +101,7 @@ public class SeletorActivity extends AppCompatActivity {
                     public void onItemClick(AdapterView<?> parent, View view, int position,
                                             long id) {
                         String cidade = adapter.getItem(position).toString();//correção para pegar valor do listview
-                        setValor(cidade);
+                        setValor(cidade,tipo,estado);
                     }
                 });
                 hideLoadingAnimation();
@@ -106,27 +115,27 @@ public class SeletorActivity extends AppCompatActivity {
 
     }
 
-    private void setValor(String cidade) {
-        switch (preferencias.getCHAVE_TIPO_BUSCA()){
-            case "1":
-                preferencias.setCHAVE_ESPECIALIDADE(cidade);
-                break;
-            case "2":
+    private void setValor(String cidade,String tipo,String estado) {
+        switch (tipo){
+
+            case "estado":
                 preferencias.setCHAVE_ESTADO(cidade);
+                Intent i = new Intent(SeletorActivity.this, SeletorActivity.class);
+                i.putExtra("tipo","cidade");
+                i.putExtra("estado",cidade);
+                startActivity(i);
+                finish();
                 break;
-            case "3":
-               preferencias.setCHAVE_CIDADE(cidade);
+            case "cidade":
+                preferencias.setCHAVE_CIDADE(cidade);
+                Intent intent = new Intent(this, FiltroBuscaActivity.class);
+                intent.putExtra("cidadeDado",cidade);
+                intent.putExtra("estadoDado",estado);
+                startActivity(intent);
+                finish();
                 break;
         }
-        if(preferencias.getCHAVE_TIPO_BUSCA().equals("2")){
-            preferencias.setCHAVE_TIPO_BUSCA("3");
-            Intent i = new Intent(SeletorActivity.this, SeletorActivity.class);
-            startActivity(i);
-        }else {
-            Intent intent = new Intent(this, FiltroBuscaActivity.class);
-            startActivity(intent);
-            finish();
-        }
+
     }
 
     //botao voltar

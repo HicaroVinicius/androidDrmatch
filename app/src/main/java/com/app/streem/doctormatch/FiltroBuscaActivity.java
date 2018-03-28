@@ -10,6 +10,8 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.DatePicker;
+import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.app.streem.doctormatch.DAO.Preferencias;
@@ -19,6 +21,7 @@ import org.w3c.dom.Text;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.Locale;
 
 public class FiltroBuscaActivity extends AppCompatActivity {
@@ -28,15 +31,39 @@ public class FiltroBuscaActivity extends AppCompatActivity {
     private TextInputEditText data;
     private TextInputEditText especialidade;
     private TextInputEditText estado;
-    private TextInputEditText cidade;
+    private Button buscar;
     private DatePickerDialog dataPicker;
+    private TextView cidadeFiltro;
+    private TextView dataFiltro;
+    private TextView textoFiltro;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_filtro_busca);
 
+        preferencias = new Preferencias(this);
+
         Button buttonBuscara = findViewById(R.id.buttonBuscar);
+
+        textoFiltro = findViewById(R.id.textoFiltroBusca);
+        cidadeFiltro = findViewById(R.id.cidadeFiltro);
+        dataFiltro = findViewById(R.id.dataFiltro);
+        buscar = findViewById(R.id.buttonBuscar);
+
+        Intent dadosFiltro = getIntent();
+       final String cidade = dadosFiltro.getStringExtra("cidadeDado");
+       final String estado = dadosFiltro.getStringExtra("estadoDado");
+
+        if(cidade==null||estado==null){
+            cidadeFiltro.setText("Selecione sua Cidade");
+        }else{
+            cidadeFiltro.setText(cidade.concat(", ").concat(estado));
+        }
+
+        dataFiltro.setText(preferencias.getCHAVE_DATA());
+
+        textoFiltro.setText("Vamos encontrar o ".concat(preferencias.getCHAVE_ESPECIALIDADE()).concat(" mais próximo de você!"));
 
         buttonBuscara.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -45,6 +72,63 @@ public class FiltroBuscaActivity extends AppCompatActivity {
                 startActivity(i);
             }
         });
+
+        myCalendar = Calendar.getInstance();
+
+        final DatePickerDialog.OnDateSetListener date = new DatePickerDialog.OnDateSetListener() {
+
+            @Override
+            public void onDateSet(DatePicker view, int year, int monthOfYear,
+                                  int dayOfMonth) {
+
+                myCalendar.set(Calendar.YEAR, year);
+                myCalendar.set(Calendar.MONTH, monthOfYear);
+                myCalendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
+                updateLabel();
+            }
+
+        };
+
+        dataFiltro.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                dataPicker = new DatePickerDialog(FiltroBuscaActivity.this, date, myCalendar
+                        .get(Calendar.YEAR), myCalendar.get(Calendar.MONTH),
+                        myCalendar.get(Calendar.DAY_OF_MONTH));
+                dataPicker.getDatePicker().setMinDate(System.currentTimeMillis() - 1000);
+                dataPicker.show();
+            }
+        });
+
+
+        cidadeFiltro.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                preferencias.setCHAVE_TIPO_BUSCA("2");
+               Intent intent = new Intent(FiltroBuscaActivity.this,SeletorActivity.class);
+               intent.putExtra("tipo","estado");
+               startActivity(intent);
+            }
+        });
+
+
+        buscar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(cidade==null||estado==null){
+                    Toast.makeText(FiltroBuscaActivity.this, "Selecione uma Cidade...", Toast.LENGTH_SHORT).show();
+                }else if(preferencias.getCHAVE_DATA().equals("")){
+                    Toast.makeText(FiltroBuscaActivity.this, "Selecione uma Data...", Toast.LENGTH_SHORT).show();
+                }else{
+                    Intent intent = new Intent(FiltroBuscaActivity.this,ResultActivity.class);
+                    preferencias.setCHAVE_CIDADE(cidade);
+                    preferencias.setCHAVE_ESTADO(estado);
+                    startActivity(intent);
+                }
+            }
+        });
+
+
         /*
         preferencias = new Preferencias(this);
 
@@ -68,32 +152,6 @@ public class FiltroBuscaActivity extends AppCompatActivity {
         estado.setText(preferencias.getCHAVE_ESTADO());
         cidade.setText(preferencias.getCHAVE_CIDADE());
 
-        myCalendar = Calendar.getInstance();
-
-        final DatePickerDialog.OnDateSetListener date = new DatePickerDialog.OnDateSetListener() {
-
-            @Override
-            public void onDateSet(DatePicker view, int year, int monthOfYear,
-                                  int dayOfMonth) {
-
-                myCalendar.set(Calendar.YEAR, year);
-                myCalendar.set(Calendar.MONTH, monthOfYear);
-                myCalendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
-                updateLabel();
-            }
-
-        };
-
-        data.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                dataPicker = new DatePickerDialog(FiltroBuscaActivity.this, date, myCalendar
-                        .get(Calendar.YEAR), myCalendar.get(Calendar.MONTH),
-                        myCalendar.get(Calendar.DAY_OF_MONTH));
-                dataPicker.getDatePicker().setMinDate(System.currentTimeMillis() - 1000);
-                dataPicker.show();
-            }
-        });
 
         buttonBuscar.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -150,13 +208,6 @@ public class FiltroBuscaActivity extends AppCompatActivity {
         startActivity(i);
     }
 
-    private void updateLabel() {
-
-        String myFormat = "dd/MM/yyyy"; //In which you need put here
-        SimpleDateFormat sdf = new SimpleDateFormat(myFormat, new Locale("pt","BR"));
-
-        data.setText(sdf.format(myCalendar.getTime()));
-    }
 
     //botao voltar
     @Override
@@ -185,5 +236,15 @@ public class FiltroBuscaActivity extends AppCompatActivity {
     }*/
 
     }
+
+    private void updateLabel() {
+
+        String myFormat = "dd/MM/yyyy"; //In which you need put here
+        SimpleDateFormat sdf = new SimpleDateFormat(myFormat, new Locale("pt","BR"));
+        dataFiltro.setText(sdf.format(myCalendar.getTime()));
+        preferencias.setCHAVE_DATA(dataFiltro.getText().toString());
+        Log.i("testePref",preferencias.getCHAVE_DATA());
+    }
+
 
 }

@@ -27,6 +27,17 @@ public class Preferencias {
     private final String CHAVE_CIDADE = "cidadeSelect";
     private final String CHAVE_DATA = "dataSelect";
 
+    public String getCHAVE_Servico_Seleciona() {
+        return preferences.getString(CHAVE_Servico_Seleciona,"");
+    }
+
+    public void setCHAVE_Servico_Seleciona(String origem){
+        editor.putString(CHAVE_Servico_Seleciona,origem);
+        editor.commit();
+    }
+
+    private final String CHAVE_Servico_Seleciona = "servicoSeleciona";
+
     public void setCHAVE_DATA(String origem){
         editor.putString(CHAVE_DATA, origem);
         editor.commit();

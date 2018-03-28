@@ -11,19 +11,52 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
 
+import com.app.streem.doctormatch.DAO.BD;
+import com.app.streem.doctormatch.DAO.Firebase;
 import com.app.streem.doctormatch.Fragments.AgendamentoFragment;
 import com.app.streem.doctormatch.Fragments.ConsultaFragment;
 import com.app.streem.doctormatch.Fragments.ExameFragment;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.ValueEventListener;
 
 public class MainActivity extends AppCompatActivity
         implements BottomNavigationView.OnNavigationItemSelectedListener {
 
+    private boolean buscaEspecFirebase = false;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        //buscaEspecFirebase = true;
+
+        if(buscaEspecFirebase){
+
+            final BD bd = new BD(this);
+
+            bd.deleteEspec();
+
+            Firebase.getDatabaseReference().child("ATUACAO").child("ESPECIALIDADE").addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
+
+                    for(DataSnapshot data : dataSnapshot.getChildren()){
+                        bd.inserirEspecialidade(data.getValue().toString());
+                        Log.i("testeBD",bd.buscarEspec().toString());
+                        Log.i("testeBDDATA",data.getValue().toString());
+                    }}
+
+                @Override
+                public void onCancelled(DatabaseError databaseError) {
+
+                }
+            });
+
+
+        }
          /*
 
         preferencias = new Preferencias(this);
