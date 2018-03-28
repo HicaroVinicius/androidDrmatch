@@ -25,6 +25,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.ValueEventListener;
 import com.makeramen.roundedimageview.RoundedImageView;
+import com.squareup.picasso.Picasso;
 
 public class ConfirmActivity extends AppCompatActivity {
     private TextView end1Details;
@@ -45,6 +46,20 @@ public class ConfirmActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_confirm);
+        fotoMedico = findViewById(R.id.fotoDetails);
+        Picasso.with(getApplicationContext()).load("http://doctormatch.com.br/app_files/manasses.jpg").into(fotoMedico);
+
+        RoundedImageView fotoPac = findViewById(R.id.fotoPac);
+        Picasso.with(getApplicationContext()).load("http://doctormatch.com.br/app_files/hicaro.jpg").into(fotoPac);
+
+        Button buttonConfirmar = findViewById(R.id.buttonConfirmar);
+        buttonConfirmar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent i = new Intent(ConfirmActivity.this, AgendConcluido.class);
+                startActivity(i);
+            }
+        });
 
         preferencias = new Preferencias(this);
         /*
