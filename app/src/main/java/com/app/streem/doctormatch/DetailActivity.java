@@ -72,6 +72,7 @@ public class DetailActivity extends AppCompatActivity {
     private String nomeDependente = null;
 
     private boolean hasDependente = false;
+    private String dayWeek;
 
     /*
 
@@ -126,6 +127,27 @@ public class DetailActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+
+
+        Intent dados = getIntent();
+        final String titular = dados.getStringExtra("titular");
+        final String end1 = dados.getStringExtra("end1");
+        final String end2 = dados.getStringExtra("end2");
+        final String registro = dados.getStringExtra("registro");
+        final String classif = dados.getStringExtra("classif");
+        final String key = dados.getStringExtra("key");
+        final String data = dados.getStringExtra("data");
+        final String dataFormatt = dados.getStringExtra("dataFormatt");
+        final String dataFormatt2 = dados.getStringExtra("dataFormatt2");
+        final String url = dados.getStringExtra("url");
+        final String cidade = dados.getStringExtra("cidade");
+        final String estado = dados.getStringExtra("estado");
+        final String espec = dados.getStringExtra("espec");
+        final String valor = dados.getStringExtra("valor");
+
+
+
         setContentView(R.layout.activity_detail);
         fotoMedico = findViewById(R.id.fotoDetails);
 
@@ -152,30 +174,42 @@ public class DetailActivity extends AppCompatActivity {
 
         weekCalendar = findViewById(R.id.weekCalendarDetails);
 
+        weekCalendar.setOnDateClickListener(new OnDateClickListener() {
+            @Override
+            public void onDateClick(DateTime dateTime) {
+                String myFormat = "dd/MM/yyyy"; //In which you need put here
+                SimpleDateFormat sdf = new SimpleDateFormat(myFormat, new Locale("pt","BR"));
+                String dataFormat = sdf.format(dateTime.toDate());
+
+                atualizaSemana(dateTime);
+
+                SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy");
+                Date d = null;
+                try {
+                    d = format.parse(dataFormat);
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
+                Log.i("teste1",String.valueOf(d.getTime()));
+                //Toast.makeText(DetailActivity.this,"Procurando Vagas para: "+dataFormat, Toast.LENGTH_SHORT).show();
+                vagasList.clear();
+                adapter.notifyDataSetChanged();
+                atualizarHorarios(String.valueOf(d.getTime()),key);
+
+            }
+
+        });
+
+
+
         horaView.setHasFixedSize(true);
         horaView.setLayoutManager(new LinearLayoutManager(this));
-
-
-
-        Intent dados = getIntent();
-        final String titular = dados.getStringExtra("titular");
-        final String end1 = dados.getStringExtra("end1");
-        final String end2 = dados.getStringExtra("end2");
-        final String registro = dados.getStringExtra("registro");
-        final String classif = dados.getStringExtra("classif");
-        final String key = dados.getStringExtra("key");
-        final String data = dados.getStringExtra("data");
-        final String dataFormatt = dados.getStringExtra("dataFormatt");
-        final String url = dados.getStringExtra("url");
-        final String cidade = dados.getStringExtra("cidade");
-        final String estado = dados.getStringExtra("estado");
-        final String espec = dados.getStringExtra("espec");
-        final String valor = dados.getStringExtra("valor");
 
         DateTimeFormatter formatter = DateTimeFormat.forPattern("dd/MM/yyyy");
         DateTime dt = formatter.parseDateTime(dataFormatt);
 
         weekCalendar.setStartDate(dt);
+        atualizaSemana(dt);
 
         urlFoto = url;
 
@@ -207,6 +241,8 @@ public class DetailActivity extends AppCompatActivity {
 
                 confirmar.putExtra("data",data);
                 confirmar.putExtra("dataFormatt",dataFormatt);
+                confirmar.putExtra("dataFormatt2",dataFormatt2);
+                confirmar.putExtra("dayWeek",dayWeek);
                 confirmar.putExtra("cidade",cidade);
                 confirmar.putExtra("estado",estado);
                 confirmar.putExtra("espec",espec);
@@ -224,30 +260,6 @@ public class DetailActivity extends AppCompatActivity {
         horaView.setAdapter(adapter);
 
         atualizarHorarios(data,key);
-
-        weekCalendar.setOnDateClickListener(new OnDateClickListener() {
-            @Override
-            public void onDateClick(DateTime dateTime) {
-                String myFormat = "dd/MM/yyyy"; //In which you need put here
-                SimpleDateFormat sdf = new SimpleDateFormat(myFormat, new Locale("pt","BR"));
-                String dataFormat = sdf.format(dateTime.toDate());
-
-                SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy");
-                Date d = null;
-                try {
-                    d = format.parse(dataFormat);
-                } catch (ParseException e) {
-                    e.printStackTrace();
-                }
-                Log.i("teste1",String.valueOf(d.getTime()));
-                //Toast.makeText(DetailActivity.this,"Procurando Vagas para: "+dataFormat, Toast.LENGTH_SHORT).show();
-                vagasList.clear();
-                adapter.notifyDataSetChanged();
-                atualizarHorarios(String.valueOf(d.getTime()),key);
-
-            }
-
-        });
 
 
     /*
@@ -422,6 +434,26 @@ public class DetailActivity extends AppCompatActivity {
         });
 */
 
+
+    }
+
+    private void atualizaSemana(DateTime dt) {
+
+        int week = dt.getDayOfWeek();
+        Log.i("testeSemana",String.valueOf(week));
+        String semana = "";
+        switch (week){
+            case 1: semana = "Segunda-Feira"; break;
+            case 2: semana = "Terça-Feira"; break;
+            case 3: semana = "Quarta-Feira"; break;
+            case 4: semana = "Quinta-Feira"; break;
+            case 5:  semana = "Sexta-Feira"; break;
+            case 6:  semana = "Sábado"; break;
+            case 7:  semana = "Domingo"; break;
+            default: semana = ""; break;
+        }
+
+        dayWeek = semana;
 
     }
 
