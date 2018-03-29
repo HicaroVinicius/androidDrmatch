@@ -145,13 +145,14 @@
             app:layout_constraintTop_toBottomOf="@+id/especialidadeConfirm" />
 
         <RadioGroup
-            android:id="@+id/radioGroup"
+            android:id="@+id/radioGroupConfirm"
+            android:visibility="visible"
             android:layout_width="280dp"
             android:layout_height="wrap_content"
             android:layout_marginEnd="8dp"
             android:layout_marginTop="8dp"
             android:orientation="horizontal"
-            app:layout_constraintEnd_toStartOf="@+id/imageView27"
+            app:layout_constraintEnd_toStartOf="@+id/imgAddConfirm"
             app:layout_constraintStart_toEndOf="@+id/imageView25"
             app:layout_constraintTop_toBottomOf="@+id/textView21">
 
@@ -170,57 +171,33 @@
                 android:text="Outra pessoa" />
         </RadioGroup>
 
-        <com.makeramen.roundedimageview.RoundedImageView xmlns:app="http://schemas.android.com/apk/res-auto"
-            android:id="@+id/fotoPacienteConfirm"
-            android:layout_width="60dp"
-            android:layout_height="60dp"
-            android:layout_marginTop="8dp"
-            android:scaleType="fitCenter"
-            android:src="@drawable/ic_favorite_black_24dp"
-            app:layout_constraintStart_toEndOf="@+id/imageView25"
-            app:layout_constraintTop_toBottomOf="@+id/radioGroup"
-            app:riv_border_color="@color/colorAccent"
-            app:riv_border_width="2dip"
-            app:riv_corner_radius="30dip"
-            app:riv_mutate_background="true"
-            app:riv_oval="true" />
+
 
         <ImageView
-            android:id="@+id/imageView27"
+            android:id="@+id/imgAddConfirm"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginBottom="8dp"
             android:layout_marginEnd="8dp"
             android:layout_marginTop="8dp"
-            app:layout_constraintBottom_toBottomOf="@+id/radioGroup"
+            app:layout_constraintBottom_toBottomOf="@+id/radioGroupConfirm"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/radioGroup"
+            app:layout_constraintTop_toTopOf="@+id/radioGroupConfirm"
             app:srcCompat="@drawable/app_novo_dep_24dp" />
 
-        <Spinner
-            android:id="@+id/spinnerDependenteConfirm"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="8dp"
-            android:layout_marginEnd="8dp"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="8dp"
-            app:layout_constraintBottom_toBottomOf="@+id/fotoPacienteConfirm"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/fotoPacienteConfirm"
-            app:layout_constraintTop_toTopOf="@+id/fotoPacienteConfirm" />
 
         <TextView
             android:id="@+id/textView12"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
+            android:layout_marginStart="20dp"
             android:text="ESPECIALISTA:"
             android:textColor="@color/colorAccent"
             android:textStyle="bold"
             app:layout_constraintBottom_toBottomOf="@+id/imageView26"
             app:layout_constraintStart_toEndOf="@+id/imageView26"
-            app:layout_constraintTop_toTopOf="@+id/imageView26" />
+            app:layout_constraintTop_toTopOf="@+id/imageView26"
+            app:layout_constraintVertical_bias="1.0" />
 
         <com.makeramen.roundedimageview.RoundedImageView xmlns:app="http://schemas.android.com/apk/res-auto"
             android:id="@+id/fotoMedicoConfirm"
@@ -259,7 +236,7 @@
             app:layout_constraintTop_toBottomOf="@+id/nomeMedicoConfirm" />
 
         <ImageView
-            android:id="@+id/imageView28"
+            android:id="@+id/imgTrocaConfirm"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="8dp"
@@ -267,6 +244,53 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="@+id/textView21"
             app:srcCompat="@drawable/app_troca_pac_24dp" />
+
+        <TextView
+            android:id="@+id/nomeProprioConfirm"
+            android:layout_width="0dp"
+            android:visibility="gone"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:text="TextView"
+            android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+            app:layout_constraintBottom_toTopOf="@id/imageView26"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/fotoPacienteConfirm"
+            app:layout_constraintTop_toBottomOf="@+id/radioGroupConfirm" />
+
+        <com.makeramen.roundedimageview.RoundedImageView xmlns:app="http://schemas.android.com/apk/res-auto"
+            android:id="@+id/fotoPacienteConfirm"
+            android:visibility="gone"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:layout_marginTop="8dp"
+            android:scaleType="fitCenter"
+            android:src="@drawable/ic_favorite_black_24dp"
+            app:layout_constraintStart_toEndOf="@+id/imageView25"
+            app:layout_constraintTop_toBottomOf="@+id/radioGroupConfirm"
+            app:riv_border_color="@color/colorAccent"
+            app:riv_border_width="2dip"
+            app:riv_corner_radius="30dip"
+            app:riv_mutate_background="true"
+            app:riv_oval="true" />
+
+        <Spinner
+            android:id="@+id/spinnerDependenteConfirm"
+            android:layout_width="0dp"
+            android:layout_height="60dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginRight="16dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:visibility="gone"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.529"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/radioGroupConfirm" />
 
 
     </android.support.constraint.ConstraintLayout>

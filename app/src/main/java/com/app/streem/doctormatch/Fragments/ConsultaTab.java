@@ -12,6 +12,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.CheckedTextView;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.Toast;
 
@@ -85,6 +87,7 @@ public class ConsultaTab extends Fragment {
         preferencias = new Preferencias(getContext());
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_consulta_tab, container, false);
+
         ListView listView = view.findViewById(R.id.listviewConsulta);
         listView.setAdapter(adapter);
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -92,7 +95,6 @@ public class ConsultaTab extends Fragment {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 //Toast.makeText(getContext(), parent.getItemAtPosition(position).toString(), Toast.LENGTH_SHORT).show();
                 String espec = parent.getItemAtPosition(position).toString();
-                Log.i("testeEspec",espec);
                 Intent intent = new Intent(getContext(), FiltroBuscaActivity.class);
                 preferencias.setCHAVE_ESPECIALIDADE(espec);
                 startActivity(intent);

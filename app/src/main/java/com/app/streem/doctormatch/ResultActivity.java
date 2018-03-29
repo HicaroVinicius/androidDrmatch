@@ -161,6 +161,9 @@ public class ResultActivity extends AppCompatActivity {
         SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy");
         final Date d = format.parse(preferencias.getCHAVE_DATA());
         final String dataFormatt = format.format(d.getTime());
+        SimpleDateFormat format2 = new SimpleDateFormat("dd/MM");
+        final Date d2 = format.parse(preferencias.getCHAVE_DATA());
+        final String dataFormatt2 = format2.format(d2.getTime());
 
 //        showLoadingAnimation();
         medicos.clear();
@@ -178,6 +181,7 @@ public class ResultActivity extends AppCompatActivity {
             newPage.putExtra("key",item.getKey());
             newPage.putExtra("valor",item.getValor());
             newPage.putExtra("dataFormatt",dataFormatt);
+            newPage.putExtra("dataFormatt2",dataFormatt2);
             newPage.putExtra("cidade",cidade);
             newPage.putExtra("estado",estado);
             newPage.putExtra("espec",espec);

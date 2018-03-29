@@ -43,8 +43,8 @@ public class ServicoSeletorActivity extends AppCompatActivity implements Consult
 
 
         final ArrayAdapter[] adapterAuto = new ArrayAdapter[2];
-        adapterAuto[0] = new ArrayAdapter(ServicoSeletorActivity.this, android.R.layout.simple_list_item_checked, consulta);
-        adapterAuto[1] = new ArrayAdapter(ServicoSeletorActivity.this, android.R.layout.simple_list_item_checked, exame);
+        adapterAuto[0] = new ArrayAdapter(ServicoSeletorActivity.this, R.layout.recyclerview_servicos, consulta);
+        adapterAuto[1] = new ArrayAdapter(ServicoSeletorActivity.this, R.layout.recyclerview_servicos, exame);
 
         final AutoCompleteTextView autoCompleteTextView = findViewById(R.id.autoCompleteSeletor);
 
