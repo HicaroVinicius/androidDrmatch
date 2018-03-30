@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
+import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.support.v7.app.AppCompatActivity;
@@ -21,9 +22,14 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.ValueEventListener;
 
 public class MainActivity extends AppCompatActivity
-        implements BottomNavigationView.OnNavigationItemSelectedListener {
+        implements BottomNavigationView.OnNavigationItemSelectedListener, NavigationView.OnNavigationItemSelectedListener {
 
     private boolean buscaEspecFirebase = false;
+
+    private void setNavigationViewListner() {
+        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_camera);
+        navigationView.setNavigationItemSelectedListener(this);
+    }
 
 
     @Override
@@ -89,32 +95,23 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.activity_main_drawer, menu);
         return true;
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
+        Toast.makeText(this, "teste", Toast.LENGTH_SHORT).show();
 
-        Log.i("testeNAV2", String.valueOf(id));
-
-        //noinspection SimplifiableIfStatement
         if (id == R.id.nav_camera) {
-            Toast.makeText(this, "aqui", Toast.LENGTH_SHORT).show();
-            Intent intent = new Intent(this,cadastraVagaActivity.class);
-            startActivity(intent);
+
             return true;
         }
 
+
         return super.onOptionsItemSelected(item);
     }
-
-
 
 
     private boolean carregarFragment(Fragment fragment){
@@ -152,5 +149,7 @@ public class MainActivity extends AppCompatActivity
 
         return carregarFragment(fragment);
     }
+
+
 
 }

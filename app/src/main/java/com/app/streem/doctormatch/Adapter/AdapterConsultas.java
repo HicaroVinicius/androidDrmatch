@@ -50,7 +50,8 @@ public class AdapterConsultas extends RecyclerView.Adapter<AdapterConsultas.Resu
         Consulta consultas = consulta.get(position);
         holder.bind(consulta.get(position), (OnItemLongClickListener) listener);
         holder.nome.setText(String.valueOf(consultas.getNomeMedico()));
-        holder.data.setText(String.valueOf(consultas.getDataFormat()) + " ás " + String.valueOf(consultas.getHoraFormat()));
+        holder.info.setText(String.valueOf(consultas.getInfo()));
+        holder.espec.setText(String.valueOf(consultas.getEspec()));
     }
 
     @Override
@@ -61,12 +62,14 @@ public class AdapterConsultas extends RecyclerView.Adapter<AdapterConsultas.Resu
     class ResultViewHolder extends RecyclerView.ViewHolder {
 
         TextView nome;
-        TextView data;
+        TextView espec;
+        TextView info;
 
         public ResultViewHolder(View itemView) {
             super(itemView);
-            //nome = itemView.findViewById(R.id.horaRecID);
-           // data = itemView.findViewById(R.id.dataConsultaID);
+            nome = itemView.findViewById(R.id.nomeMedicoConsultaRec);
+            espec = itemView.findViewById(R.id.especConsultaRec);
+            info = itemView.findViewById(R.id.infoConsultaRec);
 
         }
 

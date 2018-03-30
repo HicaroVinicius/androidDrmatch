@@ -1,7 +1,9 @@
 package com.app.streem.doctormatch.Fragments;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.constraint.ConstraintLayout;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.LinearLayoutManager;
@@ -10,6 +12,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -19,6 +22,7 @@ import com.app.streem.doctormatch.DAO.Preferencias;
 import com.app.streem.doctormatch.Modelo.Consulta;
 import com.app.streem.doctormatch.Modelo.ResultModel;
 import com.app.streem.doctormatch.R;
+import com.app.streem.doctormatch.ServicoSeletorActivity;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.ValueEventListener;
@@ -34,14 +38,15 @@ import static com.facebook.FacebookSdk.getApplicationContext;
 
 public class ConsultaFragment extends Fragment {
 
+    private Button agendar;
 
     private RecyclerView consultaView;
     private RecyclerView.Adapter adapter;
     private List<Consulta> consultaList = new ArrayList<>();
     private Preferencias preferencias;
 
-    private TextView semRegistro;
-    private CardView cardViewConsulta;
+    private ConstraintLayout semRegistro;
+    private ConstraintLayout cardViewConsulta;
 
 
 
@@ -52,13 +57,22 @@ public class ConsultaFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_consulta,null);
 
         Toast.makeText(getApplicationContext(), "Carregando...", Toast.LENGTH_SHORT).show();
-        /*
+
         preferencias = new Preferencias(view.getContext());
 
-        semRegistro = view.findViewById(R.id.semRegistroResultIdConsulta);
-        cardViewConsulta = view.findViewById(R.id.cardViewConsulta);
+        agendar = view.findViewById(R.id.agendarConsultaButton);
+        agendar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(v.getContext(), ServicoSeletorActivity.class);
+                startActivity(intent);
+            }
+        });
+
+        semRegistro = view.findViewById(R.id.idConstraintConsulta);
 
         consultaView = view.findViewById(R.id.recyclerConsulta);
+        cardViewConsulta = view.findViewById(R.id.idRecyclerConsulta);
 
         consultaView.setHasFixedSize(true);
         consultaView.setLayoutManager(new LinearLayoutManager(view.getContext()));
@@ -112,7 +126,7 @@ public class ConsultaFragment extends Fragment {
 
             }
         });
-    */
+
 
         return view;
     }

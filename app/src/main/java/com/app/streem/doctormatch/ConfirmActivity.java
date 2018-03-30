@@ -163,7 +163,8 @@ public class ConfirmActivity extends AppCompatActivity {
 
         titularDetails.setText(titular);
         especialidade.setText(preferencias.getCHAVE_ESPECIALIDADE());
-        info.setText(dayWeek+", "+dataFormatt2+" às "+hora);
+        final String inf = dayWeek+", "+dataFormatt2+" às "+hora;
+        info.setText(inf);
         valorView.setText(valor);
 
 
@@ -226,29 +227,37 @@ public class ConfirmActivity extends AppCompatActivity {
         confirmarButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(ConfirmActivity.this, nomeDep, Toast.LENGTH_SHORT).show();
+                //Toast.makeText(ConfirmActivity.this, nomeDep, Toast.LENGTH_SHORT).show();
+
+                if(buttonProprio.isChecked()||buttonDependente.isChecked()){
 
 
-                AlertDialog.Builder confirm = new AlertDialog.Builder(ConfirmActivity.this);
-                confirm.setTitle("Confirmar Agendamento");
-                confirm.setIcon(R.drawable.ic_done_black_24dp).setMessage("Deseja confirmar o agendamento?").setCancelable(true);
-                confirm.setNegativeButton("Cancelar", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                       return;
-                    }
-                });
+                    AlertDialog.Builder confirm = new AlertDialog.Builder(ConfirmActivity.this);
+                    confirm.setTitle("Confirmar Agendamento");
+                    confirm.setIcon(R.drawable.ic_done_black_24dp).setMessage("Deseja confirmar o agendamento?").setCancelable(true);
+                    confirm.setNegativeButton("Cancelar", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            return;
+                        }
+                    });
 
-                confirm.setPositiveButton("Confirmar", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                       // confirmar(data,keyMedico,cidade,estado,espec,keyHora,nomeDep,titular,hora,dataFormatt);
-                        Log.i("testeConfirm",data+keyMedico+cidade+estado+espec+keyHora+nomeDep+titular+hora+dataFormatt);
-                    }
-                });
+                    confirm.setPositiveButton("Confirmar", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            confirmar(data,keyMedico,cidade,estado,espec,keyHora,nomeDep,titular,inf);
+                            Log.i("testeConfirm",data+keyMedico+cidade+estado+espec+keyHora+nomeDep+titular+hora+dataFormatt);
+                            Intent intent = new Intent(ConfirmActivity.this,AgendConcluido.class);
+                            startActivity(intent);
 
-                AlertDialog alertDialog = confirm.create();
-                alertDialog.show();
+                        }
+                    });
+
+                    AlertDialog alertDialog = confirm.create();
+                    alertDialog.show();
+                }else{
+                    Toast.makeText(ConfirmActivity.this, "Selecione um Paciente", Toast.LENGTH_SHORT).show();
+                }
 
             }
         });
@@ -256,11 +265,11 @@ public class ConfirmActivity extends AppCompatActivity {
 
     }
 
-    public void confirmar(String data, String keyMedico, String cidade, String estado, String espec, String keyHora, final String nomeUser,String nomeMedico, String horaFormat,String dataFormat){
+    public void confirmar(String data, String keyMedico, String cidade, String estado, String espec, String keyHora, final String nomeUser,String nomeMedico, String info){
 
         Log.i("testeRemove",estado+"-"+cidade+"-"+espec+"-"+data+"-"+keyMedico+"-"+keyHora);
 
-        Firebase.getDatabaseReference().child("VAGAS").child(estado).child(cidade).child(espec).child(data).child(keyMedico).child(keyHora).removeValue();
+       // Firebase.getDatabaseReference().child("VAGAS").child(estado).child(cidade).child(espec).child(data).child(keyMedico).child(keyHora).removeValue();
 
         Firebase.getDatabaseReference().child("CLIENTES").child(keyMedico).child("AGENDAMENTO").child(data).child(keyHora).child("status").addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
@@ -275,34 +284,12 @@ public class ConfirmActivity extends AppCompatActivity {
             }
         });
 
-        Firebase.getDatabaseReference().child("CLIENTES").child(keyMedico).child("AGENDAMENTO").child(data).child(keyHora).child("key_cliente").addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                dataSnapshot.getRef().setValue(preferencias.getCHAVE_INDENTIFICADOR());
-                Log.i("testeIdent",dataSnapshot.toString());
-            }
+        Firebase.getDatabaseReference().child("CLIENTES").child(keyMedico).child("AGENDAMENTO").child(data).child(keyHora).child("key_cliente").setValue(preferencias.getCHAVE_INDENTIFICADOR());
 
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-
-            }
-        });
-
-        Firebase.getDatabaseReference().child("CLIENTES").child(keyMedico).child("AGENDAMENTO").child(data).child(keyHora).child("nome").addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                dataSnapshot.getRef().setValue(nomeUser);
-                Log.i("testeIdent",dataSnapshot.toString());
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-
-            }
-        });
+        Firebase.getDatabaseReference().child("CLIENTES").child(keyMedico).child("AGENDAMENTO").child(data).child(keyHora).child("nome").setValue(nomeUser);
 
         String key = Firebase.getDatabaseReference().child("USUARIO").child(preferencias.getCHAVE_INDENTIFICADOR()).child("CONSULTA").push().getKey();
-        Consulta nova = new Consulta(keyMedico,data,keyHora,nomeUser,nomeMedico,horaFormat,dataFormat,key);
+        Consulta nova = new Consulta(keyMedico,data,keyHora,nomeUser,nomeMedico,info,key,preferencias.getCHAVE_ESPECIALIDADE());
         Firebase.getDatabaseReference().child("USUARIO").child(preferencias.getCHAVE_INDENTIFICADOR()).child("CONSULTA").child(key).setValue(nova);
 
         Intent intent = new Intent(ConfirmActivity.this,MainActivity.class);
