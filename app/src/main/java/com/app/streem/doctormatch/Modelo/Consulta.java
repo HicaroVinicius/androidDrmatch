@@ -6,15 +6,15 @@ package com.app.streem.doctormatch.Modelo;
 
 public class Consulta {
 
-    public Consulta(String medico, String data, String hora,String nome,String nomeMedico,String horaFormat, String dataFormat,String keyConsulta) {
+    public Consulta(String medico, String data, String hora,String nome,String nomeMedico,String info,String keyConsulta,String espec) {
         this.medico = medico;
         this.data = data;
         this.hora = hora;
         this.nome = nome;
         this.nomeMedico = nomeMedico;
-        this.horaFormat = horaFormat;
-        this.dataFormat = dataFormat;
+        this.info = info;
         this.keyConsulta = keyConsulta;
+        this.espec = espec;
     }
 
     public Consulta(){
@@ -99,4 +99,24 @@ public class Consulta {
     }
 
     private String keyConsulta;
+
+    public String getInfo() {
+        return info;
+    }
+
+    public void setInfo(String info) {
+        this.info = info;
+    }
+
+    private String info;
+
+    public String getEspec() {
+        return espec;
+    }
+
+    public void setEspec(String espec) {
+        this.espec = espec;
+    }
+
+    private String espec;
 }
