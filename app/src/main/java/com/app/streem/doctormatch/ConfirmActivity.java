@@ -68,7 +68,7 @@ public class ConfirmActivity extends AppCompatActivity {
             switch (checkedId) {
                 case R.id.proprioConfirm:
                     nomeDep = preferencias.getCHAVE_NOME_USUARIO();
-                    Toast.makeText(ConfirmActivity.this, nomeDep, Toast.LENGTH_SHORT).show();
+                    //Toast.makeText(ConfirmActivity.this, nomeDep, Toast.LENGTH_SHORT).show();
                     nomeProprio.setVisibility(View.VISIBLE);
                     fotoProprio.setVisibility(View.VISIBLE);
                     spinner.setVisibility(View.INVISIBLE);
@@ -78,7 +78,7 @@ public class ConfirmActivity extends AppCompatActivity {
                     break;
                 case R.id.outroConfirm:
                     nomeDep = nomeDependente;
-                        Toast.makeText(ConfirmActivity.this, nomeDep, Toast.LENGTH_SHORT).show();
+                        //Toast.makeText(ConfirmActivity.this, nomeDep, Toast.LENGTH_SHORT).show();
                         spinner.setVisibility(View.VISIBLE);
                         nomeProprio.setVisibility(View.INVISIBLE);
                         fotoProprio.setVisibility(View.INVISIBLE);
@@ -136,7 +136,6 @@ public class ConfirmActivity extends AppCompatActivity {
         titularDetails = findViewById(R.id.nomeMedicoConfirm);
         especialidade = findViewById(R.id.especialidadeConfirm);
         info = findViewById(R.id.infoConfirm);
-        valorView = findViewById(R.id.valorConfirm);
 
 
         Intent dados = getIntent();
@@ -157,7 +156,6 @@ public class ConfirmActivity extends AppCompatActivity {
         final String cidade = dados.getStringExtra("cidade");
         final String estado = dados.getStringExtra("estado");
         final String espec = dados.getStringExtra("espec");
-        final String valor = dados.getStringExtra("valor");
 
         Picasso.with(getApplicationContext()).load(url).into(fotoMedico);
 
@@ -165,7 +163,6 @@ public class ConfirmActivity extends AppCompatActivity {
         especialidade.setText(preferencias.getCHAVE_ESPECIALIDADE());
         final String inf = dayWeek+", "+dataFormatt2+" às "+hora;
         info.setText(inf);
-        valorView.setText(valor);
 
 
         spinner = findViewById(R.id.spinnerDependenteConfirm);
