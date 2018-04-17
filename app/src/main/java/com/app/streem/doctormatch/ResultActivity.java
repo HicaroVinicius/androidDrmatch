@@ -215,7 +215,7 @@ public class ResultActivity extends AppCompatActivity {
                     final String key = data.getValue().toString();
                     Log.i("TESTEMED",data.getValue().toString().concat("fora"));
 
-                    Firebase.getDatabaseReference().child("CLIENTES").child(key).child("AGENDAMENTO").child(String.valueOf(d.getTime())).orderByChild("status").equalTo("Disponível").addListenerForSingleValueEvent(new ValueEventListener() {
+                    Firebase.getDatabaseReference().child("CLIENTES").child(key).child("AGENDAMENTO").child(String.valueOf(d.getTime())).orderByChild("").equalTo("Disponível").addListenerForSingleValueEvent(new ValueEventListener() {
                         @Override
                         public void onDataChange(DataSnapshot dataSnapshot) {
                             if (!dataSnapshot.hasChildren()){
