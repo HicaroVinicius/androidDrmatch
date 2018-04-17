@@ -97,19 +97,19 @@ public class MainActivity extends AppCompatActivity
         return true;
     }
 
-<<<<<<< HEAD
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
         Toast.makeText(this, "teste", Toast.LENGTH_SHORT).show();
 
         if (id == R.id.nav_camera) {
-            Toast.makeText(MainActivity.this,"teste",Toast.LENGTH_LONG).show();
+            Toast.makeText(MainActivity.this, "teste", Toast.LENGTH_LONG).show();
             return true;
         }
+        return true;
+    }
 
-=======
->>>>>>> d21741d53dab475b41f0b9a8229480b32161c160
 
 
 

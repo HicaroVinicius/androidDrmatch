@@ -226,7 +226,7 @@ public class ResultActivity extends AppCompatActivity {
                     maximo++;
                     buscaDisponibilidade(key,d,"dataAtual");
 
-<<<<<<< HEAD
+
                     Firebase.getDatabaseReference().child("CLIENTES").child(key).child("AGENDAMENTO").child(String.valueOf(d.getTime())).orderByChild("").equalTo("Disponível").addListenerForSingleValueEvent(new ValueEventListener() {
                         @Override
                         public void onDataChange(DataSnapshot dataSnapshot) {
@@ -261,8 +261,7 @@ public class ResultActivity extends AppCompatActivity {
 
                         }
                     });
-=======
->>>>>>> d21741d53dab475b41f0b9a8229480b32161c160
+
 
 
 
