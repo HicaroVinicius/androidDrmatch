@@ -227,6 +227,42 @@ public class ResultActivity extends AppCompatActivity {
                     buscaDisponibilidade(key,d,"dataAtual");
 
 
+                    Firebase.getDatabaseReference().child("CLIENTES").child(key).child("AGENDAMENTO").child(String.valueOf(d.getTime())).orderByChild("").equalTo("Disponível").addListenerForSingleValueEvent(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(DataSnapshot dataSnapshot) {
+                            if (!dataSnapshot.hasChildren()){
+                                semRegistro.setVisibility(View.VISIBLE);
+                                Log.i("TESTEMED","semFilho");
+                               // Firebase.getDatabaseReference().child("CLIENTES").child(key).child("AGENDAMENTO").orderByChild().orderByChild()
+                            }else{
+
+                                Firebase.getDatabaseReference().child("CLIENTES").child(key).child("DADOS").addListenerForSingleValueEvent(new ValueEventListener() {
+                                    @Override
+                                    public void onDataChange(DataSnapshot dataSnapshot) {
+                                        ResultModel med = dataSnapshot.getValue(ResultModel.class);
+                                        Log.i("TESTERESULT",dataSnapshot.getValue().toString());
+                                        med.setKey(key);
+                                        medicos.add(med);
+                                        adapter.notifyDataSetChanged();
+                                    }
+
+                                    @Override
+                                    public void onCancelled(DatabaseError databaseError) {
+                                        Log.i("TESTEMED",databaseError.getDetails());
+                                    }
+                                });
+
+
+                            }
+                        }
+
+                        @Override
+                        public void onCancelled(DatabaseError databaseError) {
+
+                        }
+                    });
+
+
 
 
 
