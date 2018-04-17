@@ -26,11 +26,6 @@ public class MainActivity extends AppCompatActivity
 
     private boolean buscaEspecFirebase = false;
 
-    private void setNavigationViewListner() {
-        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_camera);
-        navigationView.setNavigationItemSelectedListener(this);
-    }
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -88,6 +83,9 @@ public class MainActivity extends AppCompatActivity
         navigationView.setSelectedItemId(R.id.navigation_agendamento);
         carregarFragment(new AgendamentoFragment());
 
+        NavigationView navigationLatetal = (NavigationView) findViewById(R.id.nav_view);
+        navigationLatetal.setNavigationItemSelectedListener(this);
+
 
 
 
@@ -99,19 +97,7 @@ public class MainActivity extends AppCompatActivity
         return true;
     }
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        int id = item.getItemId();
-        Toast.makeText(this, "teste", Toast.LENGTH_SHORT).show();
 
-        if (id == R.id.nav_camera) {
-
-            return true;
-        }
-
-
-        return super.onOptionsItemSelected(item);
-    }
 
 
     private boolean carregarFragment(Fragment fragment){
@@ -124,6 +110,8 @@ public class MainActivity extends AppCompatActivity
 
         return false;
     }
+
+
 
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
@@ -143,6 +131,11 @@ public class MainActivity extends AppCompatActivity
             case R.id.navigation_exames:
                 fragment = new ExameFragment();
                 break;
+            case R.id.nav_camera:
+                Intent intent = new Intent(MainActivity.this,cadastraVagaActivity.class);
+                startActivity(intent);
+                break;
+
 
 
         }

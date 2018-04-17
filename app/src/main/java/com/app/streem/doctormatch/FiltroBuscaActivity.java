@@ -61,7 +61,8 @@ public class FiltroBuscaActivity extends AppCompatActivity {
             cidadeFiltro.setText(cidade.concat(", ").concat(estado));
         }
 
-        dataFiltro.setText(preferencias.getCHAVE_DATA());
+        dataFiltro.setText("Escolha uma Data");
+        preferencias.setCHAVE_DATA(null);
 
         textoFiltro.setText("Vamos encontrar o ".concat(preferencias.getCHAVE_ESPECIALIDADE()).concat(" mais próximo de você!"));
 
