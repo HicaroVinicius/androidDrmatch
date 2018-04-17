@@ -31,8 +31,6 @@ import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
-import static java.lang.Float.valueOf;
-
 public class ResultActivity extends AppCompatActivity {
 
 
@@ -47,9 +45,6 @@ public class ResultActivity extends AppCompatActivity {
     private Calendar myCalendar;
     private TextView data;
     private DatePickerDialog dataPicker;
-
-    public int contador = 0;
-    public int maximo = 0;
 
 
 
@@ -160,7 +155,7 @@ public class ResultActivity extends AppCompatActivity {
 
     //carrega lista
     public void buscarMedicos(final String cidade, final String estado, final String espec) throws ParseException {
-        //Toast.makeText(getApplicationContext(),"Carregando... Aguarde",Toast.LENGTH_LONG).show();
+        Toast.makeText(getApplicationContext(),"Carregando... Aguarde",Toast.LENGTH_LONG).show();
 
 
         SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy");
@@ -215,9 +210,8 @@ public class ResultActivity extends AppCompatActivity {
                    // Toast.makeText(getApplicationContext(),"Nenhum Médico encontrado",Toast.LENGTH_LONG).show();
                 }else{
 
-                    maximo = 0;
-
                 for (DataSnapshot data : dataSnapshot.getChildren()){
+<<<<<<< HEAD
                     contador = 0;
                     final String key = data.getValue().toString();
                     Log.i("TESTEMEDmedicos",data.getValue().toString());
@@ -302,55 +296,64 @@ public class ResultActivity extends AppCompatActivity {
                         Date novaData = new Date(data);
 
                         SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy");
+=======
+>>>>>>> parent of d21741d... mvp
 
-                        final String novoFormatt = format.format(novaData.getTime());
+                    final String key = data.getValue().toString();
+                    Log.i("TESTEMED",data.getValue().toString().concat("fora"));
 
-                        buscaDisponibilidade(key,novaData,novoFormatt);
-                        Log.i("TESTEMEDnewDAta",String.valueOf(data));
-                        Log.i("TESTEMEDnewDAtaCont",String.valueOf(contador));
-                        contador++;
-
-                    }else{
-                        return;
-                    }
-
-
-
-                }else{
-
-                    Firebase.getDatabaseReference().child("CLIENTES").child(key).child("DADOS").addListenerForSingleValueEvent(new ValueEventListener() {
+                    Firebase.getDatabaseReference().child("CLIENTES").child(key).child("AGENDAMENTO").child(String.valueOf(d.getTime())).orderByChild("status").equalTo("Disponível").addListenerForSingleValueEvent(new ValueEventListener() {
                         @Override
                         public void onDataChange(DataSnapshot dataSnapshot) {
-                            ResultModel med = dataSnapshot.getValue(ResultModel.class);
-                            Log.i("TESTEmedRESULT",dataSnapshot.getValue().toString());
-                            med.setKey(key);
-                            med.setValor(dataAtual);
-                            medicos.add(med);
-                            adapter.notifyDataSetChanged();
+                            if (!dataSnapshot.hasChildren()){
+                                semRegistro.setVisibility(View.VISIBLE);
+                                Log.i("TESTEMED","semFilho");
+                               // Firebase.getDatabaseReference().child("CLIENTES").child(key).child("AGENDAMENTO").orderByChild().orderByChild()
+                            }else{
+
+                                Firebase.getDatabaseReference().child("CLIENTES").child(key).child("DADOS").addListenerForSingleValueEvent(new ValueEventListener() {
+                                    @Override
+                                    public void onDataChange(DataSnapshot dataSnapshot) {
+                                        ResultModel med = dataSnapshot.getValue(ResultModel.class);
+                                        Log.i("TESTERESULT",dataSnapshot.getValue().toString());
+                                        med.setKey(key);
+                                        medicos.add(med);
+                                        adapter.notifyDataSetChanged();
+                                    }
+
+                                    @Override
+                                    public void onCancelled(DatabaseError databaseError) {
+                                        Log.i("TESTEMED",databaseError.getDetails());
+                                    }
+                                });
 
 
+                            }
                         }
 
                         @Override
                         public void onCancelled(DatabaseError databaseError) {
-                            Log.i("TESTEMED",databaseError.getDetails());
+
                         }
                     });
 
-                    return;
+
+
+
                 }
+             //   hideLoadingAnimation();
+                semRegistro.setVisibility(View.GONE);
+
+                }
+
             }
 
             @Override
             public void onCancelled(DatabaseError databaseError) {
 
             }
-
-
         });
 
-
-        return true;
 
     }
 

@@ -53,11 +53,6 @@ public class ResultAdapter extends RecyclerView.Adapter<ResultAdapter.ResultView
         holder.endereco2ResultID.setText(String.valueOf(medicos.getEndereco2()));
         holder.medicoResultID.setText(String.valueOf(medicos.getTitular()));
         holder.localResultID.setText(String.valueOf(medicos.getLocal()));
-        if(String.valueOf(medicos.getValor())=="dataAtual"){
-            holder.valor.setText("Disponível");
-        }else {
-            holder.valor.setText("Disponível a partir de " + String.valueOf(medicos.getValor()));
-        }
         Picasso.with(context).load(medicos.getUrl()).into(holder.fotoResultID);
       /*  holder.valor.setOnClickListener(new View.OnClickListener() {
             @Override

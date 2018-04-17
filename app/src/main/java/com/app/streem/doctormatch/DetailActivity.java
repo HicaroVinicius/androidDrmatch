@@ -73,8 +73,6 @@ public class DetailActivity extends AppCompatActivity {
 
     private boolean hasDependente = false;
     private String dayWeek;
-    private String dataNova;
-    private String dataFormattNovo;
 
     /*
 
@@ -105,7 +103,7 @@ public class DetailActivity extends AppCompatActivity {
 
                 if (!dataSnapshot.hasChildren()){
                     Log.i("TESTE","sem filho");
-                    //Toast.makeText(DetailActivity.this, "Nenhum Horário Disponível", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(DetailActivity.this, "Nenhum Horário Disponível", Toast.LENGTH_SHORT).show();
                 }
 
 
@@ -148,7 +146,6 @@ public class DetailActivity extends AppCompatActivity {
         final String espec = dados.getStringExtra("espec");
         final String valor = dados.getStringExtra("valor");
 
-        dataNova = data;
 
 
         setContentView(R.layout.activity_detail);
@@ -182,20 +179,19 @@ public class DetailActivity extends AppCompatActivity {
             public void onDateClick(DateTime dateTime) {
                 String myFormat = "dd/MM/yyyy"; //In which you need put here
                 SimpleDateFormat sdf = new SimpleDateFormat(myFormat, new Locale("pt","BR"));
-               dataFormattNovo = sdf.format(dateTime.toDate());
+                String dataFormat = sdf.format(dateTime.toDate());
 
                 atualizaSemana(dateTime);
 
                 SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy");
                 Date d = null;
                 try {
-                    d = format.parse(dataFormattNovo);
+                    d = format.parse(dataFormat);
                 } catch (ParseException e) {
                     e.printStackTrace();
                 }
-                dataNova = String.valueOf(d.getTime());
                 Log.i("teste1",String.valueOf(d.getTime()));
-                //Toast.makeText(DetailActivity.this,"Procurando Vagas para: "+dataFormattNovo, Toast.LENGTH_SHORT).show();
+                //Toast.makeText(DetailActivity.this,"Procurando Vagas para: "+dataFormat, Toast.LENGTH_SHORT).show();
                 vagasList.clear();
                 adapter.notifyDataSetChanged();
                 atualizarHorarios(String.valueOf(d.getTime()),key);
@@ -243,10 +239,9 @@ public class DetailActivity extends AppCompatActivity {
 
                 confirmar.putExtra("nome",nome);
 
-
-                confirmar.putExtra("data",dataNova);
+                confirmar.putExtra("data",data);
                 confirmar.putExtra("dataFormatt",dataFormatt);
-                confirmar.putExtra("dataFormatt2",dataFormattNovo);
+                confirmar.putExtra("dataFormatt2",dataFormatt2);
                 confirmar.putExtra("dayWeek",dayWeek);
                 confirmar.putExtra("cidade",cidade);
                 confirmar.putExtra("estado",estado);

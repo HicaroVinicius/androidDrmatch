@@ -122,8 +122,6 @@
                     app:layout_constraintRight_toRightOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
-                    app:tabIndicatorColor="@color/cardview_light_background"
-                    app:tabIndicatorHeight="@dimen/com_facebook_button_login_corner_radius"
                     app:tabSelectedTextColor="@color/colorPrimary"
                     app:tabTextColor="@color/cardview_light_background">
 
