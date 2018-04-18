@@ -227,42 +227,6 @@ public class ResultActivity extends AppCompatActivity {
                     buscaDisponibilidade(key,d,"dataAtual");
 
 
-                    Firebase.getDatabaseReference().child("CLIENTES").child(key).child("AGENDAMENTO").child(String.valueOf(d.getTime())).orderByChild("").equalTo("Disponível").addListenerForSingleValueEvent(new ValueEventListener() {
-                        @Override
-                        public void onDataChange(DataSnapshot dataSnapshot) {
-                            if (!dataSnapshot.hasChildren()){
-                                semRegistro.setVisibility(View.VISIBLE);
-                                Log.i("TESTEMED","semFilho");
-                               // Firebase.getDatabaseReference().child("CLIENTES").child(key).child("AGENDAMENTO").orderByChild().orderByChild()
-                            }else{
-
-                                Firebase.getDatabaseReference().child("CLIENTES").child(key).child("DADOS").addListenerForSingleValueEvent(new ValueEventListener() {
-                                    @Override
-                                    public void onDataChange(DataSnapshot dataSnapshot) {
-                                        ResultModel med = dataSnapshot.getValue(ResultModel.class);
-                                        Log.i("TESTERESULT",dataSnapshot.getValue().toString());
-                                        med.setKey(key);
-                                        medicos.add(med);
-                                        adapter.notifyDataSetChanged();
-                                    }
-
-                                    @Override
-                                    public void onCancelled(DatabaseError databaseError) {
-                                        Log.i("TESTEMED",databaseError.getDetails());
-                                    }
-                                });
-
-
-                            }
-                        }
-
-                        @Override
-                        public void onCancelled(DatabaseError databaseError) {
-
-                        }
-                    });
-
-
 
 
 
@@ -286,7 +250,7 @@ public class ResultActivity extends AppCompatActivity {
 
 
 
-    public Boolean buscaDisponibilidade(final String key,final Date d, final String dataAtual){
+    public Boolean buscaDisponibilidade(final String key,final Date d, final String dataFormatt){
         Firebase.getDatabaseReference().child("CLIENTES").child(key).child("AGENDAMENTO").child(String.valueOf(d.getTime())).orderByChild("status").equalTo("Disponível").addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -324,7 +288,7 @@ public class ResultActivity extends AppCompatActivity {
                             ResultModel med = dataSnapshot.getValue(ResultModel.class);
                             Log.i("TESTEmedRESULT",dataSnapshot.getValue().toString());
                             med.setKey(key);
-                            med.setValor(dataAtual);
+                            med.setValor(dataFormatt);
                             medicos.add(med);
                             adapter.notifyDataSetChanged();
 
