@@ -280,8 +280,6 @@ public class DetailActivity extends AppCompatActivity {
 
         horaView.setAdapter(adapter);
 
-        atualizarHorarios(data,key);
-        Log.i("testeAtuaHora2",data);
 
 
 
