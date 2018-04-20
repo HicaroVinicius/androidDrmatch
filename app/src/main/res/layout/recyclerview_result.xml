@@ -24,6 +24,21 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
+            <TextView
+                android:id="@+id/textView2"
+                android:layout_width="280dp"
+                android:layout_height="2dp"
+                android:layout_marginBottom="8dp"
+                android:layout_marginStart="32dp"
+                android:layout_marginTop="15dp"
+                android:background="@color/colorAccent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/constraintLayout"
+                app:layout_constraintHorizontal_bias="1.0"
+                app:layout_constraintStart_toStartOf="@+id/fotoDetails"
+                app:layout_constraintTop_toTopOf="@+id/constraintLayout"
+                app:layout_constraintVertical_bias="0.0" />
+
             <com.makeramen.roundedimageview.RoundedImageView xmlns:app="http://schemas.android.com/apk/res-auto"
                 android:id="@+id/fotoDetails"
                 android:layout_width="85dp"
@@ -67,19 +82,6 @@
                 app:layout_constraintBottom_toTopOf="@+id/textView2"
                 app:layout_constraintEnd_toStartOf="@+id/avaliacao2ResultID"
                 app:srcCompat="@drawable/app_coracao_color_18dp" />
-
-            <TextView
-                android:id="@+id/textView2"
-                android:layout_width="0dp"
-                android:layout_height="2dp"
-                android:layout_marginBottom="8dp"
-                android:layout_marginTop="15dp"
-                android:background="@color/colorAccent"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toStartOf="@+id/constraintLayout"
-                app:layout_constraintStart_toEndOf="@+id/fotoDetails"
-                app:layout_constraintTop_toTopOf="@+id/constraintLayout"
-                app:layout_constraintVertical_bias="0.0" />
 
             <TextView
                 android:id="@+id/medicoResultID"
@@ -159,10 +161,9 @@
                 android:id="@+id/crmResultID"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="4dp"
                 android:text="CRM 9999-9"
                 android:textSize="10sp"
-                app:layout_constraintStart_toStartOf="@+id/textView2"
+                app:layout_constraintStart_toStartOf="@+id/medicoResultID"
                 app:layout_constraintTop_toBottomOf="@+id/medicoResultID" />
 
 
@@ -194,13 +195,12 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="8dp"
-                android:layout_marginStart="4dp"
                 android:layout_marginTop="24dp"
                 android:text="Rua Conselheiro José Julio"
                 android:textSize="12sp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.0"
-                app:layout_constraintStart_toStartOf="@+id/textView2"
+                app:layout_constraintStart_toStartOf="@+id/localResultID"
                 app:layout_constraintTop_toTopOf="@+id/localResultID" />
 
             <TextView
@@ -209,14 +209,13 @@
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="8dp"
                 android:layout_marginEnd="8dp"
-                android:layout_marginStart="4dp"
                 android:layout_marginTop="8dp"
                 android:text="N.300, Centro, 62.010-820"
                 android:textSize="12sp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.0"
-                app:layout_constraintStart_toStartOf="@+id/textView2"
+                app:layout_constraintStart_toStartOf="@+id/endereco1ResultID"
                 app:layout_constraintTop_toTopOf="@+id/localResultID" />
 
         </android.support.constraint.ConstraintLayout>
