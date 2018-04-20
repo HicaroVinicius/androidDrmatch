@@ -16,7 +16,7 @@ public class Preferencias {
 
     private final String CHAVE_INDENTIFICADOR = "logadoKey";
     private final String CHAVE_NOME_USUARIO = "logadoNome";
-    private final String CHAVE_TEL = "logadoNome";
+    private final String CHAVE_TEL = "logadoTelefone";
     private final String CHAVE_DATABASE = "offline";
 
     private final String CHAVE_TIPO_BUSCA = "tipoBusca"; // para tela de seletor

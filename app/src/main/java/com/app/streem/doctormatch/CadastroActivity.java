@@ -16,6 +16,7 @@ import android.widget.Toast;
 
 import com.app.streem.doctormatch.DAO.Firebase;
 import com.app.streem.doctormatch.DAO.Preferencias;
+import com.app.streem.doctormatch.Modelo.Usuario;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
@@ -47,7 +48,7 @@ public class CadastroActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_cadastro);
-        /*
+
         sexo = "null";
         preferencias = new Preferencias(this);
         auth = Firebase.getFirebaseAuth();
@@ -124,6 +125,11 @@ public class CadastroActivity extends AppCompatActivity {
                                             }else{
                                                 apelido = nomeC[0];
                                             }
+
+
+                                            Usuario usuario = new Usuario(nome.getText().toString(),apelido,sexo);
+                                            Firebase.getDatabaseReference().child("USUARIO").child(Firebase.getFirebaseAuth().getCurrentUser().getUid()).child("REGISTRO").setValue(usuario);
+
                                             preferencias.setUsuarioLogado(Firebase.getFirebaseAuth().getCurrentUser().getUid(),
                                                     apelido, telefone.getText().toString());
                                             Intent i = new Intent(CadastroActivity.this, MainActivity.class);
@@ -152,7 +158,7 @@ public class CadastroActivity extends AppCompatActivity {
                             });
                 }
             }
-        });*/
+        });
 
     }
 

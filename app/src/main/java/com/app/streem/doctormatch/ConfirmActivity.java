@@ -21,6 +21,7 @@ import com.app.streem.doctormatch.DAO.Firebase;
 import com.app.streem.doctormatch.DAO.Preferencias;
 import com.app.streem.doctormatch.Modelo.Consulta;
 import com.app.streem.doctormatch.Modelo.DependenteModel;
+import com.app.streem.doctormatch.Modelo.Usuario;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.ValueEventListener;
@@ -95,6 +96,16 @@ public class ConfirmActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         preferencias = new Preferencias(this);
         setContentView(R.layout.activity_confirm);
+
+        ImageView voltar = findViewById(R.id.imageView10);
+        voltar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
+
+
         fotoMedico = findViewById(R.id.fotoMedicoConfirm);
 
         RoundedImageView fotoPac = findViewById(R.id.fotoPacienteConfirm);
@@ -120,8 +131,12 @@ public class ConfirmActivity extends AppCompatActivity {
         imgTrocar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if(buttonDependente.isEnabled()){
                 radio.setVisibility(View.VISIBLE);
                 imgAdd.setVisibility(View.VISIBLE);
+                }else{
+                    Toast.makeText(ConfirmActivity.this, "Nenhum dependente cadastrado", Toast.LENGTH_SHORT).show();
+                }
             }
         });
 

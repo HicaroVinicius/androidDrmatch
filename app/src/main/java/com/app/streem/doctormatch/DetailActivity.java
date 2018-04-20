@@ -11,6 +11,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
@@ -98,7 +99,7 @@ public class DetailActivity extends AppCompatActivity {
     };*/
 
     public void atualizarHorarios(String data,String key){
-        Firebase.getDatabaseReference().child("CLIENTES").child(key).child("AGENDAMENTO").child(data).orderByChild("status").equalTo("Disponível").addListenerForSingleValueEvent(new ValueEventListener() {
+        Firebase.getDatabaseReference().child("CLIENTES").child(key).child("AGENDAMENTO").child(data).orderByChild("hora").addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
 
@@ -114,8 +115,13 @@ public class DetailActivity extends AppCompatActivity {
                     Log.i("TESTE",data.getValue().toString());
                     VagasModel vaga = data.getValue(VagasModel.class);
                     Log.i("TESTEVAGA",vaga.getHora());
-                    vagasList.add(vaga);
-                    adapter.notifyDataSetChanged();
+                    if(vaga.getStatus().equalsIgnoreCase("disponível")){
+                        vagasList.add(vaga);
+                        adapter.notifyDataSetChanged();
+                    }else{
+                        return;
+                    }
+
 
                 }
             }
@@ -153,6 +159,15 @@ public class DetailActivity extends AppCompatActivity {
 
 
         setContentView(R.layout.activity_detail);
+
+        ImageView voltar = findViewById(R.id.imageView10);
+        voltar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
+
         fotoMedico = findViewById(R.id.fotoDetails);
 
         Button buttonAgendar = findViewById(R.id.buttonDetails);
@@ -182,7 +197,11 @@ public class DetailActivity extends AppCompatActivity {
 
 
         horaView.setHasFixedSize(true);
-        horaView.setLayoutManager(new LinearLayoutManager(this));
+
+        LinearLayoutManager layoutManager
+                = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
+
+        horaView.setLayoutManager(layoutManager);
 
         DateTimeFormatter formatter = DateTimeFormat.forPattern("dd/MM/yyyy");
         DateTime dt = formatter.parseDateTime(dataDisp);

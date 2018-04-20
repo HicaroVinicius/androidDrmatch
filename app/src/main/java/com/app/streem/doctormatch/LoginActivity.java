@@ -16,6 +16,7 @@ import android.widget.Toast;
 
 import com.app.streem.doctormatch.DAO.Firebase;
 import com.app.streem.doctormatch.DAO.Preferencias;
+import com.app.streem.doctormatch.Modelo.Usuario;
 import com.facebook.AccessToken;
 import com.facebook.CallbackManager;
 import com.facebook.FacebookCallback;
@@ -36,6 +37,9 @@ import com.google.firebase.auth.FacebookAuthProvider;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.ValueEventListener;
 
 /**
  * An example full-screen activity that shows and hides the system UI (i.e.
@@ -47,6 +51,8 @@ public class LoginActivity extends AppCompatActivity {
     private FirebaseAuth auth;
     private GoogleApiClient mGoogleApiClient;
     private static final int RC_SIGN_IN = 9001;
+
+    private Usuario usuario = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -115,8 +121,25 @@ public class LoginActivity extends AppCompatActivity {
                     if(preferencias.getCHAVE_DATABASE().equals("0")) {
                         Firebase.loginDatabase();
                     }
-                    FirebaseUser user = task.getResult().getUser();
-                    preferencias.setUsuarioLogado(user.getUid(),user.getDisplayName(),user.getPhoneNumber());
+                    final FirebaseUser user = task.getResult().getUser();
+
+
+
+                    Firebase.getDatabaseReference().child("USUARIO").child(user.getUid()).child("REGISTRO").addListenerForSingleValueEvent(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(DataSnapshot dataSnapshot) {
+                            usuario = dataSnapshot.getValue(Usuario.class);
+                            preferencias.setUsuarioLogado(user.getUid(),usuario.getNome().toString(),null);
+                            Log.i("testeUSER", usuario.getNome().toString());
+                            Log.i("testeUSER2",dataSnapshot.toString());
+                        }
+                        public void onCancelled(DatabaseError databaseError) {
+
+                        }
+                    });
+
+
+                    Log.i("prefLogin",user.getUid()+user.getDisplayName()+user.getPhoneNumber());
                     Intent intent = new Intent(LoginActivity.this, MainActivity.class);
                     startActivity(intent);
                     finish();

@@ -12,6 +12,7 @@ import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.app.streem.doctormatch.Adapter.TabAdapter;
@@ -38,6 +39,14 @@ public class ServicoSeletorActivity extends AppCompatActivity implements Consult
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_servico_seletor);
+
+        ImageView voltar = findViewById(R.id.voltaservsel);
+        voltar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
 
         final BD bd = new BD(this);
 

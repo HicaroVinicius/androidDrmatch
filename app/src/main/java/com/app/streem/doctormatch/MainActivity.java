@@ -1,11 +1,13 @@
 package com.app.streem.doctormatch;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.AlertDialog;
 import android.util.Log;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
@@ -199,6 +201,28 @@ public class MainActivity extends AppCompatActivity
                 Intent intent = new Intent(MainActivity.this,cadastraVagaActivity.class);
                 startActivity(intent);
                 break;
+            case R.id.nav_logout:
+                AlertDialog.Builder confirm = new AlertDialog.Builder(MainActivity.this);
+                confirm.setTitle("Deseja sair da sua conta?");
+                confirm.setIcon(R.drawable.ic_done_black_24dp).setMessage("Ao sair, você não poderá receber notificações dos seus agendamentos").setCancelable(true);
+                confirm.setNegativeButton("Cancelar", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        return;
+                    }
+                });
+
+                confirm.setPositiveButton("Confirmar", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        logout();
+                    }
+                });
+
+                AlertDialog alertDialog = confirm.create();
+                alertDialog.show();
+
+                break;
 
 
 
@@ -207,6 +231,18 @@ public class MainActivity extends AppCompatActivity
         return carregarFragment(fragment);
     }
 
+    private void logout() {
+
+        try {
+            Firebase.getFirebaseAuth().signOut();
+            Intent intent = new Intent(MainActivity.this,LoginActivity.class);
+            startActivity(intent);
+            finish();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+    }
 
 
 }
