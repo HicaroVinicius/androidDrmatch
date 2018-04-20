@@ -15,6 +15,7 @@ import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
 
+import com.app.streem.doctormatch.DAO.BD;
 import com.app.streem.doctormatch.DAO.Firebase;
 import com.app.streem.doctormatch.DAO.Preferencias;
 import com.google.firebase.database.DataSnapshot;
@@ -57,66 +58,89 @@ public class SeletorActivity extends AppCompatActivity {
         switch (tipo){
             case "1":
                 autoCompleteCity.setHint("  "+"O que você procura?");
-              //  getSupportActionBar().setTitle("Especialidades");
-                caminho = "ESPECIALIDADE";
                 break;
             case "estado":
                 autoCompleteCity.setHint("  "+"Qual seu estado?");
-              //  getSupportActionBar().setTitle("Estado");
-                caminho = "ESTADO";
+
                 break;
             case "cidade":
                 autoCompleteCity.setHint("  "+"Qual sua cidade?");
-               // getSupportActionBar().setTitle("Especialidades");
-                caminho = "CIDADE/"+estado.replace(" ","");
-                Log.i("testeCaminho",caminho);
+
                 break;
         }
 
-        Firebase.getDatabaseReference().child("ATUACAO").child(caminho).addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                ArrayList<String> temp = new ArrayList();
-                for(DataSnapshot data : dataSnapshot.getChildren()){
-                    temp.add(data.getValue().toString());
+        final BD bd = new BD(this);
 
-                    Log.i("testeCaminhoData",data.getValue().toString());
+
+        if(tipo.equals("estado")){
+            final ArrayList<String> estadoSQL = bd.buscarEstado();
+            Log.i("testeBDConsulta1",estadoSQL.toString());
+
+            final ArrayAdapter adapter = new ArrayAdapter(SeletorActivity.this, android.R.layout.simple_list_item_checked, estadoSQL);
+            autoCompleteCity.setDropDownHeight(0);
+            autoCompleteCity.setThreshold(1);
+            autoCompleteCity.setAdapter(adapter);
+            autoCompleteCity.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                @Override
+                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                    // Toast.makeText(SeletorActivity.this,adapter.getItem(position).toString(),Toast.LENGTH_LONG).show();
+                    setValor(adapter.getItem(position).toString(), tipo,estado);
+
                 }
+            });
+
+            adapterList = new ArrayAdapter<String>(SeletorActivity.this, android.R.layout.simple_list_item_checked, estadoSQL);
+            listView.setAdapter(adapter);
 
 
-                final ArrayAdapter adapter = new ArrayAdapter(SeletorActivity.this, android.R.layout.simple_list_item_checked, temp);
-                autoCompleteCity.setDropDownHeight(0);
-                autoCompleteCity.setThreshold(1);
-                autoCompleteCity.setAdapter(adapter);
-                autoCompleteCity.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                    @Override
-                    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                       // Toast.makeText(SeletorActivity.this,adapter.getItem(position).toString(),Toast.LENGTH_LONG).show();
-                        setValor(adapter.getItem(position).toString(),tipo,estado);
-
-                    }
-                });
-
-                adapterList = new ArrayAdapter<String>(SeletorActivity.this, android.R.layout.simple_list_item_checked, temp);
-                listView.setAdapter(adapter);
+            listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                @Override
+                public void onItemClick(AdapterView<?> parent, View view, int position,
+                                        long id) {
+                    String cidade = adapter.getItem(position).toString();//correção para pegar valor do listview
+                    setValor(cidade,tipo,estado);
+                }
+            });
 
 
-                listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                    @Override
-                    public void onItemClick(AdapterView<?> parent, View view, int position,
-                                            long id) {
-                        String cidade = adapter.getItem(position).toString();//correção para pegar valor do listview
-                        setValor(cidade,tipo,estado);
-                    }
-                });
-                hideLoadingAnimation();
-            }
 
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
+        }else if(tipo.equals("cidade")){
+            final ArrayList<String> cidadeSQL = bd.buscarCidade(estado);
+            Log.i("testeBDConsulta2",cidadeSQL.toString());
 
-            }
-        });
+            final ArrayAdapter adapter = new ArrayAdapter(SeletorActivity.this, android.R.layout.simple_list_item_checked, cidadeSQL);
+            autoCompleteCity.setDropDownHeight(0);
+            autoCompleteCity.setThreshold(1);
+            autoCompleteCity.setAdapter(adapter);
+            autoCompleteCity.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                @Override
+                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                    // Toast.makeText(SeletorActivity.this,adapter.getItem(position).toString(),Toast.LENGTH_LONG).show();
+                    setValor(adapter.getItem(position).toString(), tipo,estado);
+
+                }
+            });
+
+            adapterList = new ArrayAdapter<String>(SeletorActivity.this, android.R.layout.simple_list_item_checked, cidadeSQL);
+            listView.setAdapter(adapter);
+
+
+            listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                @Override
+                public void onItemClick(AdapterView<?> parent, View view, int position,
+                                        long id) {
+                    String cidade = adapter.getItem(position).toString();//correção para pegar valor do listview
+                    setValor(cidade,tipo,estado);
+                }
+            });
+
+
+
+        }else{
+            Toast.makeText(this, "Erro - Seletor, contate nosso suporte!", Toast.LENGTH_SHORT).show();
+        }
+
+
 
     }
 

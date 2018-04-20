@@ -11,7 +11,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 
 public class SQLITE extends SQLiteOpenHelper {
     private static final String NOME_BD = "doctorMatch";
-    private static final int VERSAO_BD = 1;
+    private static final int VERSAO_BD = 4;
 
     public SQLITE(Context context){
         super(context,NOME_BD,null, VERSAO_BD);
@@ -21,14 +21,18 @@ public class SQLITE extends SQLiteOpenHelper {
     public void onCreate(SQLiteDatabase db) {
         db.execSQL("create table especialidades(nome text primary key not null);");
         db.execSQL("create table exames(nome text primary key not null);");
+        db.execSQL("create table cidades(nome text primary key not null, estado text);");
+        db.execSQL("create table estados(nome text primary key not null);");
 
 
     }
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-        db.execSQL("drop table especialidades;");
-        db.execSQL("drop table exames;");
+        db.execSQL("drop table IF EXISTS especialidades;");
+        db.execSQL("drop table IF EXISTS exames;");
+        db.execSQL("drop table IF EXISTS cidades;");
+        db.execSQL("drop table IF EXISTS estados;");
         onCreate(db);
     }
 }

@@ -24,7 +24,13 @@ import com.google.firebase.database.ValueEventListener;
 public class MainActivity extends AppCompatActivity
         implements BottomNavigationView.OnNavigationItemSelectedListener, NavigationView.OnNavigationItemSelectedListener {
 
-    private boolean buscaEspecFirebase = false;
+    //Modifica aqui se quiser baixar. Depois faço o tratamamento pra pegar cada variável do Firebase.
+    final boolean baixar = false;
+
+    private boolean buscaEspecFirebase = baixar;
+    private boolean buscaEstadoFirebase = baixar;
+    private boolean buscaCidadeFirebase = baixar;
+
 
 
     @Override
@@ -32,11 +38,12 @@ public class MainActivity extends AppCompatActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        final BD bd = new BD(this);
+
         //buscaEspecFirebase = true;
 
         if(buscaEspecFirebase){
 
-            final BD bd = new BD(this);
 
             bd.deleteEspec();
 
@@ -46,8 +53,7 @@ public class MainActivity extends AppCompatActivity
 
                     for(DataSnapshot data : dataSnapshot.getChildren()){
                         bd.inserirEspecialidade(data.getValue().toString());
-                        Log.i("testeBD",bd.buscarEspec().toString());
-                        Log.i("testeBDDATA",data.getValue().toString());
+
                     }}
 
                 @Override
@@ -57,6 +63,51 @@ public class MainActivity extends AppCompatActivity
             });
 
 
+        }
+
+        if(buscaEstadoFirebase){
+
+            bd.deleteEstado();
+
+            Firebase.getDatabaseReference().child("ATUACAO").child("ESTADO").addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
+
+                    for(DataSnapshot data : dataSnapshot.getChildren()){
+                        bd.inserirEstado(data.getValue().toString());
+
+                    }}
+
+                @Override
+                public void onCancelled(DatabaseError databaseError) {
+
+                }
+            });
+        }
+
+        if(buscaCidadeFirebase){
+
+            bd.deleteCidade();
+
+            Firebase.getDatabaseReference().child("ATUACAO").child("CIDADE").addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
+
+
+                    for(DataSnapshot data : dataSnapshot.getChildren()){
+
+                        for(DataSnapshot data1 : data.getChildren()){
+                            Log.i("testeBDvalue",data1.getValue().toString());
+                            Log.i("testeBDestado",data.getKey().toString());
+                            bd.inserirCidade(data1.getValue().toString(),data.getKey().toString());
+                        }
+                    }}
+
+                @Override
+                public void onCancelled(DatabaseError databaseError) {
+
+                }
+            });
         }
          /*
 

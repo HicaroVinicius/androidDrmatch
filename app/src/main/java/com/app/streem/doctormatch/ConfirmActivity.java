@@ -231,7 +231,7 @@ public class ConfirmActivity extends AppCompatActivity {
 
                     AlertDialog.Builder confirm = new AlertDialog.Builder(ConfirmActivity.this);
                     confirm.setTitle("Confirmar Agendamento");
-                    confirm.setIcon(R.drawable.ic_done_black_24dp).setMessage("Deseja confirmar o agendamento?").setCancelable(true);
+                    confirm.setIcon(R.drawable.ic_done_black_24dp).setMessage(inf).setCancelable(true);
                     confirm.setNegativeButton("Cancelar", new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {

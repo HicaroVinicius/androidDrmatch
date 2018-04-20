@@ -170,6 +170,8 @@ public class ResultActivity extends AppCompatActivity {
         final Date d2 = format.parse(preferencias.getCHAVE_DATA());
         final String dataFormatt2 = format2.format(d2.getTime());
 
+
+
 //        showLoadingAnimation();
         medicos.clear();
         adapter = new ResultAdapter(medicos, this, new ResultAdapter.OnItemClickListener() {

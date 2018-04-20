@@ -26,6 +26,19 @@ public class BD {
         db.insert("especialidades",null,valores);
     }
 
+    public void inserirCidade(String valor, String estado){
+        ContentValues valores = new ContentValues();
+        valores.put("estado",estado);
+        valores.put("nome",valor);
+        db.insert("cidades",null,valores);
+    }
+
+    public void inserirEstado(String valor){
+        ContentValues valores = new ContentValues();
+        valores.put("nome",valor);
+        db.insert("estados",null,valores);
+    }
+
     public void inserirExame(String exames){
         ContentValues valores = new ContentValues();
         valores.put("nome",exames);
@@ -34,6 +47,12 @@ public class BD {
 
     public void deleteEspec(){
         db.delete("especialidades",null,null);
+    }
+    public void deleteEstado(){
+        db.delete("estados",null,null);
+    }
+    public void deleteCidade(){
+        db.delete("cidades",null,null);
     }
 
     public ArrayList<String> buscarEspec(){
@@ -50,6 +69,39 @@ public class BD {
         }
 
         return especialidades;
+    }
+
+    public ArrayList<String> buscarEstado(){
+        ArrayList<String> estados = new ArrayList();
+        String[] colunas = new String[]{"nome"};
+        Cursor cursor = db.query("estados",colunas,null,null,null,null,"nome ASC");
+
+        if(cursor.getCount() > 0){
+            cursor.moveToFirst();
+
+            do{
+                estados.add(cursor.getString(0));
+            }while (cursor.moveToNext());
+        }
+
+        return estados;
+    }
+
+    public ArrayList<String> buscarCidade(String estado){
+        ArrayList<String> cidades = new ArrayList();
+        String[] colunas = new String[]{"nome"};
+        String[] arg = new String[]{estado.replace(" ","")};
+        Cursor cursor = db.query("cidades",colunas,"estado = ?",arg,null,null,"estado ASC");
+
+        if(cursor.getCount() > 0){
+            cursor.moveToFirst();
+
+            do{
+                cidades.add(cursor.getString(0));
+            }while (cursor.moveToNext());
+        }
+
+        return cidades;
     }
 
 
