@@ -142,6 +142,7 @@ public class DetailActivity extends AppCompatActivity {
         final String data = dados.getStringExtra("data");
         final String dataFormatt = dados.getStringExtra("dataFormatt");
         final String dataFormatt2 = dados.getStringExtra("dataFormatt2");
+        final String dataDisp = dados.getStringExtra("dataDisp");
         final String url = dados.getStringExtra("url");
         final String cidade = dados.getStringExtra("cidade");
         final String estado = dados.getStringExtra("estado");
@@ -177,6 +178,31 @@ public class DetailActivity extends AppCompatActivity {
 
         weekCalendar = findViewById(R.id.weekCalendarDetails);
 
+
+
+
+        horaView.setHasFixedSize(true);
+        horaView.setLayoutManager(new LinearLayoutManager(this));
+
+        DateTimeFormatter formatter = DateTimeFormat.forPattern("dd/MM/yyyy");
+        DateTime dt = formatter.parseDateTime(dataDisp);
+
+        SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy");
+        Date d = null;
+        try {
+            d = format.parse(dataDisp);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
+
+        weekCalendar.setStartDate(dt);
+        atualizaSemana(dt);
+        atualizarHorarios(String.valueOf(d.getTime()),key);
+        Log.i("testeAtuaHora",String.valueOf(dt));
+
+        dataFormattNovo = dataDisp;
+
         weekCalendar.setOnDateClickListener(new OnDateClickListener() {
             @Override
             public void onDateClick(DateTime dateTime) {
@@ -204,16 +230,6 @@ public class DetailActivity extends AppCompatActivity {
 
         });
 
-
-
-        horaView.setHasFixedSize(true);
-        horaView.setLayoutManager(new LinearLayoutManager(this));
-
-        DateTimeFormatter formatter = DateTimeFormat.forPattern("dd/MM/yyyy");
-        DateTime dt = formatter.parseDateTime(dataFormatt);
-
-        weekCalendar.setStartDate(dt);
-        atualizaSemana(dt);
 
         urlFoto = url;
 
@@ -265,6 +281,8 @@ public class DetailActivity extends AppCompatActivity {
         horaView.setAdapter(adapter);
 
         atualizarHorarios(data,key);
+        Log.i("testeAtuaHora2",data);
+
 
 
     /*

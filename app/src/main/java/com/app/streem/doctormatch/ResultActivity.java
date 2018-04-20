@@ -170,7 +170,7 @@ public class ResultActivity extends AppCompatActivity {
         final Date d2 = format.parse(preferencias.getCHAVE_DATA());
         final String dataFormatt2 = format2.format(d2.getTime());
 
-
+        String dataNova = dataFormatt;
 
 //        showLoadingAnimation();
         medicos.clear();
@@ -189,6 +189,7 @@ public class ResultActivity extends AppCompatActivity {
             newPage.putExtra("valor",item.getValor());
             newPage.putExtra("dataFormatt",dataFormatt);
             newPage.putExtra("dataFormatt2",dataFormatt2);
+            newPage.putExtra("dataDisp",item.getData().toString());
             newPage.putExtra("cidade",cidade);
             newPage.putExtra("estado",estado);
             newPage.putExtra("espec",espec);
@@ -226,7 +227,7 @@ public class ResultActivity extends AppCompatActivity {
                     Log.i("TESTEMEDmedicosCont", String.valueOf(contador));
                     contador = 0;
                     maximo++;
-                    buscaDisponibilidade(key,d,"dataAtual");
+                    buscaDisponibilidade(key,d,"dataAtual",dataFormatt);
 
 
 
@@ -252,7 +253,7 @@ public class ResultActivity extends AppCompatActivity {
 
 
 
-    public Boolean buscaDisponibilidade(final String key,final Date d, final String dataFormatt){
+    public Boolean buscaDisponibilidade(final String key, final Date d, final String dataFormatt, final String dataN){
         Firebase.getDatabaseReference().child("CLIENTES").child(key).child("AGENDAMENTO").child(String.valueOf(d.getTime())).orderByChild("status").equalTo("Disponível").addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -271,7 +272,7 @@ public class ResultActivity extends AppCompatActivity {
 
                         final String novoFormatt = format.format(novaData.getTime());
 
-                        buscaDisponibilidade(key,novaData,novoFormatt);
+                        buscaDisponibilidade(key,novaData,novoFormatt,novoFormatt);
                         Log.i("TESTEMEDnewDAta",String.valueOf(data));
                         Log.i("TESTEMEDnewDAtaCont",String.valueOf(contador));
                         contador++;
@@ -291,6 +292,7 @@ public class ResultActivity extends AppCompatActivity {
                             Log.i("TESTEmedRESULT",dataSnapshot.getValue().toString());
                             med.setKey(key);
                             med.setValor(dataFormatt);
+                            med.setData(dataN);
                             medicos.add(med);
                             adapter.notifyDataSetChanged();
 
