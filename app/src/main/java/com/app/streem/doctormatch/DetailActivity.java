@@ -98,32 +98,30 @@ public class DetailActivity extends AppCompatActivity {
         }
     };*/
 
-    public void atualizarHorarios(String data,String key){
+    public void atualizarHorarios(final String data, String key){
         Firebase.getDatabaseReference().child("CLIENTES").child(key).child("AGENDAMENTO").child(data).orderByChild("hora").addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
 
-
-                if (!dataSnapshot.hasChildren()){
-                    Log.i("TESTE","sem filho");
+                if (!dataSnapshot.hasChildren()) {
+                    Log.i("TESTE", "sem filho");
                     //Toast.makeText(DetailActivity.this, "Nenhum Horário Disponível", Toast.LENGTH_SHORT).show();
-                }
+                }else{
 
 
-                for (DataSnapshot data : dataSnapshot.getChildren()) {
+                    for (DataSnapshot data1 : dataSnapshot.getChildren()) {
 
-                    Log.i("TESTE",data.getValue().toString());
-                    VagasModel vaga = data.getValue(VagasModel.class);
-                    Log.i("TESTEVAGA",vaga.getHora());
-                    if(vaga.getStatus().equalsIgnoreCase("disponível")){
-                        vagasList.add(vaga);
-                        adapter.notifyDataSetChanged();
-                    }else{
-                        return;
+                        Log.i("TESTE", data1.getValue().toString());
+                        VagasModel vaga = data1.getValue(VagasModel.class);
+                        if (vaga.getStatus().equals("Disponível")) {
+                            Log.i("TESTEdisp", data1.getValue().toString());
+                            vagasList.add(vaga);
+                            adapter.notifyDataSetChanged();
+                        }
+
                     }
 
-
-                }
+            }
             }
             public void onCancelled(DatabaseError databaseError) {
 
