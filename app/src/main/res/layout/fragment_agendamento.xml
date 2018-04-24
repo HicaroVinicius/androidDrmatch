@@ -40,7 +40,7 @@
         android:layout_marginBottom="42dp"
         android:layout_marginEnd="32dp"
         android:layout_marginStart="32dp"
-        android:text="Agende suas consultas e exames agora"
+        android:text="Agendar suas consultas e exames nunca foi tão fácil"
         android:textAlignment="center"
         android:textColor="@android:color/white"
         android:textSize="24sp"
@@ -66,7 +66,7 @@
         android:layout_marginEnd="62dp"
         android:layout_marginStart="62dp"
         android:layout_marginTop="32dp"
-        android:text="Em menos de 1 minuto, marque consultas e exames com os melhores especialistas."
+        android:text="Em menos de 1 minuto, agende seu atendimento com os melhores especialistas."
         android:textAlignment="center"
         android:textSize="16sp"
         app:layout_constraintEnd_toEndOf="parent"
@@ -75,55 +75,55 @@
 
     <ImageView
         android:id="@+id/imageView9"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="45dp"
+        android:layout_height="80dp"
         android:layout_marginBottom="32dp"
-        android:layout_marginEnd="8dp"
+        android:layout_marginEnd="16dp"
         app:layout_constraintBottom_toBottomOf="@+id/textView25"
         app:layout_constraintEnd_toStartOf="@+id/imageView14"
-        app:srcCompat="@drawable/medicina" />
+        app:srcCompat="@drawable/dentenormal" />
 
     <ImageView
         android:id="@+id/imageView14"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="50dp"
+        android:layout_height="80dp"
         android:layout_marginBottom="16dp"
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
         app:layout_constraintBottom_toBottomOf="@+id/textView25"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:srcCompat="@drawable/medicina" />
+        app:srcCompat="@drawable/cerebro" />
 
     <ImageView
         android:id="@+id/imageView17"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="50dp"
+        android:layout_height="80dp"
         android:layout_marginBottom="24dp"
-        android:layout_marginEnd="8dp"
+        android:layout_marginEnd="20dp"
         app:layout_constraintBottom_toBottomOf="@+id/textView25"
         app:layout_constraintEnd_toStartOf="@+id/imageView9"
-        app:srcCompat="@drawable/medicina" />
+        app:srcCompat="@drawable/coracao" />
 
     <ImageView
         android:id="@+id/imageView18"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="50dp"
+        android:layout_height="80dp"
         android:layout_marginBottom="32dp"
-        android:layout_marginStart="8dp"
+        android:layout_marginStart="16dp"
         app:layout_constraintBottom_toBottomOf="@+id/textView25"
         app:layout_constraintStart_toEndOf="@+id/imageView14"
-        app:srcCompat="@drawable/medicina" />
+        app:srcCompat="@drawable/esqueleto" />
 
     <ImageView
         android:id="@+id/imageView19"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="50dp"
+        android:layout_height="80dp"
         android:layout_marginBottom="24dp"
-        android:layout_marginStart="8dp"
+        android:layout_marginStart="16dp"
         app:layout_constraintBottom_toBottomOf="@+id/textView25"
         app:layout_constraintStart_toEndOf="@+id/imageView18"
-        app:srcCompat="@drawable/medicina" />
+        app:srcCompat="@drawable/mirco" />
 
     <ImageView
         android:id="@+id/imageView20"

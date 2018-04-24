@@ -27,7 +27,7 @@ public class MainActivity extends AppCompatActivity
         implements BottomNavigationView.OnNavigationItemSelectedListener, NavigationView.OnNavigationItemSelectedListener {
 
     //Modifica aqui se quiser baixar. Depois faço o tratamamento pra pegar cada variável do Firebase.
-    final boolean baixar = false;
+    final boolean baixar = true;
 
     private boolean buscaEspecFirebase = baixar;
     private boolean buscaEstadoFirebase = baixar;

@@ -29,7 +29,7 @@
                 android:title="Share" />
             <item
                 android:id="@+id/nav_logout"
-                android:icon="@drawable/ic_compare_arrows_black_24dp"
+                android:icon="@drawable/ic_access_time_black_24dp"
                 android:title="Trocar de Usuário" />
         </menu>
     </item>
