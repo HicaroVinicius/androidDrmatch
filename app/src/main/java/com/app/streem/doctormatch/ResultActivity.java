@@ -2,7 +2,6 @@ package com.app.streem.doctormatch;
 
 import android.app.DatePickerDialog;
 import android.content.Intent;
-import android.support.design.widget.TextInputEditText;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -14,7 +13,6 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import com.app.streem.doctormatch.Modelo.Consulta;
 import com.app.streem.doctormatch.DAO.Firebase;
 import com.app.streem.doctormatch.DAO.Preferencias;
@@ -32,15 +30,11 @@ import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
-import static java.lang.Float.valueOf;
-
 public class ResultActivity extends AppCompatActivity {
-
 
     private RecyclerView recyclerView;
     private RecyclerView.Adapter adapter;
     private TextView semRegistro;
-
     private List<ResultModel> medicos = new ArrayList<>();
     private ResultModel med;
     private List<Consulta> consultas = new ArrayList<>();
@@ -48,34 +42,8 @@ public class ResultActivity extends AppCompatActivity {
     private Calendar myCalendar;
     private TextView data;
     private DatePickerDialog dataPicker;
-
     public int contador = 0;
     public int maximo = 0;
-
-
-
-    private void updateLabel() {
-        String myFormat = "dd/MM/yyyy"; //In which you need put here
-        SimpleDateFormat sdf = new SimpleDateFormat(myFormat, new Locale("pt","BR"));
-
-
-        if(!dataAtual(sdf.format(myCalendar.getTime()))){
-            Toast.makeText(this,"Selecione uma data válida",Toast.LENGTH_LONG).show();
-            return;
-        }else{
-            data.setText(sdf.format(myCalendar.getTime()));
-            preferencias.setCHAVE_DATA(sdf.format(myCalendar.getTime()));
-
-            try {
-                buscarMedicos(preferencias.getCHAVE_CIDADE().replace(" ",""),preferencias.getCHAVE_ESTADO().replace(" ",""), preferencias.getCHAVE_ESPECIALIDADE().replace(" ",""));
-            } catch (ParseException e) {
-                e.printStackTrace();
-            }
-        }
-
-    }
-
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -121,14 +89,10 @@ public class ResultActivity extends AppCompatActivity {
 
         semRegistro = findViewById(R.id.semRegistroResultID);
 
-//        showLoadingAnimation();
         preferencias = new Preferencias(this);
         recyclerView = findViewById(R.id.RecyclerViewMedico);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
-
-
-
 
         try {
             buscarMedicos(preferencias.getCHAVE_CIDADE().replace(" ",""),preferencias.getCHAVE_ESTADO().replace(" ",""), preferencias.getCHAVE_ESPECIALIDADE().replace(" ",""));
@@ -136,21 +100,6 @@ public class ResultActivity extends AppCompatActivity {
             e.printStackTrace();
         }
         data.setText(preferencias.getCHAVE_DATA());
-    }
-
-    //show
-    public void showLoadingAnimation()
-    {
-        RelativeLayout pageLoading = (RelativeLayout) findViewById(R.id.main_layoutPageLoading);
-        pageLoading.setVisibility(View.VISIBLE);
-    }
-
-
-    //hide
-    public void hideLoadingAnimation()
-    {
-        RelativeLayout pageLoading = (RelativeLayout) findViewById(R.id.main_layoutPageLoading);
-        pageLoading.setVisibility(View.GONE);
     }
 
     public Boolean dataAtual(String data){
@@ -164,14 +113,10 @@ public class ResultActivity extends AppCompatActivity {
         }else{
             return false;
         }
-
-            }
+    }
 
     //carrega lista
     public void buscarMedicos(final String cidade, final String estado, final String espec) throws ParseException {
-        //Toast.makeText(getApplicationContext(),"Carregando... Aguarde",Toast.LENGTH_LONG).show();
-
-
         SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy");
         final Date d = format.parse(preferencias.getCHAVE_DATA());
         final String dataFormatt = format.format(d.getTime());
@@ -181,7 +126,6 @@ public class ResultActivity extends AppCompatActivity {
 
         String dataNova = dataFormatt;
 
-//        showLoadingAnimation();
         medicos.clear();
         adapter = new ResultAdapter(medicos, this, new ResultAdapter.OnItemClickListener() {
             @Override public void onItemClick(ResultModel item) {
@@ -212,42 +156,21 @@ public class ResultActivity extends AppCompatActivity {
 
         recyclerView.setAdapter(adapter);
 
-
-        Log.i("dataTESTE",String.valueOf(estado));
-        Log.i("dataTESTE",String.valueOf(espec));
-        Log.i("dataTESTE",String.valueOf(cidade));
-        Log.i("dataTESTE",String.valueOf(d.getTime()));
         Firebase.getDatabaseReference().child("MEDICOS").child(String.valueOf(espec)).child(String.valueOf(estado)).child(String.valueOf(cidade)).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-
                 if (!dataSnapshot.hasChildren()){
                     semRegistro.setVisibility(View.VISIBLE);
-                    Log.i("dataTesteLo",dataSnapshot.toString());
-                   // Toast.makeText(getApplicationContext(),"Nenhum Médico encontrado",Toast.LENGTH_LONG).show();
                 }else{
-
                     maximo = 0;
-
-                for (DataSnapshot data : dataSnapshot.getChildren()){
-                    contador = 0;
-                    final String key = data.getValue().toString();
-                    Log.i("TESTEMEDmedicos",data.getValue().toString());
-                    Log.i("TESTEMEDmedicosCont", String.valueOf(contador));
-                    contador = 0;
-                    maximo++;
-                    buscaDisponibilidade(key,d,"dataAtual",dataFormatt);
-
-
-
-
-
+                    for (DataSnapshot data : dataSnapshot.getChildren()){
+                        contador = 0;
+                        final String key = data.getValue().toString();
+                        contador = 0;
+                        maximo++;
+                        buscaDisponibilidade(key,d,"dataAtual",dataFormatt);
+                    }
                 }
-             //   hideLoadingAnimation();
-                semRegistro.setVisibility(View.GONE);
-
-                }
-
             }
 
             @Override
@@ -259,17 +182,12 @@ public class ResultActivity extends AppCompatActivity {
 
     }
 
-
-
-
     public Boolean buscaDisponibilidade(final String key, final Date d, final String dataFormatt, final String dataN){
         Firebase.getDatabaseReference().child("CLIENTES").child(key).child("AGENDAMENTO").child(String.valueOf(d.getTime())).orderByChild("status").equalTo("Disponível").addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 if (!dataSnapshot.hasChildren()){
-                    semRegistro.setVisibility(View.VISIBLE);
-                    // Log.i("TESTEMEDnoChild",dataSnapshot.toString());
-
+                    //vaga indisponível, busca o proximo o dia
                     if(contador<=maximo*7){
 
                         String dataString = String.valueOf(d.getTime());
@@ -290,10 +208,8 @@ public class ResultActivity extends AppCompatActivity {
                         return;
                     }
 
-
-
                 }else{
-
+                    //vaga disponível, busca os dados
                     Firebase.getDatabaseReference().child("CLIENTES").child(key).child("DADOS").addListenerForSingleValueEvent(new ValueEventListener() {
                         @Override
                         public void onDataChange(DataSnapshot dataSnapshot) {
@@ -304,8 +220,6 @@ public class ResultActivity extends AppCompatActivity {
                             med.setData(dataN);
                             medicos.add(med);
                             adapter.notifyDataSetChanged();
-
-
                         }
 
                         @Override
@@ -328,6 +242,23 @@ public class ResultActivity extends AppCompatActivity {
 
 
         return true;
+
+    }
+
+    private void updateLabel() {
+        String myFormat = "dd/MM/yyyy"; //In which you need put here
+        SimpleDateFormat sdf = new SimpleDateFormat(myFormat, new Locale("pt","BR"));
+        if(!dataAtual(sdf.format(myCalendar.getTime()))){
+            return;
+        }else{
+            data.setText(sdf.format(myCalendar.getTime()));
+            preferencias.setCHAVE_DATA(sdf.format(myCalendar.getTime()));
+            try {
+                buscarMedicos(preferencias.getCHAVE_CIDADE().replace(" ",""),preferencias.getCHAVE_ESTADO().replace(" ",""), preferencias.getCHAVE_ESPECIALIDADE().replace(" ",""));
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+        }
 
     }
 

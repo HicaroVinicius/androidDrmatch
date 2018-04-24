@@ -55,7 +55,7 @@
             android:drawableTop="@drawable/app_coracao_braco_18dp"
             android:text="Não temos vagas para a data escolhida. Que tal selecionar uma nova data?"
             android:textAlignment="center"
-            android:textColor="@color/colorPrimary"
+            android:textColor="@color/colorAccent"
             android:visibility="gone"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -70,7 +70,7 @@
             android:layout_marginStart="8dp"
             android:layout_marginTop="32dp"
             android:indeterminate="true"
-            android:visibility="gone"
+            android:visibility="visible"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
