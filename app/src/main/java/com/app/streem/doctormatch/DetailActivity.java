@@ -256,7 +256,7 @@ public class DetailActivity extends AppCompatActivity {
         registroDetails.setText(registro);
         end1Details.setText(end1);
         end2Details.setText(end2);
-        especialidade.setText(preferencias.getCHAVE_ESPECIALIDADE());
+        especialidade.setText(preferencias.getCHAVE_ESPECIALIDADE().toUpperCase());
 
        // Toast.makeText(getApplicationContext(),"Carregando... Aguarde",Toast.LENGTH_SHORT).show();
 
