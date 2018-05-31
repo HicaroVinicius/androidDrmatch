@@ -17,6 +17,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.app.streem.doctormatch.Adapter.SpinnerDependenteAdapter;
+import com.app.streem.doctormatch.DAO.BD;
 import com.app.streem.doctormatch.DAO.Firebase;
 import com.app.streem.doctormatch.DAO.Preferencias;
 import com.app.streem.doctormatch.Modelo.Consulta;
@@ -296,12 +297,16 @@ public class ConfirmActivity extends AppCompatActivity {
             }
         });
 
+        final BD bd = new BD(this);
+
         Firebase.getDatabaseReference().child("CLIENTES").child(keyMedico).child("AGENDAMENTO").child(data).child(keyHora).child("key_cliente").setValue(preferencias.getCHAVE_INDENTIFICADOR());
 
         Firebase.getDatabaseReference().child("CLIENTES").child(keyMedico).child("AGENDAMENTO").child(data).child(keyHora).child("nome").setValue(nomeUser);
 
         String key = Firebase.getDatabaseReference().child("USUARIO").child(preferencias.getCHAVE_INDENTIFICADOR()).child("CONSULTA").push().getKey();
         Consulta nova = new Consulta(keyMedico,data,keyHora,nomeUser,nomeMedico,info,key,preferencias.getCHAVE_ESPECIALIDADE());
+        //inserindo no Sqlite
+        bd.inserirConsulta(nova);
         Firebase.getDatabaseReference().child("USUARIO").child(preferencias.getCHAVE_INDENTIFICADOR()).child("CONSULTA").child(key).setValue(nova);
 
         Intent intent = new Intent(ConfirmActivity.this,MainActivity.class);

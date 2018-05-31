@@ -22,6 +22,7 @@ public class AgendConcluido extends AppCompatActivity {
             public void onClick(View v) {
                 Intent intent = new Intent(AgendConcluido.this,MainActivity.class);
                 startActivity(intent);
+                finish();
             }
         });
 

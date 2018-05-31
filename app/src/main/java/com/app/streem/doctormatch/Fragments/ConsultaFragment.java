@@ -7,6 +7,7 @@ import android.support.constraint.ConstraintLayout;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,6 +15,7 @@ import android.widget.Button;
 import android.widget.ProgressBar;
 
 import com.app.streem.doctormatch.Adapter.AdapterConsultas;
+import com.app.streem.doctormatch.DAO.BD;
 import com.app.streem.doctormatch.DAO.Firebase;
 import com.app.streem.doctormatch.DAO.Preferencias;
 import com.app.streem.doctormatch.Modelo.Consulta;
@@ -37,7 +39,7 @@ public class ConsultaFragment extends Fragment {
     private Button agendar;
     private RecyclerView consultaView;
     private RecyclerView.Adapter adapter;
-    private List<Consulta> consultaList = new ArrayList<>();
+    private ArrayList<Consulta> consultaList = new ArrayList<>();
     private Preferencias preferencias;
     private ProgressBar progressBar;
     private ConstraintLayout semDados;
@@ -80,10 +82,23 @@ public class ConsultaFragment extends Fragment {
 
         // validar disponibilidade de novos dados no fire e jogar em sqlite
         //=========================  SQLite ======================================
-        getFirebase();
+        //getFirebase();
+        getSqlite();
 
 
         return view;
+    }
+
+    public void getSqlite(){
+        final BD bd = new BD(getApplicationContext());
+        ArrayList<Consulta> consultas = bd.buscarConsulta();
+        for (Consulta consulta:consultas) {
+            consultaList.add(consulta);
+            Log.i("testeBDvalueCon_Frag",consulta.toString());
+            adapter.notifyDataSetChanged();
+        }
+
+        loadControle();
     }
 
     //========================= Get Firebase =====================================

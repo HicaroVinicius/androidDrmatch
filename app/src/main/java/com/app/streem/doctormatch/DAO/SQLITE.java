@@ -11,7 +11,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 
 public class SQLITE extends SQLiteOpenHelper {
     private static final String NOME_BD = "doctorMatch";
-    private static final int VERSAO_BD = 4;
+    private static final int VERSAO_BD = 5;
 
     public SQLITE(Context context){
         super(context,NOME_BD,null, VERSAO_BD);
@@ -23,6 +23,7 @@ public class SQLITE extends SQLiteOpenHelper {
         db.execSQL("create table exames(nome text primary key not null);");
         db.execSQL("create table cidades(nome text primary key not null, estado text);");
         db.execSQL("create table estados(nome text primary key not null);");
+        db.execSQL("create table consultas(keyConsulta text primary key not null,medico text,data text, hora text, nome text,nomeMedico text,info text, espec text);");
 
 
     }
@@ -33,6 +34,7 @@ public class SQLITE extends SQLiteOpenHelper {
         db.execSQL("drop table IF EXISTS exames;");
         db.execSQL("drop table IF EXISTS cidades;");
         db.execSQL("drop table IF EXISTS estados;");
+        db.execSQL("drop table IF EXISTS consultas;");
         onCreate(db);
     }
 }

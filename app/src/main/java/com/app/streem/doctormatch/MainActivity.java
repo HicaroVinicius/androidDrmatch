@@ -16,9 +16,11 @@ import android.widget.Toast;
 
 import com.app.streem.doctormatch.DAO.BD;
 import com.app.streem.doctormatch.DAO.Firebase;
+import com.app.streem.doctormatch.DAO.Preferencias;
 import com.app.streem.doctormatch.Fragments.AgendamentoFragment;
 import com.app.streem.doctormatch.Fragments.ConsultaFragment;
 import com.app.streem.doctormatch.Fragments.ExameFragment;
+import com.app.streem.doctormatch.Modelo.Consulta;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.ValueEventListener;
@@ -32,6 +34,9 @@ public class MainActivity extends AppCompatActivity
     private boolean buscaEspecFirebase = baixar;
     private boolean buscaEstadoFirebase = baixar;
     private boolean buscaCidadeFirebase = baixar;
+    private boolean buscaConsultaFirebase = baixar;
+
+    private Preferencias preferencias;
 
 
 
@@ -39,6 +44,8 @@ public class MainActivity extends AppCompatActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        preferencias = new Preferencias(getApplicationContext());
+
 
         final BD bd = new BD(this);
 
@@ -110,6 +117,29 @@ public class MainActivity extends AppCompatActivity
 
                 }
             });
+        }
+
+        if(buscaConsultaFirebase){
+
+            bd.deleteConsulta();
+
+            Firebase.getDatabaseReference().child("USUARIO").child(preferencias.getCHAVE_INDENTIFICADOR()).child("CONSULTA").addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
+
+                    for (DataSnapshot data : dataSnapshot.getChildren()) {
+                        Consulta consulta = data.getValue(Consulta.class);
+                        Log.i("testeBDvalueConsulta",consulta.getKeyConsulta().toString());
+                        Log.i("testeBDvalueConsulta",consulta.getNomeMedico().toString());
+                        bd.inserirConsulta(consulta);
+                    }
+
+                }
+                public void onCancelled(DatabaseError databaseError) {
+
+                }
+            });
+
         }
          /*
 
