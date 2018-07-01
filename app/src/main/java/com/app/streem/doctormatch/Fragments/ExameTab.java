@@ -2,15 +2,19 @@ package com.app.streem.doctormatch.Fragments;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
+import com.app.streem.doctormatch.DAO.Preferencias;
+import com.app.streem.doctormatch.FiltroBuscaActivity;
 import com.app.streem.doctormatch.R;
 
 /**
@@ -31,6 +35,7 @@ public class ExameTab extends Fragment {
     private String mParam1;
     private String mParam2;
     private ArrayAdapter adapter;
+    private Preferencias preferencias;
 
     private OnFragmentInteractionListener mListener;
 
@@ -74,10 +79,22 @@ public class ExameTab extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        preferencias = new Preferencias(getContext());
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_exame_tab, container, false);
-       // ListView listView = view.findViewById(R.id.listViewExame);
-        //listView.setAdapter(adapter);
+
+        ListView listView = view.findViewById(R.id.listViewExame);
+        listView.setAdapter(adapter);
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                //Toast.makeText(getContext(), parent.getItemAtPosition(position).toString(), Toast.LENGTH_SHORT).show();
+                String espec = parent.getItemAtPosition(position).toString();
+                Intent intent = new Intent(getContext(), FiltroBuscaActivity.class);
+                preferencias.setCHAVE_ESPECIALIDADE(espec);
+                startActivity(intent);
+            }
+        });
         return view;
     }
 

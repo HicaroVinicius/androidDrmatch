@@ -12,6 +12,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.ProgressBar;
 
 import com.app.streem.doctormatch.Adapter.AdapterConsultas;
@@ -21,6 +22,7 @@ import com.app.streem.doctormatch.DAO.Preferencias;
 import com.app.streem.doctormatch.Modelo.Consulta;
 import com.app.streem.doctormatch.R;
 import com.app.streem.doctormatch.ServicoSeletorActivity;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.ValueEventListener;
@@ -43,6 +45,7 @@ public class ConsultaFragment extends Fragment {
     private Preferencias preferencias;
     private ProgressBar progressBar;
     private ConstraintLayout semDados;
+    private ImageView atualiza;
 
     @Nullable
     @Override
@@ -54,6 +57,14 @@ public class ConsultaFragment extends Fragment {
         semDados = view.findViewById(R.id.idConstraintConsulta2);
         consultaView = view.findViewById(R.id.recyclerConsulta);
         preferencias = new Preferencias(view.getContext());
+        atualiza = view.findViewById(R.id.imageView6);
+
+        atualiza.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                buscaConsulta();
+            }
+        });
         //=======================================================================
 
         //=========================== Adapter ====================================
@@ -134,6 +145,29 @@ public class ConsultaFragment extends Fragment {
             consultaView.setVisibility(View.GONE);
             semDados.setVisibility(View.VISIBLE);
         }
+    }
+
+    public void buscaConsulta(){
+
+        final BD bd = new BD(getApplicationContext());
+        bd.deleteConsulta();
+
+        Firebase.getDatabaseReference().child("USUARIO").child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child("CONSULTA").addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+
+                for (DataSnapshot data : dataSnapshot.getChildren()) {
+                    Consulta consulta = data.getValue(Consulta.class);
+                    Log.i("testeBDvalueConsulta",consulta.getKeyConsulta().toString());
+                    Log.i("testeBDvalueConsulta",consulta.getNomeMedico().toString());
+                    bd.inserirConsulta(consulta);
+                }
+
+            }
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
     }
 
 }

@@ -88,6 +88,7 @@ public class ResultActivity extends AppCompatActivity {
         });
 
         semRegistro = findViewById(R.id.semRegistroResultID);
+        semRegistro.setVisibility(View.VISIBLE);
 
         preferencias = new Preferencias(this);
         recyclerView = findViewById(R.id.RecyclerViewMedico);
@@ -209,6 +210,7 @@ public class ResultActivity extends AppCompatActivity {
                     }
 
                 }else{
+                    semRegistro.setVisibility(View.INVISIBLE);
                     //vaga disponível, busca os dados
                     Firebase.getDatabaseReference().child("CLIENTES").child(key).child("DADOS").addListenerForSingleValueEvent(new ValueEventListener() {
                         @Override

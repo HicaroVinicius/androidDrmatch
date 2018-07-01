@@ -128,10 +128,11 @@ public class LoginActivity extends AppCompatActivity {
                     Firebase.getDatabaseReference().child("USUARIO").child(user.getUid()).child("REGISTRO").addListenerForSingleValueEvent(new ValueEventListener() {
                         @Override
                         public void onDataChange(DataSnapshot dataSnapshot) {
+                            Log.i("testeUSER2222",user.getUid().toString());
                             usuario = dataSnapshot.getValue(Usuario.class);
                             preferencias.setUsuarioLogado(user.getUid(),usuario.getNome().toString(),null);
                             Log.i("testeUSER", usuario.getNome().toString());
-                            Log.i("testeUSER2",dataSnapshot.toString());
+
                         }
                         public void onCancelled(DatabaseError databaseError) {
 

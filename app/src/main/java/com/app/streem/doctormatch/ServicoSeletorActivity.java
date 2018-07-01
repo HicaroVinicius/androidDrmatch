@@ -53,7 +53,8 @@ public class ServicoSeletorActivity extends AppCompatActivity implements Consult
         final ArrayList<String> consulta = bd.buscarEspec();
         Log.i("testeBDConsulta",consulta.toString());
 
-        final ArrayList<String> exame = new ArrayList();
+        final ArrayList<String> exame = bd.buscarExame();
+        Log.i("testeBDExame",exame.toString());
 
 
         final ArrayAdapter[] adapterAuto = new ArrayAdapter[2];
@@ -67,33 +68,43 @@ public class ServicoSeletorActivity extends AppCompatActivity implements Consult
         autoCompleteTextView.setHint("Especialidade");
         autoCompleteTextView.setAdapter(adapterAuto[0]);
 
-        TabLayout tabLayout = findViewById(R.id.tabSeletor);
+        final TabLayout tabLayout = findViewById(R.id.tabSeletor);
         tabLayout.addTab(tabLayout.newTab().setText("Consulta"));
         tabLayout.addTab(tabLayout.newTab().setText("Exame"));
         tabLayout.addTab(tabLayout.newTab().setText("Retorno"));
         tabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
 
         final ViewPager viewPager = findViewById(R.id.viewPagerSeletor);
-        final PagerAdapter adapter = new TabAdapter(getSupportFragmentManager(),tabLayout.getTabCount(), adapterAuto[0]);
-        viewPager.setAdapter(adapter);
+        final PagerAdapter adapterConsulta = new TabAdapter(getSupportFragmentManager(),tabLayout.getTabCount(), adapterAuto[0]);
+        viewPager.setAdapter(adapterConsulta);
         viewPager.setOffscreenPageLimit(2);
         viewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
 
         tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
-                viewPager.setCurrentItem(tab.getPosition());
                 switch (tab.getPosition()){
                     case 0:
-                        autoCompleteTextView.setHint("Especialidade");
                         autoCompleteTextView.setAdapter(adapterAuto[0]);
-                        adapter.notifyDataSetChanged();
+                        autoCompleteTextView.setText(autoCompleteTextView.getText());
+                        autoCompleteTextView.setSelection(autoCompleteTextView.getText().length());
+                        autoCompleteTextView.setHint("Especialidade");
+                        viewPager.setAdapter(new TabAdapter(getSupportFragmentManager(),tabLayout.getTabCount(), adapterAuto[0]));
+                        viewPager.setCurrentItem(tab.getPosition());
+                        viewPager.getAdapter().notifyDataSetChanged();
 
                         break;
                     case 1:
+                        autoCompleteTextView.setAdapter(adapterAuto[1]);
+                        autoCompleteTextView.setText(autoCompleteTextView.getText());
+                        autoCompleteTextView.setSelection(autoCompleteTextView.getText().length());
                         autoCompleteTextView.setHint("Exames");
+                        viewPager.setAdapter(new TabAdapter(getSupportFragmentManager(),tabLayout.getTabCount(), adapterAuto[1]));
+                        viewPager.setCurrentItem(tab.getPosition());
+                        viewPager.getAdapter().notifyDataSetChanged();
                         break;
                     case 2:
+                        autoCompleteTextView.clearComposingText();
                         autoCompleteTextView.setHint("");
                         break;
                 }

@@ -12,6 +12,8 @@ import android.util.Log;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.app.streem.doctormatch.DAO.BD;
@@ -21,6 +23,7 @@ import com.app.streem.doctormatch.Fragments.AgendamentoFragment;
 import com.app.streem.doctormatch.Fragments.ConsultaFragment;
 import com.app.streem.doctormatch.Fragments.ExameFragment;
 import com.app.streem.doctormatch.Modelo.Consulta;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.ValueEventListener;
@@ -29,7 +32,7 @@ public class MainActivity extends AppCompatActivity
         implements BottomNavigationView.OnNavigationItemSelectedListener, NavigationView.OnNavigationItemSelectedListener {
 
     //Modifica aqui se quiser baixar. Depois faço o tratamamento pra pegar cada variável do Firebase.
-    final boolean baixar = true;
+    final boolean baixar = false;
 
     private boolean buscaEspecFirebase = baixar;
     private boolean buscaEstadoFirebase = baixar;
@@ -48,8 +51,11 @@ public class MainActivity extends AppCompatActivity
 
 
         final BD bd = new BD(this);
-
         //buscaEspecFirebase = true;
+
+//        bd.deleteExame();
+//        bd.inserirExame("Cardiológico");
+//        bd.inserirExame("Sangue");
 
         if(buscaEspecFirebase){
 
@@ -120,26 +126,7 @@ public class MainActivity extends AppCompatActivity
         }
 
         if(buscaConsultaFirebase){
-
-            bd.deleteConsulta();
-
-            Firebase.getDatabaseReference().child("USUARIO").child(preferencias.getCHAVE_INDENTIFICADOR()).child("CONSULTA").addListenerForSingleValueEvent(new ValueEventListener() {
-                @Override
-                public void onDataChange(DataSnapshot dataSnapshot) {
-
-                    for (DataSnapshot data : dataSnapshot.getChildren()) {
-                        Consulta consulta = data.getValue(Consulta.class);
-                        Log.i("testeBDvalueConsulta",consulta.getKeyConsulta().toString());
-                        Log.i("testeBDvalueConsulta",consulta.getNomeMedico().toString());
-                        bd.inserirConsulta(consulta);
-                    }
-
-                }
-                public void onCancelled(DatabaseError databaseError) {
-
-                }
-            });
-
+            buscaConsulta();
         }
          /*
 
@@ -167,6 +154,11 @@ public class MainActivity extends AppCompatActivity
         carregarFragment(new AgendamentoFragment());
 
         NavigationView navigationLatetal = (NavigationView) findViewById(R.id.nav_view);
+        View headerView = navigationLatetal.getHeaderView(0);
+        TextView username = (TextView) headerView.findViewById(R.id.nome_user);
+        TextView useremail = (TextView) headerView.findViewById(R.id.email_user);
+        username.setText(FirebaseAuth.getInstance().getCurrentUser().getDisplayName());
+        useremail.setText(FirebaseAuth.getInstance().getCurrentUser().getEmail());
         navigationLatetal.setNavigationItemSelectedListener(this);
 
 
@@ -262,9 +254,11 @@ public class MainActivity extends AppCompatActivity
     }
 
     private void logout() {
-
+        final BD bd = new BD(this);
         try {
             Firebase.getFirebaseAuth().signOut();
+            bd.deleteConsulta();
+            //NESSE MOMENTO -> ALTERAR CHAVE PARA AVISAR QUE DEVE BAIXAR NÓ DE CONSULTAS
             Intent intent = new Intent(MainActivity.this,LoginActivity.class);
             startActivity(intent);
             finish();
@@ -272,6 +266,29 @@ public class MainActivity extends AppCompatActivity
             e.printStackTrace();
         }
 
+    }
+
+    public void buscaConsulta(){
+
+        final BD bd = new BD(this);
+        bd.deleteConsulta();
+
+        Firebase.getDatabaseReference().child("USUARIO").child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child("CONSULTA").addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+
+                for (DataSnapshot data : dataSnapshot.getChildren()) {
+                    Consulta consulta = data.getValue(Consulta.class);
+                    Log.i("testeBDvalueConsulta",consulta.getKeyConsulta().toString());
+                    Log.i("testeBDvalueConsulta",consulta.getNomeMedico().toString());
+                    bd.inserirConsulta(consulta);
+                }
+
+            }
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
     }
 
 

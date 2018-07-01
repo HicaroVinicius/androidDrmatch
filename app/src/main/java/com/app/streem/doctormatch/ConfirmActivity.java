@@ -23,6 +23,7 @@ import com.app.streem.doctormatch.DAO.Preferencias;
 import com.app.streem.doctormatch.Modelo.Consulta;
 import com.app.streem.doctormatch.Modelo.DependenteModel;
 import com.app.streem.doctormatch.Modelo.Usuario;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.ValueEventListener;
@@ -187,7 +188,7 @@ public class ConfirmActivity extends AppCompatActivity {
 
         spinner.setAdapter(spinnerAdapter);
 
-        Firebase.getDatabaseReference().child("USUARIO").child(preferencias.getCHAVE_INDENTIFICADOR()).child("DEPENDENTES").addListenerForSingleValueEvent(new ValueEventListener() {
+        Firebase.getDatabaseReference().child("USUARIO").child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child("DEPENDENTES").addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
 

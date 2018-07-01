@@ -71,6 +71,7 @@ public class BD {
         db.delete("cidades",null,null);
     }
     public void deleteConsulta(){ db.delete("consultas",null,null); }
+    public void deleteExame(){ db.delete("exames",null,null); }
 
     public ArrayList<String> buscarEspec(){
         ArrayList<String> especialidades = new ArrayList();
