@@ -63,6 +63,9 @@ public class cadastraVagaActivity extends AppCompatActivity {
                 findViewById(R.id.autoCompletemedico);
         Medico.setAdapter(adapterMed);
 
+        Estado.setText("Ceará");
+        Cidade.setText("Sobral");
+
 
         myCalendar = Calendar.getInstance();
         data = findViewById(R.id.dataAddID);
@@ -143,16 +146,19 @@ public class cadastraVagaActivity extends AppCompatActivity {
     }
 
     private static final String[] Espec = new String[] {
-            "Clinico Geral", "Cardiologista", "Nutricionista"
+            "Clinico Geral", "Cardiologista", "Nutricionista", "Oculista"
     };
     private static final String[] Est = new String[] {
             "Ceará"
     };
     private static final String[] Cit = new String[] {
-            "Sobral", "Tiangua", "Frecheirinha"
+            "Sobral"
     };
     private static final String[] Med = new String[] {
-            "sssKEY_MEDsss3", "sssKEY_MEDsss4", "sssKEY_MEDsss5"
+            "sssKEY_MEDsss3", "sssKEY_MEDsss4", "sssKEY_MEDsss5",
+            "CGsssKEY_MEDsss3", "CGsssKEY_MEDsss4", "CGsssKEY_MEDsss5",
+            "NUsssKEY_MEDsss3", "NUsssKEY_MEDsss4", "NUsssKEY_MEDsss5",
+            "OCsssKEY_MEDsss3", "OCsssKEY_MEDsss4", "OCsssKEY_MEDsss5"
     };
 
     private void updateLabel() throws ParseException {

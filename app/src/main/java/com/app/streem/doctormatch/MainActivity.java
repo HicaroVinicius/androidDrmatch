@@ -57,6 +57,11 @@ public class MainActivity extends AppCompatActivity
 //        bd.inserirExame("Cardiológico");
 //        bd.inserirExame("Sangue");
 
+        bd.deleteCidade();
+        bd.deleteEstado();
+        bd.inserirCidade("Sobral","Ceará");
+        bd.inserirEstado("Ceará");
+
         if(buscaEspecFirebase){
 
 
