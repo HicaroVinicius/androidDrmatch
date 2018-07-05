@@ -40,6 +40,14 @@ public class FiltroBuscaActivity extends AppCompatActivity {
 
 
     @Override
+    protected void onRestart() {
+        super.onRestart();
+        updateLabel();
+        //Toast.makeText(FiltroBuscaActivity.this, "Selecione uma Cidade...", Toast.LENGTH_SHORT).show();
+
+    }
+
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_filtro_busca);
@@ -99,6 +107,8 @@ public class FiltroBuscaActivity extends AppCompatActivity {
             }
 
         };
+
+
 
         dataFiltro.setOnClickListener(new View.OnClickListener() {
             @Override

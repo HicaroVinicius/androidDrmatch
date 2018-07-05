@@ -23,24 +23,28 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:contentDescription="Especialidade"
+                android:completionThreshold="1"
                 android:hint="Especialidade" />
 
             <AutoCompleteTextView
                 android:id="@+id/autoCompleteestado"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:completionThreshold="1"
                 android:hint="Estado" />
 
             <AutoCompleteTextView
                 android:id="@+id/autoCompletecidade"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:completionThreshold="1"
                 android:hint="Cidade" />
 
             <AutoCompleteTextView
                 android:id="@+id/autoCompletemedico"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:completionThreshold="1"
                 android:hint="Médico" />
 
             <android.support.design.widget.TextInputLayout

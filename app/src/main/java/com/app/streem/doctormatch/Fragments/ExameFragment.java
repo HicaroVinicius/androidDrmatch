@@ -79,7 +79,9 @@ public class ExameFragment extends Fragment {
         // validar disponibilidade de novos dados no fire e jogar em sqlite
         //=========================  SQLite ======================================
         //getFirebase();
-        getSqlite();
+
+
+        //getSqlite();
 
 
         return view;

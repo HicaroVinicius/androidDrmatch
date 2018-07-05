@@ -67,7 +67,7 @@ public class ResultActivity extends AppCompatActivity {
             @Override
             public void onDateSet(DatePicker view, int year, int monthOfYear,
                                   int dayOfMonth) {
-
+                semRegistro.setVisibility(View.INVISIBLE);
                 myCalendar.set(Calendar.YEAR, year);
                 myCalendar.set(Calendar.MONTH, monthOfYear);
                 myCalendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
@@ -88,7 +88,7 @@ public class ResultActivity extends AppCompatActivity {
         });
 
         semRegistro = findViewById(R.id.semRegistroResultID);
-        semRegistro.setVisibility(View.VISIBLE);
+        semRegistro.setVisibility(View.INVISIBLE);
 
         preferencias = new Preferencias(this);
         recyclerView = findViewById(R.id.RecyclerViewMedico);
@@ -206,11 +206,11 @@ public class ResultActivity extends AppCompatActivity {
                         contador++;
 
                     }else{
+                        semRegistro.setVisibility(View.VISIBLE);
                         return;
                     }
 
                 }else{
-                    semRegistro.setVisibility(View.INVISIBLE);
                     //vaga disponível, busca os dados
                     Firebase.getDatabaseReference().child("CLIENTES").child(key).child("DADOS").addListenerForSingleValueEvent(new ValueEventListener() {
                         @Override

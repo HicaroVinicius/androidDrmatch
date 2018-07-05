@@ -6,6 +6,7 @@ import android.support.design.widget.TextInputEditText;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
@@ -96,6 +97,19 @@ public class cadastraVagaActivity extends AppCompatActivity {
             }
         });
 
+        hora.setOnKeyListener(new View.OnKeyListener() {
+            @Override
+            public boolean onKey(View view, int i, KeyEvent keyEvent) {
+                // If the event is a key-down event on the "enter" button
+                if ((keyEvent.getAction() == KeyEvent.ACTION_DOWN) &&
+                        (keyEvent.getKeyCode() == KeyEvent.KEYCODE_ENTER)) {
+                    addBtn.callOnClick();
+                    return true;
+                }
+                return false;
+            }
+        });
+
         addBtn = findViewById(R.id.addVagaButton);
 
         addBtn.setOnClickListener(new View.OnClickListener() {
@@ -118,9 +132,9 @@ public class cadastraVagaActivity extends AppCompatActivity {
                     Firebase.getDatabaseReference().child("VAGAS").child(Estado.getText().toString().replace(" ","")).child(Cidade.getText().toString().replace(" ","")).child(Espec.getText().toString().replace(" ","")).child(String.valueOf(d.getTime())).child(Medico.getText().toString()).child(key).setValue(hora.getText().toString());
 
                     Toast.makeText(cadastraVagaActivity.this, "Adicionado Com Sucesso...", Toast.LENGTH_SHORT).show();
-
-                    Intent intent = new Intent(cadastraVagaActivity.this,MainActivity.class);
-                    startActivity(intent);
+                    hora.setText("");
+                    //Intent intent = new Intent(cadastraVagaActivity.this,MainActivity.class);
+                    //startActivity(intent);
 
                 }
             }

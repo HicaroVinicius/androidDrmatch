@@ -12,6 +12,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import com.app.streem.doctormatch.DAO.Preferencias;
 import com.app.streem.doctormatch.FiltroBuscaActivity;
@@ -88,11 +89,7 @@ public class ExameTab extends Fragment {
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                //Toast.makeText(getContext(), parent.getItemAtPosition(position).toString(), Toast.LENGTH_SHORT).show();
-                String espec = parent.getItemAtPosition(position).toString();
-                Intent intent = new Intent(getContext(), FiltroBuscaActivity.class);
-                preferencias.setCHAVE_ESPECIALIDADE(espec);
-                startActivity(intent);
+                Toast.makeText(getContext(), "Em breve poderá agendar seu exame!", Toast.LENGTH_SHORT).show();
             }
         });
         return view;
