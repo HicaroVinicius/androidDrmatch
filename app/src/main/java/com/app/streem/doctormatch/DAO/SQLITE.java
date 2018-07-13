@@ -19,10 +19,10 @@ public class SQLITE extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-        db.execSQL("create table especialidades(nome text primary key not null);");
-        db.execSQL("create table exames(nome text primary key not null);");
-        db.execSQL("create table cidades(nome text primary key not null, estado text);");
-        db.execSQL("create table estados(nome text primary key not null);");
+        db.execSQL("create table especialidades( keyEspec text primary key not null, nome text, dt_cont text,status text);");
+        db.execSQL("create table exames( keyExames text primary key not null, nome text, dt_cont text,status text);");
+        db.execSQL("create table cidades(keyCidade text primary key not null,keyEstado text,  cidade text, dt_cont text,status text);");
+        db.execSQL("create table estados(keyEstado text primary key not null, estado text, dt_cont text,status text);");
         db.execSQL("create table consultas(keyConsulta text primary key not null,medico text,data text, hora text, nome text,nomeMedico text,info text, espec text);");
 
 

@@ -27,6 +27,34 @@ public class Preferencias {
     private final String CHAVE_CIDADE = "cidadeSelect";
     private final String CHAVE_DATA = "dataSelect";
 
+    //------CHAVES-----
+    /*
+
+    DT_CONT - Especialidade = dtcont_espec;
+    DT_CONT - Exame = dtcont_exame;
+    DT_CONT - Cidade = dtcont_cidade;
+    DT_CONT - Estado = dtcont_estado;
+
+
+
+    **/
+
+
+    public void setInfo(String chave, String info){
+        editor.putString(chave, info);
+        editor.commit();
+    }
+
+    public String getInfo(String chave){
+        return preferences.getString(chave,"#");
+    }
+
+    public void clearDados(){
+        editor.clear();
+        editor.commit();
+    }
+
+
     public String getCHAVE_Servico_Seleciona() {
         return preferences.getString(CHAVE_Servico_Seleciona,"");
     }

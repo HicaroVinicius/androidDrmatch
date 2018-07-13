@@ -19,25 +19,27 @@ import android.widget.Toast;
 import com.app.streem.doctormatch.DAO.BD;
 import com.app.streem.doctormatch.DAO.Firebase;
 import com.app.streem.doctormatch.DAO.Preferencias;
+import com.app.streem.doctormatch.DAO.SDFormat;
 import com.app.streem.doctormatch.Fragments.AgendamentoFragment;
 import com.app.streem.doctormatch.Fragments.ConsultaFragment;
 import com.app.streem.doctormatch.Fragments.ExameFragment;
+import com.app.streem.doctormatch.Modelo.Cidade;
 import com.app.streem.doctormatch.Modelo.Consulta;
+import com.app.streem.doctormatch.Modelo.Especialidade;
+import com.app.streem.doctormatch.Modelo.Estado;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.ValueEventListener;
 
+import java.util.Calendar;
+
 public class MainActivity extends AppCompatActivity
         implements BottomNavigationView.OnNavigationItemSelectedListener, NavigationView.OnNavigationItemSelectedListener {
 
-    //Modifica aqui se quiser baixar. Depois faço o tratamamento pra pegar cada variável do Firebase.
-    final boolean baixar = false;
 
-    private boolean buscaEspecFirebase = baixar;
-    private boolean buscaEstadoFirebase = baixar;
-    private boolean buscaCidadeFirebase = baixar;
-    private boolean buscaConsultaFirebase = baixar;
+    private SDFormat format;
+    private Calendar myCalendar;
 
     private Preferencias preferencias;
 
@@ -48,31 +50,57 @@ public class MainActivity extends AppCompatActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         preferencias = new Preferencias(getApplicationContext());
+        format = new SDFormat();
 
 
         final BD bd = new BD(this);
-        //buscaEspecFirebase = true;
 
-//        bd.deleteExame();
-//        bd.inserirExame("Cardiológico");
-//        bd.inserirExame("Sangue");
-
-        bd.deleteCidade();
-        bd.deleteEstado();
-        bd.inserirCidade("Sobral","Ceará");
-        bd.inserirEstado("Ceará");
-
-        if(buscaEspecFirebase){
+        String data = preferencias.getInfo("dtcont");
+        Log.i("TESTEMAIN",data);
+        Cidade cidade = new Cidade("21","12","Sobral",data,"1");
+        Estado estado = new Estado("12","ceará",data,"1");
+        bd.inserirCidade(cidade);
+        bd.inserirEstado(estado);
 
 
-            bd.deleteEspec();
-
-            Firebase.getDatabaseReference().child("ATUACAO").child("ESPECIALIDADE").addListenerForSingleValueEvent(new ValueEventListener() {
+        Firebase.getDatabaseReference().child("APP_ATUACAO").child("ESPECIALIDADE").orderByChild("dt_cont").startAt(data).addListenerForSingleValueEvent(new ValueEventListener() {
                 @Override
                 public void onDataChange(DataSnapshot dataSnapshot) {
 
                     for(DataSnapshot data : dataSnapshot.getChildren()){
-                        bd.inserirEspecialidade(data.getValue().toString());
+                        Especialidade value = data.getValue(Especialidade.class);
+                        Log.i("testeBDvalue1",value.getNome().toString());
+                        bd.inserirEspecialidade(value);
+
+                        myCalendar = Calendar.getInstance();
+                        String date = format.dateToMili(myCalendar.getTime().toString());
+                        preferencias.setInfo("dtcont_espec",date);
+
+                    }
+                }
+
+                @Override
+                public void onCancelled(DatabaseError databaseError) {
+
+                }
+            });
+
+
+
+
+
+        Firebase.getDatabaseReference().child("APP_ATUACAO").child("ESTADO").orderByChild("dt_cont").startAt(data).addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
+
+                    for(DataSnapshot data : dataSnapshot.getChildren()){
+                        Estado value = data.getValue(Estado.class);
+                        Log.i("testeBDvalue2",value.getEstado().toString());
+                        bd.inserirEstado(value);
+
+                        myCalendar = Calendar.getInstance();
+                        String date = format.dateToMili(myCalendar.getTime().toString());
+                        preferencias.setInfo("dtcont_estado",date);
 
                     }}
 
@@ -83,33 +111,7 @@ public class MainActivity extends AppCompatActivity
             });
 
 
-        }
-
-        if(buscaEstadoFirebase){
-
-            bd.deleteEstado();
-
-            Firebase.getDatabaseReference().child("ATUACAO").child("ESTADO").addListenerForSingleValueEvent(new ValueEventListener() {
-                @Override
-                public void onDataChange(DataSnapshot dataSnapshot) {
-
-                    for(DataSnapshot data : dataSnapshot.getChildren()){
-                        bd.inserirEstado(data.getValue().toString());
-
-                    }}
-
-                @Override
-                public void onCancelled(DatabaseError databaseError) {
-
-                }
-            });
-        }
-
-        if(buscaCidadeFirebase){
-
-            bd.deleteCidade();
-
-            Firebase.getDatabaseReference().child("ATUACAO").child("CIDADE").addListenerForSingleValueEvent(new ValueEventListener() {
+        Firebase.getDatabaseReference().child("APP_ATUACAO").child("CIDADE").orderByChild("dt_cont").startAt(data).addListenerForSingleValueEvent(new ValueEventListener() {
                 @Override
                 public void onDataChange(DataSnapshot dataSnapshot) {
 
@@ -117,9 +119,13 @@ public class MainActivity extends AppCompatActivity
                     for(DataSnapshot data : dataSnapshot.getChildren()){
 
                         for(DataSnapshot data1 : data.getChildren()){
-                            Log.i("testeBDvalue",data1.getValue().toString());
-                            Log.i("testeBDestado",data.getKey().toString());
-                            bd.inserirCidade(data1.getValue().toString(),data.getKey().toString());
+                            Cidade value = data1.getValue(Cidade.class);
+                            Log.i("testeBDvalue3",value.getCidade().toString());
+                            bd.inserirCidade(value);
+
+                            myCalendar = Calendar.getInstance();
+                            String date = format.dateToMili(myCalendar.getTime().toString());
+                            preferencias.setInfo("dtcont_cidade",date);
                         }
                     }}
 
@@ -128,11 +134,25 @@ public class MainActivity extends AppCompatActivity
 
                 }
             });
-        }
 
-        if(buscaConsultaFirebase){
-            buscaConsulta();
-        }
+
+        Firebase.getDatabaseReference().child("USUARIO").child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child("CONSULTA").addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+
+                for (DataSnapshot data : dataSnapshot.getChildren()) {
+                    Consulta consulta = data.getValue(Consulta.class);
+                    Log.i("testeBDvalueConsulta",consulta.getKeyConsulta().toString());
+                    Log.i("testeBDvalueConsulta",consulta.getNomeMedico().toString());
+                    bd.inserirConsulta(consulta);
+                }
+
+            }
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+
          /*
 
         preferencias = new Preferencias(this);
@@ -262,7 +282,11 @@ public class MainActivity extends AppCompatActivity
         final BD bd = new BD(this);
         try {
             Firebase.getFirebaseAuth().signOut();
+            bd.deleteEstado();
+            bd.deleteCidade();
             bd.deleteConsulta();
+            bd.deleteEspec();
+            bd.deleteExame();
             //NESSE MOMENTO -> ALTERAR CHAVE PARA AVISAR QUE DEVE BAIXAR NÓ DE CONSULTAS
             Intent intent = new Intent(MainActivity.this,LoginActivity.class);
             startActivity(intent);
@@ -271,29 +295,6 @@ public class MainActivity extends AppCompatActivity
             e.printStackTrace();
         }
 
-    }
-
-    public void buscaConsulta(){
-
-        final BD bd = new BD(this);
-        bd.deleteConsulta();
-
-        Firebase.getDatabaseReference().child("USUARIO").child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child("CONSULTA").addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-
-                for (DataSnapshot data : dataSnapshot.getChildren()) {
-                    Consulta consulta = data.getValue(Consulta.class);
-                    Log.i("testeBDvalueConsulta",consulta.getKeyConsulta().toString());
-                    Log.i("testeBDvalueConsulta",consulta.getNomeMedico().toString());
-                    bd.inserirConsulta(consulta);
-                }
-
-            }
-            public void onCancelled(DatabaseError databaseError) {
-
-            }
-        });
     }
 
 

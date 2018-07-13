@@ -131,6 +131,10 @@ public class LoginActivity extends AppCompatActivity {
                             Log.i("testeUSER2222",user.getUid().toString());
                             usuario = dataSnapshot.getValue(Usuario.class);
                             preferencias.setUsuarioLogado(user.getUid(),usuario.getNome().toString(),null);
+                            preferencias.setInfo("dtcont_cidade","1");
+                            preferencias.setInfo("dtcont_estado","1");
+                            preferencias.setInfo("dtcont_exame","1");
+                            preferencias.setInfo("dtcont_espec","1");
                             Log.i("testeUSER", usuario.getNome().toString());
 
                         }

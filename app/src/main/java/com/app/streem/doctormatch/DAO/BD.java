@@ -6,7 +6,11 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
+import com.app.streem.doctormatch.Modelo.Cidade;
 import com.app.streem.doctormatch.Modelo.Consulta;
+import com.app.streem.doctormatch.Modelo.Especialidade;
+import com.app.streem.doctormatch.Modelo.Estado;
+import com.app.streem.doctormatch.Modelo.Exame;
 
 import java.sql.SQLData;
 import java.util.ArrayList;
@@ -23,29 +27,55 @@ public class BD {
         db = auxBD.getWritableDatabase();
     }
 
-    public void inserirEspecialidade(String especialidades){
+    public void inserirEspecialidade(Especialidade espec){
         ContentValues valores = new ContentValues();
-        valores.put("nome",especialidades);
-        db.insert("especialidades",null,valores);
+        valores.put("keyEspec",espec.getKey());
+        valores.put("nome",espec.getNome());
+        valores.put("dt_cont",espec.getDt_cont());
+        valores.put("status",espec.getStatus());
+        int id = (int) db.insertWithOnConflict("especialidades",null,valores,SQLiteDatabase.CONFLICT_IGNORE);
+        if (id == -1) {
+            db.update("especialidades", valores, "keyEspec=?", new String[] {espec.getKey()});
+        }
     }
 
-    public void inserirCidade(String valor, String estado){
+    public void inserirCidade(Cidade c){
         ContentValues valores = new ContentValues();
-        valores.put("estado",estado);
-        valores.put("nome",valor);
-        db.insert("cidades",null,valores);
+        valores.put("keyCidade",c.getKey_cidade());
+        valores.put("keyEstado",c.getKey_estado());
+        valores.put("cidade",c.getCidade());
+        valores.put("dt_cont",c.getDt_cont());
+        valores.put("status",c.getStatus());
+        int id = (int) db.insertWithOnConflict("cidades",null,valores,SQLiteDatabase.CONFLICT_IGNORE);
+        if (id == -1) {
+            db.update("cidades", valores, "keyCidade=?", new String[] {c.getKey_cidade()});
+        }
     }
 
-    public void inserirEstado(String valor){
+    public void inserirEstado(Estado estado){
         ContentValues valores = new ContentValues();
-        valores.put("nome",valor);
-        db.insert("estados",null,valores);
+        valores.put("keyEstado",estado.getKey_estado());
+        valores.put("estado",estado.getEstado());
+        valores.put("dt_cont",estado.getDt_cont());
+        valores.put("status",estado.getStatus());
+        int id = (int) db.insertWithOnConflict("estados",null,valores,SQLiteDatabase.CONFLICT_IGNORE);
+        if (id == -1) {
+            db.update("estados", valores, "keyEstado=?", new String[] {estado.getKey_estado()});
+        }
     }
 
-    public void inserirExame(String exames){
+    public void inserirExame(Exame exame){
         ContentValues valores = new ContentValues();
-        valores.put("nome",exames);
+        valores.put("keyExames",exame.getKey());
+        valores.put("nome",exame.getNome());
+        valores.put("dt_cont",exame.getDt_cont());
+        valores.put("status",exame.getStatus());
         db.insert("exames",null,valores);
+        int id = (int) db.insertWithOnConflict("exames",null,valores,SQLiteDatabase.CONFLICT_IGNORE);
+        if (id == -1) {
+            db.update("exames", valores, "keyExames=?", new String[] {exame.getKey()});
+        }
+
     }
 
     public void inserirConsulta(Consulta consulta){
