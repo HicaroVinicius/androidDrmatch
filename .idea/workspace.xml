@@ -11,18 +11,8 @@
     <option name="TOOL_WINDOW_CONFIGURED_FILTER" value="Show only selected application" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="429d84d9-81d1-4875-ae26-3e9a6697b97f" name="Default" comment="changing local storage">
-      <change beforePath="" afterPath="$PROJECT_DIR$/app/src/main/java/com/app/streem/doctormatch/DAO/SDFormat.java" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/app/src/main/java/com/app/streem/doctormatch/Modelo/Cidade.java" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/app/src/main/java/com/app/streem/doctormatch/Modelo/Especialidade.java" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/app/src/main/java/com/app/streem/doctormatch/Modelo/Estado.java" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/app/src/main/java/com/app/streem/doctormatch/Modelo/Exame.java" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" afterPath="$PROJECT_DIR$/.idea/misc.xml" />
+    <list default="true" id="429d84d9-81d1-4875-ae26-3e9a6697b97f" name="Default" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/app/streem/doctormatch/DAO/BD.java" afterPath="$PROJECT_DIR$/app/src/main/java/com/app/streem/doctormatch/DAO/BD.java" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/app/streem/doctormatch/DAO/Preferencias.java" afterPath="$PROJECT_DIR$/app/src/main/java/com/app/streem/doctormatch/DAO/Preferencias.java" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/app/streem/doctormatch/DAO/SQLITE.java" afterPath="$PROJECT_DIR$/app/src/main/java/com/app/streem/doctormatch/DAO/SQLITE.java" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/app/streem/doctormatch/LoginActivity.java" afterPath="$PROJECT_DIR$/app/src/main/java/com/app/streem/doctormatch/LoginActivity.java" />
       <change beforePath="$PROJECT_DIR$/app/src/main/java/com/app/streem/doctormatch/MainActivity.java" afterPath="$PROJECT_DIR$/app/src/main/java/com/app/streem/doctormatch/MainActivity.java" />
     </list>
     <ignored path="$PROJECT_DIR$/build/classes/" />
@@ -62,13 +52,13 @@
       <file leaf-file-name="MainActivity.java" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/app/src/main/java/com/app/streem/doctormatch/MainActivity.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="644">
-              <caret line="135" column="15" lean-forward="true" selection-start-line="135" selection-start-column="15" selection-end-line="135" selection-end-column="15" />
+            <state relative-caret-position="107">
+              <caret line="87" column="8" lean-forward="false" selection-start-line="87" selection-start-column="8" selection-end-line="87" selection-end-column="8" />
               <folding>
-                <element signature="e#9245#9463#0" expanded="true" />
-                <element signature="e#9462#9463#0" expanded="true" />
-                <element signature="e#9522#9742#0" expanded="true" />
-                <element signature="e#9741#9742#0" expanded="true" />
+                <element signature="e#9251#9469#0" expanded="true" />
+                <element signature="e#9468#9469#0" expanded="true" />
+                <element signature="e#9528#9748#0" expanded="true" />
+                <element signature="e#9747#9748#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -2552,7 +2542,14 @@
       <option name="project" value="LOCAL" />
       <updated>1530757796063</updated>
     </task>
-    <option name="localTasksCounter" value="5" />
+    <task id="LOCAL-00005" summary="changing local storage">
+      <created>1531516198531</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1531516198531</updated>
+    </task>
+    <option name="localTasksCounter" value="6" />
     <servers />
   </component>
   <component name="TodoView">
@@ -3088,13 +3085,13 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/java/com/app/streem/doctormatch/MainActivity.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="644">
-          <caret line="135" column="15" lean-forward="true" selection-start-line="135" selection-start-column="15" selection-end-line="135" selection-end-column="15" />
+        <state relative-caret-position="107">
+          <caret line="87" column="8" lean-forward="false" selection-start-line="87" selection-start-column="8" selection-end-line="87" selection-end-column="8" />
           <folding>
-            <element signature="e#9245#9463#0" expanded="true" />
-            <element signature="e#9462#9463#0" expanded="true" />
-            <element signature="e#9522#9742#0" expanded="true" />
-            <element signature="e#9741#9742#0" expanded="true" />
+            <element signature="e#9251#9469#0" expanded="true" />
+            <element signature="e#9468#9469#0" expanded="true" />
+            <element signature="e#9528#9748#0" expanded="true" />
+            <element signature="e#9747#9748#0" expanded="true" />
           </folding>
         </state>
       </provider>

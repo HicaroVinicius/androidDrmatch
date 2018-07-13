@@ -87,8 +87,6 @@ public class MainActivity extends AppCompatActivity
 
 
 
-
-
         Firebase.getDatabaseReference().child("APP_ATUACAO").child("ESTADO").orderByChild("dt_cont").startAt(data).addListenerForSingleValueEvent(new ValueEventListener() {
                 @Override
                 public void onDataChange(DataSnapshot dataSnapshot) {
