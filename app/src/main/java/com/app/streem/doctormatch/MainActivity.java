@@ -27,12 +27,15 @@ import com.app.streem.doctormatch.Modelo.Cidade;
 import com.app.streem.doctormatch.Modelo.Consulta;
 import com.app.streem.doctormatch.Modelo.Especialidade;
 import com.app.streem.doctormatch.Modelo.Estado;
+import com.app.streem.doctormatch.Modelo.Exame;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.ValueEventListener;
 
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Date;
 
 public class MainActivity extends AppCompatActivity
         implements BottomNavigationView.OnNavigationItemSelectedListener, NavigationView.OnNavigationItemSelectedListener {
@@ -55,83 +58,6 @@ public class MainActivity extends AppCompatActivity
 
         final BD bd = new BD(this);
 
-        String data = preferencias.getInfo("dtcont");
-        Log.i("TESTEMAIN",data);
-        Cidade cidade = new Cidade("21","12","Sobral",data,"1");
-        Estado estado = new Estado("12","ceará",data,"1");
-        bd.inserirCidade(cidade);
-        bd.inserirEstado(estado);
-
-
-        Firebase.getDatabaseReference().child("APP_ATUACAO").child("ESPECIALIDADE").orderByChild("dt_cont").startAt(data).addListenerForSingleValueEvent(new ValueEventListener() {
-                @Override
-                public void onDataChange(DataSnapshot dataSnapshot) {
-
-                    for(DataSnapshot data : dataSnapshot.getChildren()){
-                        Especialidade value = data.getValue(Especialidade.class);
-                        Log.i("testeBDvalue1",value.getNome().toString());
-                        bd.inserirEspecialidade(value);
-
-                        myCalendar = Calendar.getInstance();
-                        String date = format.dateToMili(myCalendar.getTime().toString());
-                        preferencias.setInfo("dtcont_espec",date);
-
-                    }
-                }
-
-                @Override
-                public void onCancelled(DatabaseError databaseError) {
-
-                }
-            });
-
-
-
-        Firebase.getDatabaseReference().child("APP_ATUACAO").child("ESTADO").orderByChild("dt_cont").startAt(data).addListenerForSingleValueEvent(new ValueEventListener() {
-                @Override
-                public void onDataChange(DataSnapshot dataSnapshot) {
-
-                    for(DataSnapshot data : dataSnapshot.getChildren()){
-                        Estado value = data.getValue(Estado.class);
-                        Log.i("testeBDvalue2",value.getEstado().toString());
-                        bd.inserirEstado(value);
-
-                        myCalendar = Calendar.getInstance();
-                        String date = format.dateToMili(myCalendar.getTime().toString());
-                        preferencias.setInfo("dtcont_estado",date);
-
-                    }}
-
-                @Override
-                public void onCancelled(DatabaseError databaseError) {
-
-                }
-            });
-
-
-        Firebase.getDatabaseReference().child("APP_ATUACAO").child("CIDADE").orderByChild("dt_cont").startAt(data).addListenerForSingleValueEvent(new ValueEventListener() {
-                @Override
-                public void onDataChange(DataSnapshot dataSnapshot) {
-
-
-                    for(DataSnapshot data : dataSnapshot.getChildren()){
-
-                        for(DataSnapshot data1 : data.getChildren()){
-                            Cidade value = data1.getValue(Cidade.class);
-                            Log.i("testeBDvalue3",value.getCidade().toString());
-                            bd.inserirCidade(value);
-
-                            myCalendar = Calendar.getInstance();
-                            String date = format.dateToMili(myCalendar.getTime().toString());
-                            preferencias.setInfo("dtcont_cidade",date);
-                        }
-                    }}
-
-                @Override
-                public void onCancelled(DatabaseError databaseError) {
-
-                }
-            });
 
 
         Firebase.getDatabaseReference().child("USUARIO").child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child("CONSULTA").addListenerForSingleValueEvent(new ValueEventListener() {

@@ -36,6 +36,11 @@ public class Preferencias {
     DT_CONT - Estado = dtcont_estado;
 
 
+    ESTADO
+
+    idEstado
+    nomeEstado
+
 
     **/
 

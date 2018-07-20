@@ -18,21 +18,31 @@ import android.widget.Toast;
 import com.app.streem.doctormatch.Adapter.TabAdapter;
 import com.app.streem.doctormatch.DAO.BD;
 import com.app.streem.doctormatch.DAO.Firebase;
+import com.app.streem.doctormatch.DAO.Preferencias;
+import com.app.streem.doctormatch.DAO.SDFormat;
 import com.app.streem.doctormatch.Fragments.ConsultaTab;
 import com.app.streem.doctormatch.Fragments.ExameTab;
 import com.app.streem.doctormatch.Fragments.RetornoTab;
+import com.app.streem.doctormatch.Modelo.Especialidade;
+import com.app.streem.doctormatch.Modelo.Exame;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.Date;
 
 public class ServicoSeletorActivity extends AppCompatActivity implements ConsultaTab.OnFragmentInteractionListener,ExameTab.OnFragmentInteractionListener,RetornoTab.OnFragmentInteractionListener {
 
+    private Preferencias preferencias;
+    private BD bd;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
+        preferencias = new Preferencias(getApplicationContext());
+        bd = new BD(this);
 
         getWindow().setSoftInputMode(
                 WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
@@ -48,7 +58,8 @@ public class ServicoSeletorActivity extends AppCompatActivity implements Consult
             }
         });
 
-        final BD bd = new BD(this);
+        atualizaEspec();
+        atualizaExame();
 
         final ArrayList<String> consulta = bd.buscarEspec();
         Log.i("testeBDConsulta",consulta.toString());
@@ -135,6 +146,77 @@ public class ServicoSeletorActivity extends AppCompatActivity implements Consult
     @Override
     public void onPointerCaptureChanged(boolean hasCapture) {
 
+    }
+
+    public void atualizaEspec(){
+
+        String dtcont_espec = preferencias.getInfo("dtcont_espec");
+        Date dataA = new Date();
+        Log.i("TESTEDataAtual",String.valueOf(dataA.getTime()));
+        Log.i("TESTEMAIN-dtcont_espec",String.valueOf(dtcont_espec));
+
+        Firebase.getDatabaseReference().child("APP_ATUACAO").child("ESPECIALIDADES").orderByChild("dt_cont").startAt(dtcont_espec).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+
+                //Log.i("testeBDvalue1","dentroESP");
+                if(!dataSnapshot.hasChildren()){
+                    Log.i("testeBDvalue1","noChildESP");
+                }
+                for(DataSnapshot data : dataSnapshot.getChildren()){
+                    Especialidade value = data.getValue(Especialidade.class);
+                    Log.i("testeBDvalue1",data.toString());
+                    Log.i("testeBDvalue1",data.getValue().toString());
+
+                    Log.i("testeBDvalue1",value.getNome().toString());
+                    bd.inserirEspecialidade(value);
+
+                    Date dataA = new Date();
+                    preferencias.setInfo("dtcont_espec",String.valueOf(dataA.getTime()));
+                    Log.i("TESTEMA D-dtcont_espec",String.valueOf(dataA.getTime()));
+
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+    }
+
+    public void atualizaExame(){
+        String dtcont_exame = preferencias.getInfo("dtcont_exame");
+        Date dataA = new Date();
+        Log.i("TESTEDataAtual",String.valueOf(dataA.getTime()));
+        Log.i("TESTEMAIN-dtcont_exame",String.valueOf(dtcont_exame));
+
+        Firebase.getDatabaseReference().child("APP_ATUACAO").child("EXAMES").orderByChild("dt_cont").startAt(dtcont_exame).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+
+                // Log.i("testeBDvalue1","dentroCIT-"+String.valueOf(dtcont_cidade));
+                if(!dataSnapshot.hasChildren()){
+                    Log.i("testeBDvalue1","noChildEXA");
+                }
+                for(DataSnapshot data : dataSnapshot.getChildren()){
+
+                    Exame value = data.getValue(Exame.class);
+                    Log.i("testeBDvalue3", value.getNome().toString());
+                    bd.inserirExame(value);
+
+                    Date dataA = new Date();
+                    preferencias.setInfo("dtcont_exame", String.valueOf(dataA.getTime()));
+                    Log.i("TESTEMA D-dtcont_exame", String.valueOf(dataA.getTime()));
+
+
+                }}
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
     }
 
 

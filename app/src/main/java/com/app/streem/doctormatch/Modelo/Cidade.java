@@ -10,22 +10,26 @@ public class Cidade {
 
 
 
-    private String key_cidade;
+    private String id;
 
-    public Cidade(String key_cidade, String key_estado, String cidade, String dt_cont, String status) {
-        this.key_cidade = key_cidade;
+    public Cidade(String id, String key_estado, String cidade, String dt_cont, String status) {
+        this.id = id;
         this.key_estado = key_estado;
         this.cidade = cidade;
         this.dt_cont = dt_cont;
         this.status = status;
     }
 
-    public String getKey_cidade() {
-        return key_cidade;
+    public Cidade() {
+
     }
 
-    public void setKey_cidade(String key_cidade) {
-        this.key_cidade = key_cidade;
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
     }
 
     public String getKey_estado() {

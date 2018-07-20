@@ -8,21 +8,25 @@ public class Especialidade {
 
 
 
-    public Especialidade(String key, String nome, String dt_cont, String status) {
-        this.key = key;
+    public Especialidade(String id, String nome, String dt_cont, String status) {
+        this.id = id;
         this.nome = nome;
         this.dt_cont = dt_cont;
         this.status = status;
     }
 
-    private String key;
+    public Especialidade(){
 
-    public String getKey() {
-        return key;
     }
 
-    public void setKey(String key) {
-        this.key = key;
+    private String id;
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
     }
 
     public String getNome() {

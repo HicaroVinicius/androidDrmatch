@@ -70,8 +70,10 @@ public class FiltroBuscaActivity extends AppCompatActivity {
         buscar = findViewById(R.id.buttonBuscar);
 
         Intent dadosFiltro = getIntent();
-       final String cidade = dadosFiltro.getStringExtra("cidadeDado");
-       final String estado = dadosFiltro.getStringExtra("estadoDado");
+       final String cidade = dadosFiltro.getStringExtra("nomeCidade");
+       final String estado = dadosFiltro.getStringExtra("nomeEstado");
+       final String idEstado = dadosFiltro.getStringExtra("idEstado");
+       final String idCidade = dadosFiltro.getStringExtra("idCidade");
 
         if(cidade==null||estado==null){
             cidadeFiltro.setText("Selecione sua Cidade");
@@ -144,6 +146,8 @@ public class FiltroBuscaActivity extends AppCompatActivity {
                     Intent intent = new Intent(FiltroBuscaActivity.this,ResultActivity.class);
                     preferencias.setCHAVE_CIDADE(cidade);
                     preferencias.setCHAVE_ESTADO(estado);
+                    preferencias.setInfo("idEstado",idEstado);
+                    preferencias.setInfo("idCidade",idCidade);
                     startActivity(intent);
                 }
             }

@@ -29,51 +29,54 @@ public class BD {
 
     public void inserirEspecialidade(Especialidade espec){
         ContentValues valores = new ContentValues();
-        valores.put("keyEspec",espec.getKey());
+        valores.put("id",espec.getId());
         valores.put("nome",espec.getNome());
-        valores.put("dt_cont",espec.getDt_cont());
+        valores.put("dt_cont",1);
         valores.put("status",espec.getStatus());
         int id = (int) db.insertWithOnConflict("especialidades",null,valores,SQLiteDatabase.CONFLICT_IGNORE);
         if (id == -1) {
-            db.update("especialidades", valores, "keyEspec=?", new String[] {espec.getKey()});
+            db.update("especialidades", valores, "id=?", new String[] {espec.getId()});
         }
     }
 
     public void inserirCidade(Cidade c){
         ContentValues valores = new ContentValues();
-        valores.put("keyCidade",c.getKey_cidade());
-        valores.put("keyEstado",c.getKey_estado());
+        valores.put("id",c.getId());
+        valores.put("key_estado",c.getKey_estado());
         valores.put("cidade",c.getCidade());
         valores.put("dt_cont",c.getDt_cont());
         valores.put("status",c.getStatus());
         int id = (int) db.insertWithOnConflict("cidades",null,valores,SQLiteDatabase.CONFLICT_IGNORE);
         if (id == -1) {
-            db.update("cidades", valores, "keyCidade=?", new String[] {c.getKey_cidade()});
+            db.update("cidades", valores, "id=?", new String[] {c.getId()});
         }
     }
 
     public void inserirEstado(Estado estado){
         ContentValues valores = new ContentValues();
-        valores.put("keyEstado",estado.getKey_estado());
+        valores.put("id",estado.getId());
         valores.put("estado",estado.getEstado());
         valores.put("dt_cont",estado.getDt_cont());
         valores.put("status",estado.getStatus());
         int id = (int) db.insertWithOnConflict("estados",null,valores,SQLiteDatabase.CONFLICT_IGNORE);
+        Log.i("testeEstado-insert/ ",estado.getEstado());
         if (id == -1) {
-            db.update("estados", valores, "keyEstado=?", new String[] {estado.getKey_estado()});
+            Log.i("testeEstado-update/ ",estado.getEstado());
+            int i = db.update("estados", valores, "id=?", new String[] {estado.getId()});
         }
+
     }
 
     public void inserirExame(Exame exame){
         ContentValues valores = new ContentValues();
-        valores.put("keyExames",exame.getKey());
+        valores.put("id",exame.getId());
         valores.put("nome",exame.getNome());
         valores.put("dt_cont",exame.getDt_cont());
         valores.put("status",exame.getStatus());
         db.insert("exames",null,valores);
         int id = (int) db.insertWithOnConflict("exames",null,valores,SQLiteDatabase.CONFLICT_IGNORE);
         if (id == -1) {
-            db.update("exames", valores, "keyExames=?", new String[] {exame.getKey()});
+            db.update("exames", valores, "id=?", new String[] {exame.getId()});
         }
 
     }
@@ -119,37 +122,54 @@ public class BD {
         return especialidades;
     }
 
-    public ArrayList<String> buscarEstado(){
-        ArrayList<String> estados = new ArrayList();
-        String[] colunas = new String[]{"nome"};
-        Cursor cursor = db.query("estados",colunas,null,null,null,null,"nome ASC");
-
+    public ArrayList<Estado> buscarEstado(){
+        ArrayList<Estado> estado = new ArrayList<>();
+        Estado u;
+        Cursor cursor;
+        String[] campos =  {"id"," estado", "dt_cont", "status"};
+        cursor = db.query("estados", campos, null, null, null, null, null, null);
+        Log.i("testeConsultaCutreso",String.valueOf(cursor.getCount()));
         if(cursor.getCount() > 0){
             cursor.moveToFirst();
 
             do{
-                estados.add(cursor.getString(0));
+                u = new Estado();
+            u.setId(cursor.getString(0));
+            u.setEstado(cursor.getString(1));
+            u.setDt_cont(cursor.getString(2));
+            u.setStatus(cursor.getString(3));
+            estado.add(u);
+            Log.i("testeConsulta111",cursor.getString(1));
             }while (cursor.moveToNext());
         }
 
-        return estados;
+        return estado;
     }
 
-    public ArrayList<String> buscarCidade(String estado){
-        ArrayList<String> cidades = new ArrayList();
-        String[] colunas = new String[]{"nome"};
-        String[] arg = new String[]{estado.replace(" ","")};
-        Cursor cursor = db.query("cidades",colunas,"estado = ?",arg,null,null,"estado ASC");
+    public ArrayList<Cidade> buscarCidade(String estado){
+        ArrayList<Cidade> cidade = new ArrayList<>();
+        Cidade u;
+        Log.i("testeConsultaIDD->",estado);
+        String[] colunas = new String[]{"cidade","key_estado","dt_cont","status","id"};
+        String[] arg = new String[]{estado};
+        Cursor cursor = db.query("cidades",colunas,"key_estado = ?",arg,null,null,"cidade ASC");
 
         if(cursor.getCount() > 0){
             cursor.moveToFirst();
 
             do{
-                cidades.add(cursor.getString(0));
+                u = new Cidade();
+                u.setId(cursor.getString(4));
+                u.setCidade(cursor.getString(0));
+                u.setKey_estado(cursor.getString(1));
+                u.setDt_cont(cursor.getString(2));
+                u.setStatus(cursor.getString(3));
+                cidade.add(u);
+                Log.i("testeConsulta111",cursor.getString(0));
             }while (cursor.moveToNext());
         }
 
-        return cidades;
+        return cidade;
     }
 
 

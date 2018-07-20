@@ -130,12 +130,12 @@ public class LoginActivity extends AppCompatActivity {
                         public void onDataChange(DataSnapshot dataSnapshot) {
                             Log.i("testeUSER2222",user.getUid().toString());
                             usuario = dataSnapshot.getValue(Usuario.class);
-                            preferencias.setUsuarioLogado(user.getUid(),usuario.getNome().toString(),null);
+                            preferencias.setUsuarioLogado(user.getUid(),user.getDisplayName(),user.getPhoneNumber());
                             preferencias.setInfo("dtcont_cidade","1");
                             preferencias.setInfo("dtcont_estado","1");
                             preferencias.setInfo("dtcont_exame","1");
                             preferencias.setInfo("dtcont_espec","1");
-                            Log.i("testeUSER", usuario.getNome().toString());
+                            Log.i("testeUSER", user.getDisplayName()+".");
 
                         }
                         public void onCancelled(DatabaseError databaseError) {

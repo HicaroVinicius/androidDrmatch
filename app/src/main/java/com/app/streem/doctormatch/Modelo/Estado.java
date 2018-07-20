@@ -7,21 +7,24 @@ package com.app.streem.doctormatch.Modelo;
 public class Estado {
 
 
-    public Estado(String key_estado, String estado, String dt_cont, String status) {
-        this.key_estado = key_estado;
+    public Estado(String id, String estado, String dt_cont, String status) {
+        this.id = id;
         this.estado = estado;
         this.dt_cont = dt_cont;
         this.status = status;
     }
 
+    public Estado(){
 
-    private String key_estado;
-    public String getKey_estado() {
-        return key_estado;
     }
 
-    public void setKey_estado(String key_estado) {
-        this.key_estado = key_estado;
+    private String id;
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
     }
 
 

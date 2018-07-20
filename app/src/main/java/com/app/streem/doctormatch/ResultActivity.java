@@ -96,7 +96,9 @@ public class ResultActivity extends AppCompatActivity {
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
         try {
-            buscarMedicos(preferencias.getCHAVE_CIDADE().replace(" ",""),preferencias.getCHAVE_ESTADO().replace(" ",""), preferencias.getCHAVE_ESPECIALIDADE().replace(" ",""));
+            buscarMedicos(preferencias.getInfo("idEstado"),
+                    preferencias.getInfo("idCidade"),
+                    preferencias.getCHAVE_ESPECIALIDADE().replace(" ",""));
         } catch (ParseException e) {
             e.printStackTrace();
         }
