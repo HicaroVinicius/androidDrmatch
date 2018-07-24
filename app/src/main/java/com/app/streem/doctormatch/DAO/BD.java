@@ -11,6 +11,7 @@ import com.app.streem.doctormatch.Modelo.Consulta;
 import com.app.streem.doctormatch.Modelo.Especialidade;
 import com.app.streem.doctormatch.Modelo.Estado;
 import com.app.streem.doctormatch.Modelo.Exame;
+import com.app.streem.doctormatch.Modelo.Medico;
 
 import java.sql.SQLData;
 import java.util.ArrayList;
@@ -27,11 +28,26 @@ public class BD {
         db = auxBD.getWritableDatabase();
     }
 
+    public void inserirMedico(Medico value){
+        ContentValues valores = new ContentValues();
+        valores.put("id",value.getId());
+        valores.put("status",value.getStatus());
+        valores.put("dt_cont",value.getDt_cont());
+        valores.put("key_cidade",value.getKey_cidade());
+        valores.put("key_estado",value.getKey_estado());
+        valores.put("key_clinica",value.getKey_clinica());
+        valores.put("key_medico",value.getKey_medico());
+        int id = (int) db.insertWithOnConflict("medicos",null,valores,SQLiteDatabase.CONFLICT_IGNORE);
+        if (id == -1) {
+            db.update("medicos", valores, "id=?", new String[] {value.getId()});
+        }
+    }
+
     public void inserirEspecialidade(Especialidade espec){
         ContentValues valores = new ContentValues();
         valores.put("id",espec.getId());
         valores.put("nome",espec.getNome());
-        valores.put("dt_cont",1);
+        valores.put("dt_cont",espec.getDt_cont());
         valores.put("status",espec.getStatus());
         int id = (int) db.insertWithOnConflict("especialidades",null,valores,SQLiteDatabase.CONFLICT_IGNORE);
         if (id == -1) {
@@ -105,6 +121,33 @@ public class BD {
     }
     public void deleteConsulta(){ db.delete("consultas",null,null); }
     public void deleteExame(){ db.delete("exames",null,null); }
+    public void deleteMedico(){ db.delete("medicos",null,null); }
+
+    public ArrayList<Medico> buscarMedicos(String cidade,String estado){
+        ArrayList<Medico> medico = new ArrayList<>();
+        Medico u;
+        Cursor cursor;
+        String[] campos =  {"id","dt_cont", "status","key_estado", "key_cidade", "key_clinica", "key_medico"};
+        cursor = db.query("medicos", campos, "key_cidade=? and key_estado=? and status=? ", new String[] { cidade, estado,"1" }, null, null, null, null);
+        if(cursor.getCount() > 0){
+            cursor.moveToFirst();
+
+            do{
+                u = new Medico();
+                u.setId(cursor.getString(0));
+                u.setDt_cont(cursor.getString(1));
+                u.setStatus(cursor.getString(2));
+                u.setKey_estado(cursor.getString(3));
+                u.setKey_cidade(cursor.getString(4));
+                u.setKey_clinica(cursor.getString(5));
+                u.setKey_medico(cursor.getString(6));
+                medico.add(u);
+                Log.i("testeConsulta111",cursor.getString(0));
+            }while (cursor.moveToNext());
+        }
+
+        return medico;
+    }
 
     public ArrayList<String> buscarEspec(){
         ArrayList<String> especialidades = new ArrayList();
@@ -215,9 +258,6 @@ public class BD {
 
         return consultas;
     }
-
-
-
 
 
 }

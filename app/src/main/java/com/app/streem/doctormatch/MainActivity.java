@@ -211,6 +211,7 @@ public class MainActivity extends AppCompatActivity
             bd.deleteConsulta();
             bd.deleteEspec();
             bd.deleteExame();
+            bd.deleteMedico();
             //NESSE MOMENTO -> ALTERAR CHAVE PARA AVISAR QUE DEVE BAIXAR NÓ DE CONSULTAS
             Intent intent = new Intent(MainActivity.this,LoginActivity.class);
             startActivity(intent);

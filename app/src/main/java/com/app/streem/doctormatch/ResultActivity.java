@@ -13,10 +13,14 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.app.streem.doctormatch.DAO.BD;
 import com.app.streem.doctormatch.Modelo.Consulta;
 import com.app.streem.doctormatch.DAO.Firebase;
 import com.app.streem.doctormatch.DAO.Preferencias;
 import com.app.streem.doctormatch.Adapter.ResultAdapter;
+import com.app.streem.doctormatch.Modelo.Estado;
+import com.app.streem.doctormatch.Modelo.Medico;
 import com.app.streem.doctormatch.Modelo.ResultModel;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -27,6 +31,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
 
@@ -35,7 +40,7 @@ public class ResultActivity extends AppCompatActivity {
     private RecyclerView recyclerView;
     private RecyclerView.Adapter adapter;
     private TextView semRegistro;
-    private List<ResultModel> medicos = new ArrayList<>();
+    private List<ResultModel> resultModels = new ArrayList<>();
     private ResultModel med;
     private List<Consulta> consultas = new ArrayList<>();
     private Preferencias preferencias;
@@ -44,6 +49,36 @@ public class ResultActivity extends AppCompatActivity {
     private DatePickerDialog dataPicker;
     public int contador = 0;
     public int maximo = 0;
+
+    public void atualizaMedico(){
+        final BD bd = new BD(this);
+        String dtcont_medico = preferencias.getInfo("dtcont_medico");
+        Log.i("TESTEMAIN-dtcont_medico",String.valueOf(dtcont_medico));
+
+        Firebase.getDatabaseReference().child("APP_ATUACAO").child("MEDICOS").orderByChild("dt_cont").startAt(dtcont_medico).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                if(!dataSnapshot.hasChildren()){
+                    Log.i("testeBDvalue1","noChildMED");
+                }
+                for(DataSnapshot data : dataSnapshot.getChildren()){
+                    Medico value = data.getValue(Medico.class);
+                    Log.i("testeBDvalue2",value.getId().toString());
+                    bd.inserirMedico(value);
+
+                    Date dataA = new Date();
+                    preferencias.setInfo("dtcont_medico",String.valueOf(dataA.getTime()));
+                    Log.i("TESTEMA D-dtcont_medico",String.valueOf(dataA.getTime()));
+
+                }}
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -91,14 +126,19 @@ public class ResultActivity extends AppCompatActivity {
         semRegistro.setVisibility(View.INVISIBLE);
 
         preferencias = new Preferencias(this);
+
+        final String idEstado = preferencias.getInfo("idEstado");
+        final String idCidade = preferencias.getInfo("idCidade");
+        final String espec = preferencias.getCHAVE_ESPECIALIDADE().replace(" ","");
+
         recyclerView = findViewById(R.id.RecyclerViewMedico);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
+        atualizaMedico();
+
         try {
-            buscarMedicos(preferencias.getInfo("idEstado"),
-                    preferencias.getInfo("idCidade"),
-                    preferencias.getCHAVE_ESPECIALIDADE().replace(" ",""));
+            buscarMedicos(idEstado,idCidade,espec);
         } catch (ParseException e) {
             e.printStackTrace();
         }
@@ -129,8 +169,8 @@ public class ResultActivity extends AppCompatActivity {
 
         String dataNova = dataFormatt;
 
-        medicos.clear();
-        adapter = new ResultAdapter(medicos, this, new ResultAdapter.OnItemClickListener() {
+        resultModels.clear();
+        adapter = new ResultAdapter(resultModels, this, new ResultAdapter.OnItemClickListener() {
             @Override public void onItemClick(ResultModel item) {
 
            //Toast.makeText(getApplicationContext(),"KEY: "+item.getKEY()+"/DATA: "+preferencias.getCHAVE_DATA(),Toast.LENGTH_SHORT).show();
@@ -159,28 +199,25 @@ public class ResultActivity extends AppCompatActivity {
 
         recyclerView.setAdapter(adapter);
 
-        Firebase.getDatabaseReference().child("MEDICOS").child(String.valueOf(espec)).child(String.valueOf(estado)).child(String.valueOf(cidade)).addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                if (!dataSnapshot.hasChildren()){
-                    semRegistro.setVisibility(View.VISIBLE);
-                }else{
-                    maximo = 0;
-                    for (DataSnapshot data : dataSnapshot.getChildren()){
-                        contador = 0;
-                        final String key = data.getValue().toString();
-                        contador = 0;
-                        maximo++;
-                        buscaDisponibilidade(key,d,"dataAtual",dataFormatt);
-                    }
-                }
-            }
+        BD bd = new BD(this);
+        ArrayList<Medico> medicosSQL = bd.buscarMedicos(cidade,estado);
+        ArrayList<String> medicos = new ArrayList<>();
 
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
+        Iterator<Medico> iterator = medicosSQL.iterator();
+        while(iterator.hasNext()) {
+            Medico m = iterator.next();
+            Log.i("TesteMedicosBusca",m.getId());
+            medicos.add(m.getId());
+        }
 
-            }
-        });
+        maximo = 0;
+        for (String data : medicos) {
+            contador = 0;
+            final String key = data;
+            contador = 0;
+            maximo++;
+            buscaDisponibilidade(key, d, "dataAtual", dataFormatt);
+        }
 
 
     }
@@ -222,7 +259,7 @@ public class ResultActivity extends AppCompatActivity {
                             med.setKey(key);
                             med.setValor(dataFormatt);
                             med.setData(dataN);
-                            medicos.add(med);
+                            resultModels.add(med);
                             adapter.notifyDataSetChanged();
                         }
 
@@ -258,7 +295,7 @@ public class ResultActivity extends AppCompatActivity {
             data.setText(sdf.format(myCalendar.getTime()));
             preferencias.setCHAVE_DATA(sdf.format(myCalendar.getTime()));
             try {
-                buscarMedicos(preferencias.getCHAVE_CIDADE().replace(" ",""),preferencias.getCHAVE_ESTADO().replace(" ",""), preferencias.getCHAVE_ESPECIALIDADE().replace(" ",""));
+                buscarMedicos(preferencias.getInfo("idCidade"),preferencias.getInfo("idEstado"), preferencias.getCHAVE_ESPECIALIDADE().replace(" ",""));
             } catch (ParseException e) {
                 e.printStackTrace();
             }
