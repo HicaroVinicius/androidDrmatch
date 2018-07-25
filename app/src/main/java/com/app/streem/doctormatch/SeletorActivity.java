@@ -92,7 +92,7 @@ public class SeletorActivity extends AppCompatActivity {
 
         if(tipo.equals("estado")){
             final ArrayList<Estado> estadoSQL = bd.buscarEstado();
-            ArrayList<String> estados = new ArrayList<>();
+            final ArrayList<String> estados = new ArrayList<>();
 
             Iterator<Estado> iterator = estadoSQL.iterator();
             while(iterator.hasNext()) {
@@ -102,6 +102,37 @@ public class SeletorActivity extends AppCompatActivity {
 
 
             final ArrayAdapter adapter = new ArrayAdapter(SeletorActivity.this, android.R.layout.simple_list_item_checked, estados);
+
+            String dtcont_estado = preferencias.getInfo("dtcont_estado");
+            Firebase.getDatabaseReference().child("APP_ATUACAO").child("ESTADOS").orderByChild("dt_cont").startAt(dtcont_estado).addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
+                    //Log.i("testeBDvalue1","dentroEST-"+String.valueOf(dtcont_estado));
+                    if(!dataSnapshot.hasChildren()){
+                        Log.i("testeBDvalue1","noChildEST");
+                    }else {
+                        for (DataSnapshot data : dataSnapshot.getChildren()) {
+                            Estado value = data.getValue(Estado.class);
+                            Log.i("testeBDvalue2", value.getEstado().toString());
+                            bd.inserirEstado(value);
+                            estadoSQL.add(value);
+                            estados.add(value.getEstado().toString());
+                            adapter.notifyDataSetChanged();
+                            Date dataA = new Date();
+                            preferencias.setInfo("dtcont_estado", String.valueOf(dataA.getTime()));
+                            Log.i("TESTEMA D-dtcont_estado", String.valueOf(dataA.getTime()));
+
+                        }
+                    }
+                }
+
+                @Override
+                public void onCancelled(DatabaseError databaseError) {
+
+                }
+            });
+
+
             autoCompleteCity.setDropDownHeight(0);
             autoCompleteCity.setThreshold(1);
             autoCompleteCity.setAdapter(adapter);
@@ -127,7 +158,7 @@ public class SeletorActivity extends AppCompatActivity {
         }else if(tipo.equals("cidade")){
             Log.i("testeBDConsulta2 IDD->",idEstado);
             final ArrayList<Cidade> cidadeSQL = bd.buscarCidade(idEstado);
-            ArrayList<String> cidades = new ArrayList<>();
+            final ArrayList<String> cidades = new ArrayList<>();
             Log.i("testeBDConsulta2",cidadeSQL.toString());
 
             Iterator<Cidade> iterator = cidadeSQL.iterator();
@@ -137,6 +168,7 @@ public class SeletorActivity extends AppCompatActivity {
             }
 
             final ArrayAdapter adapter = new ArrayAdapter(SeletorActivity.this, android.R.layout.simple_list_item_checked, cidades);
+
             autoCompleteCity.setDropDownHeight(0);
             autoCompleteCity.setThreshold(1);
             autoCompleteCity.setAdapter(adapter);
@@ -168,37 +200,9 @@ public class SeletorActivity extends AppCompatActivity {
 
     private void atualizarInfos() {
 
+
         String dtcont_cidade = preferencias.getInfo("dtcont_cidade");
-        String dtcont_estado = preferencias.getInfo("dtcont_estado");
-
-
         Log.i("TESTEMAIN-dtcont_cidade",String.valueOf(dtcont_cidade));
-        Log.i("TESTEMAIN-dtcont_estado",String.valueOf(dtcont_estado));
-
-        Firebase.getDatabaseReference().child("APP_ATUACAO").child("ESTADOS").orderByChild("dt_cont").startAt(dtcont_estado).addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                //Log.i("testeBDvalue1","dentroEST-"+String.valueOf(dtcont_estado));
-                if(!dataSnapshot.hasChildren()){
-                    Log.i("testeBDvalue1","noChildEST");
-                }
-                for(DataSnapshot data : dataSnapshot.getChildren()){
-                    Estado value = data.getValue(Estado.class);
-                    Log.i("testeBDvalue2",value.getEstado().toString());
-                    bd.inserirEstado(value);
-
-                    Date dataA = new Date();
-                    preferencias.setInfo("dtcont_estado",String.valueOf(dataA.getTime()));
-                    Log.i("TESTEMA D-dtcont_estado",String.valueOf(dataA.getTime()));
-
-                }}
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-
-            }
-        });
-
 
         Firebase.getDatabaseReference().child("APP_ATUACAO").child("CIDADES").orderByChild("dt_cont").startAt(dtcont_cidade).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
@@ -207,25 +211,30 @@ public class SeletorActivity extends AppCompatActivity {
                 // Log.i("testeBDvalue1","dentroCIT-"+String.valueOf(dtcont_cidade));
                 if(!dataSnapshot.hasChildren()){
                     Log.i("testeBDvalue1","noChildCIT");
+                }else {
+                    for (DataSnapshot data : dataSnapshot.getChildren()) {
+
+                        Cidade value = data.getValue(Cidade.class);
+                        Log.i("testeBDvalueEstado-", value.getKey_estado());
+                        bd.inserirCidade(value);
+
+                        Date dataA = new Date();
+                        preferencias.setInfo("dtcont_cidade", String.valueOf(dataA.getTime()));
+                        Log.i("TESTEMA D-dtcont_cidade", String.valueOf(dataA.getTime()));
+
+
+                    }
                 }
-                for(DataSnapshot data : dataSnapshot.getChildren()){
-
-                    Cidade value = data.getValue(Cidade.class);
-                    Log.i("testeBDvalue3", value.getCidade().toString());
-                    bd.inserirCidade(value);
-
-                    Date dataA = new Date();
-                    preferencias.setInfo("dtcont_cidade", String.valueOf(dataA.getTime()));
-                    Log.i("TESTEMA D-dtcont_cidade", String.valueOf(dataA.getTime()));
-
-
-                }}
+            }
 
             @Override
             public void onCancelled(DatabaseError databaseError) {
 
             }
         });
+
+
+
     }
 
     private void setValor(String value,String tipo,String idEstado,String nomeEstado,String idCidade) {

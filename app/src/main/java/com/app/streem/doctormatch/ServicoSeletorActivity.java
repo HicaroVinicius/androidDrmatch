@@ -58,19 +58,90 @@ public class ServicoSeletorActivity extends AppCompatActivity implements Consult
             }
         });
 
-        atualizaEspec();
-        atualizaExame();
+        final ArrayAdapter[] adapterAuto = new ArrayAdapter[2];
+
 
         final ArrayList<String> consulta = bd.buscarEspec();
         Log.i("testeBDConsulta",consulta.toString());
+        adapterAuto[0] = new ArrayAdapter(ServicoSeletorActivity.this, R.layout.recyclerview_servicos, consulta);
+
+        String dtcont_espec = preferencias.getInfo("dtcont_espec");
+        Date dataA = new Date();
+        Log.i("TESTEDataAtual",String.valueOf(dataA.getTime()));
+
+        Firebase.getDatabaseReference().child("APP_ATUACAO").child("ESPECIALIDADES").orderByChild("dt_cont").startAt(dtcont_espec).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+
+                //Log.i("testeBDvalue1","dentroESP");
+                if(!dataSnapshot.hasChildren()){
+                    Log.i("testeBDvalue1","noChildESP");
+                }
+                for(DataSnapshot data : dataSnapshot.getChildren()){
+                    Especialidade value = data.getValue(Especialidade.class);
+                    Log.i("testeBDvalue1",data.toString());
+                    Log.i("testeBDvalue1",data.getValue().toString());
+
+                    Log.i("testeBDvalue1",value.getNome().toString());
+                    bd.inserirEspecialidade(value);
+
+                    consulta.add(value.getNome().toString());
+                    adapterAuto[0].notifyDataSetChanged();
+
+                    Date dataA = new Date();
+                    preferencias.setInfo("dtcont_espec",String.valueOf(dataA.getTime()));
+                    Log.i("TESTEMA D-dtcont_espec",String.valueOf(dataA.getTime()));
+
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
 
         final ArrayList<String> exame = bd.buscarExame();
         Log.i("testeBDExame",exame.toString());
 
-
-        final ArrayAdapter[] adapterAuto = new ArrayAdapter[2];
-        adapterAuto[0] = new ArrayAdapter(ServicoSeletorActivity.this, R.layout.recyclerview_servicos, consulta);
         adapterAuto[1] = new ArrayAdapter(ServicoSeletorActivity.this, R.layout.recyclerview_servicos, exame);
+
+        String dtcont_exame = preferencias.getInfo("dtcont_exame");
+        dataA = new Date();
+        Log.i("TESTEDataAtual",String.valueOf(dataA.getTime()));
+        Log.i("TESTEMAIN-dtcont_exame",String.valueOf(dtcont_exame));
+
+        Firebase.getDatabaseReference().child("APP_ATUACAO").child("EXAMES").orderByChild("dt_cont").startAt(dtcont_exame).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+
+                // Log.i("testeBDvalue1","dentroCIT-"+String.valueOf(dtcont_cidade));
+                if(!dataSnapshot.hasChildren()){
+                    Log.i("testeBDvalue1","noChildEXA");
+                }
+                for(DataSnapshot data : dataSnapshot.getChildren()){
+
+                    Exame value = data.getValue(Exame.class);
+                    Log.i("testeBDvalue3", value.getNome().toString());
+                    bd.inserirExame(value);
+                    exame.add(value.getNome().toString());
+                    adapterAuto[1].notifyDataSetChanged();
+                    Date dataA = new Date();
+                    preferencias.setInfo("dtcont_exame", String.valueOf(dataA.getTime()));
+                    Log.i("TESTEMA D-dtcont_exame", String.valueOf(dataA.getTime()));
+
+
+                }
+
+
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+
 
         final AutoCompleteTextView autoCompleteTextView = findViewById(R.id.autoCompleteSeletor);
 
@@ -148,76 +219,7 @@ public class ServicoSeletorActivity extends AppCompatActivity implements Consult
 
     }
 
-    public void atualizaEspec(){
 
-        String dtcont_espec = preferencias.getInfo("dtcont_espec");
-        Date dataA = new Date();
-        Log.i("TESTEDataAtual",String.valueOf(dataA.getTime()));
-        Log.i("TESTEMAIN-dtcont_espec",String.valueOf(dtcont_espec));
-
-        Firebase.getDatabaseReference().child("APP_ATUACAO").child("ESPECIALIDADES").orderByChild("dt_cont").startAt(dtcont_espec).addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-
-                //Log.i("testeBDvalue1","dentroESP");
-                if(!dataSnapshot.hasChildren()){
-                    Log.i("testeBDvalue1","noChildESP");
-                }
-                for(DataSnapshot data : dataSnapshot.getChildren()){
-                    Especialidade value = data.getValue(Especialidade.class);
-                    Log.i("testeBDvalue1",data.toString());
-                    Log.i("testeBDvalue1",data.getValue().toString());
-
-                    Log.i("testeBDvalue1",value.getNome().toString());
-                    bd.inserirEspecialidade(value);
-
-                    Date dataA = new Date();
-                    preferencias.setInfo("dtcont_espec",String.valueOf(dataA.getTime()));
-                    Log.i("TESTEMA D-dtcont_espec",String.valueOf(dataA.getTime()));
-
-                }
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-
-            }
-        });
-    }
-
-    public void atualizaExame(){
-        String dtcont_exame = preferencias.getInfo("dtcont_exame");
-        Date dataA = new Date();
-        Log.i("TESTEDataAtual",String.valueOf(dataA.getTime()));
-        Log.i("TESTEMAIN-dtcont_exame",String.valueOf(dtcont_exame));
-
-        Firebase.getDatabaseReference().child("APP_ATUACAO").child("EXAMES").orderByChild("dt_cont").startAt(dtcont_exame).addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-
-                // Log.i("testeBDvalue1","dentroCIT-"+String.valueOf(dtcont_cidade));
-                if(!dataSnapshot.hasChildren()){
-                    Log.i("testeBDvalue1","noChildEXA");
-                }
-                for(DataSnapshot data : dataSnapshot.getChildren()){
-
-                    Exame value = data.getValue(Exame.class);
-                    Log.i("testeBDvalue3", value.getNome().toString());
-                    bd.inserirExame(value);
-
-                    Date dataA = new Date();
-                    preferencias.setInfo("dtcont_exame", String.valueOf(dataA.getTime()));
-                    Log.i("TESTEMA D-dtcont_exame", String.valueOf(dataA.getTime()));
-
-
-                }}
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-
-            }
-        });
-    }
 
 
 }
