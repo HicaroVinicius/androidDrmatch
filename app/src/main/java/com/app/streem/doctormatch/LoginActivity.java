@@ -16,7 +16,9 @@ import android.widget.Toast;
 
 import com.app.streem.doctormatch.DAO.Firebase;
 import com.app.streem.doctormatch.DAO.Preferencias;
-import com.app.streem.doctormatch.Modelo.Usuario;
+import com.app.streem.doctormatch.Modelo.Estado;
+import com.app.streem.doctormatch.Modelo.UsuarioRegistro;
+import com.app.streem.doctormatch.Modelo.UsuarioRegistro;
 import com.facebook.AccessToken;
 import com.facebook.CallbackManager;
 import com.facebook.FacebookCallback;
@@ -41,6 +43,8 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.ValueEventListener;
 
+import java.util.Date;
+
 /**
  * An example full-screen activity that shows and hides the system UI (i.e.
  * status bar and navigation/system bar) with user interaction.
@@ -52,7 +56,7 @@ public class LoginActivity extends AppCompatActivity {
     private GoogleApiClient mGoogleApiClient;
     private static final int RC_SIGN_IN = 9001;
 
-    private Usuario usuario = null;
+    private UsuarioRegistro usuario = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -125,18 +129,24 @@ public class LoginActivity extends AppCompatActivity {
 
 
 
-                    Firebase.getDatabaseReference().child("USUARIO").child(user.getUid()).child("REGISTRO").addListenerForSingleValueEvent(new ValueEventListener() {
+                    Firebase.getDatabaseReference().child("APP_USUARIOS").child("REGISTRO").child(user.getUid()).addListenerForSingleValueEvent(new ValueEventListener() {
                         @Override
                         public void onDataChange(DataSnapshot dataSnapshot) {
-                            Log.i("testeUSER2222",user.getUid().toString());
-                            usuario = dataSnapshot.getValue(Usuario.class);
+                            usuario = dataSnapshot.getValue(UsuarioRegistro.class);
                             preferencias.setUsuarioLogado(user.getUid(),user.getDisplayName(),user.getPhoneNumber());
                             preferencias.setInfo("dtcont_cidade","1");
                             preferencias.setInfo("dtcont_estado","1");
                             preferencias.setInfo("dtcont_exame","1");
                             preferencias.setInfo("dtcont_espec","1");
                             preferencias.setInfo("dtcont_medico","1");
-                            Log.i("testeUSER", user.getDisplayName()+".");
+
+                            //USER
+                            Log.i("testeUSERname",usuario.getNome());
+                            preferencias.setInfo("cpf",usuario.getCpf());
+                            preferencias.setInfo("dt_alt",usuario.getDt_alt());
+                            preferencias.setInfo("email",usuario.getEmail());
+                            preferencias.setInfo("nome",usuario.getNome());
+                            preferencias.setInfo("id",usuario.getId());
 
                         }
                         public void onCancelled(DatabaseError databaseError) {
@@ -145,7 +155,7 @@ public class LoginActivity extends AppCompatActivity {
                     });
 
 
-                    Log.i("prefLogin",user.getUid()+user.getDisplayName()+user.getPhoneNumber());
+                    //Log.i("prefLogin",user.getUid()+user.getDisplayName()+user.getPhoneNumber());
                     Intent intent = new Intent(LoginActivity.this, MainActivity.class);
                     startActivity(intent);
                     finish();

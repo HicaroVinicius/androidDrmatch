@@ -22,7 +22,7 @@ import com.app.streem.doctormatch.DAO.Firebase;
 import com.app.streem.doctormatch.DAO.Preferencias;
 import com.app.streem.doctormatch.Modelo.Consulta;
 import com.app.streem.doctormatch.Modelo.DependenteModel;
-import com.app.streem.doctormatch.Modelo.Usuario;
+import com.app.streem.doctormatch.Modelo.UsuarioRegistro;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;

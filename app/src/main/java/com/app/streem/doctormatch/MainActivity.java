@@ -106,8 +106,8 @@ public class MainActivity extends AppCompatActivity
         View headerView = navigationLatetal.getHeaderView(0);
         TextView username = (TextView) headerView.findViewById(R.id.nome_user);
         TextView useremail = (TextView) headerView.findViewById(R.id.email_user);
-        username.setText(FirebaseAuth.getInstance().getCurrentUser().getDisplayName());
-        useremail.setText(FirebaseAuth.getInstance().getCurrentUser().getEmail());
+        username.setText(preferencias.getInfo("nome"));
+        useremail.setText(preferencias.getInfo("email"));
         navigationLatetal.setNavigationItemSelectedListener(this);
 
 
@@ -120,20 +120,6 @@ public class MainActivity extends AppCompatActivity
         getMenuInflater().inflate(R.menu.activity_main_drawer, menu);
         return true;
     }
-
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        int id = item.getItemId();
-        Toast.makeText(this, "teste", Toast.LENGTH_SHORT).show();
-
-        if (id == R.id.nav_camera) {
-            Toast.makeText(MainActivity.this, "teste", Toast.LENGTH_LONG).show();
-            return true;
-        }
-        return true;
-    }
-
 
 
 
@@ -153,9 +139,10 @@ public class MainActivity extends AppCompatActivity
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
 
-        Log.i("testeNav", String.valueOf(item.getItemId()));
+        //Log.i("testeNav", String.valueOf(item.getItemId()));
 
         Fragment fragment = null;
+        Intent intent = null;
 
         switch (item.getItemId()){
 
@@ -169,7 +156,11 @@ public class MainActivity extends AppCompatActivity
                 fragment = new ExameFragment();
                 break;
             case R.id.nav_camera:
-                Intent intent = new Intent(MainActivity.this,cadastraVagaActivity.class);
+                intent = new Intent(MainActivity.this,cadastraVagaActivity.class);
+                startActivity(intent);
+                break;
+            case R.id.nav_perfil:
+                intent = new Intent(MainActivity.this,PerfilActivity.class);
                 startActivity(intent);
                 break;
             case R.id.nav_logout:

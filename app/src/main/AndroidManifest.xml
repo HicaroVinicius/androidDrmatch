@@ -67,7 +67,8 @@
         <activity android:name=".ConfirmActivity" />
         <activity android:name=".AgendConcluido" />
         <activity android:name=".cadastraVagaActivity" />
-        <activity android:name=".ServicoSeletorActivity"></activity>
+        <activity android:name=".ServicoSeletorActivity" />
+        <activity android:name=".PerfilActivity"></activity>
     </application>
 
 </manifest>
