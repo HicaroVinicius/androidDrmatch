@@ -17,6 +17,16 @@ public class ResultModel {
     private String endereco1;
     private String endereco2;
 
+    public String getDt_cont() {
+        return dt_cont;
+    }
+
+    public void setDt_cont(String dt_cont) {
+        this.dt_cont = dt_cont;
+    }
+
+    private String dt_cont;
+
     public String getData() {
         return data;
     }
@@ -27,15 +37,29 @@ public class ResultModel {
 
     private String data;
 
-    public String getKey() {
-        return key;
+    public String getId() {
+        return id;
     }
 
-    public void setKey(String key) {
-        this.key = key;
+    public void setId(String id) {
+        this.id = id;
     }
 
-    private String key;
+    private String id;
+
+    public ResultModel(String registro, String titular, String local, String valor, String url, String classif, String endereco1, String endereco2, String dt_cont, String data, String id) {
+        this.registro = registro;
+        this.titular = titular;
+        this.local = local;
+        this.valor = valor;
+        this.url = url;
+        this.classif = classif;
+        this.endereco1 = endereco1;
+        this.endereco2 = endereco2;
+        this.dt_cont = dt_cont;
+        this.data = data;
+        this.id = id;
+    }
 
     public ResultModel(){
 

@@ -7,12 +7,12 @@ package com.app.streem.doctormatch.Modelo;
 public class Medico {
 
 
-    public Medico(String id, String key_estado, String key_cidade,String key_clinica,String key_medico, String dt_cont, String status) {
+    public Medico(String id, String key_estado, String key_cidade,String key_clinica,String key_especialidade, String dt_cont, String status) {
         this.id = id;
         this.key_estado = key_estado;
         this.key_cidade = key_cidade;
         this.key_clinica = key_clinica;
-        this.key_medico = key_medico;
+        this.key_especialidade = key_especialidade;
         this.dt_cont = dt_cont;
         this.status = status;
     }
@@ -56,12 +56,12 @@ public class Medico {
         this.key_clinica = key_clinica;
     }
 
-    public String getKey_medico() {
-        return key_medico;
+    public String getKey_especialidade() {
+        return key_especialidade;
     }
 
-    public void setKey_medico(String key_medico) {
-        this.key_medico = key_medico;
+    public void setKey_especialidade(String key_especialidade) {
+        this.key_especialidade = key_especialidade;
     }
 
     public String getDt_cont() {
@@ -83,7 +83,7 @@ public class Medico {
     private String key_estado;
     private String key_cidade;
     private String key_clinica;
-    private String key_medico;
+    private String key_especialidade;
     private String dt_cont;
     private String status;
 

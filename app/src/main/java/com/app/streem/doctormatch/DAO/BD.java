@@ -12,6 +12,7 @@ import com.app.streem.doctormatch.Modelo.Especialidade;
 import com.app.streem.doctormatch.Modelo.Estado;
 import com.app.streem.doctormatch.Modelo.Exame;
 import com.app.streem.doctormatch.Modelo.Medico;
+import com.app.streem.doctormatch.Modelo.ResultModel;
 
 import java.sql.SQLData;
 import java.util.ArrayList;
@@ -36,10 +37,27 @@ public class BD {
         valores.put("key_cidade",value.getKey_cidade());
         valores.put("key_estado",value.getKey_estado());
         valores.put("key_clinica",value.getKey_clinica());
-        valores.put("key_medico",value.getKey_medico());
+        valores.put("key_especialidade",value.getKey_especialidade());
         int id = (int) db.insertWithOnConflict("medicos",null,valores,SQLiteDatabase.CONFLICT_IGNORE);
         if (id == -1) {
             db.update("medicos", valores, "id=?", new String[] {value.getId()});
+        }
+    }
+
+    public void inserirMedicoDados(ResultModel value){
+        ContentValues valores = new ContentValues();
+        valores.put("id",value.getId());
+        valores.put("endereco1",value.getEndereco1());
+        valores.put("dt_cont",value.getDt_cont());
+        valores.put("endereco2",value.getEndereco2());
+        valores.put("titular",value.getTitular());
+        valores.put("registro",value.getRegistro());
+        valores.put("url",value.getUrl());
+        valores.put("valor",value.getValor());
+        valores.put("local",value.getLocal());
+        int id = (int) db.insertWithOnConflict("medicosDados",null,valores,SQLiteDatabase.CONFLICT_IGNORE);
+        if (id == -1) {
+            db.update("medicosDados", valores, "id=?", new String[] {value.getId()});
         }
     }
 
@@ -122,12 +140,14 @@ public class BD {
     public void deleteConsulta(){ db.delete("consultas",null,null); }
     public void deleteExame(){ db.delete("exames",null,null); }
     public void deleteMedico(){ db.delete("medicos",null,null); }
+    public void deleteMedicoDados(){ db.delete("medicosDados",null,null); }
 
-    public ArrayList<Medico> buscarMedicos(String cidade,String estado){
+    public ArrayList<Medico> buscarMedicos(String cidade,String estado, String especialidade){
+        Log.i("testeResultMedico",cidade+" - "+estado+" - "+especialidade);
         ArrayList<Medico> medico = new ArrayList<>();
         Medico u;
-        Cursor cursor;
-        String[] campos =  {"id","dt_cont", "status","key_estado", "key_cidade", "key_clinica", "key_medico"};
+        Cursor cursor;                               // and key_especialidade=?
+        String[] campos =  {"id","dt_cont", "status","key_estado", "key_cidade", "key_clinica", "key_especialidade"};
         cursor = db.query("medicos", campos, "key_cidade=? and key_estado=? and status=? ", new String[] { cidade, estado,"1" }, null, null, null, null);
         if(cursor.getCount() > 0){
             cursor.moveToFirst();
@@ -140,13 +160,43 @@ public class BD {
                 u.setKey_estado(cursor.getString(3));
                 u.setKey_cidade(cursor.getString(4));
                 u.setKey_clinica(cursor.getString(5));
-                u.setKey_medico(cursor.getString(6));
+                u.setKey_especialidade(cursor.getString(6));
                 medico.add(u);
-                Log.i("testeConsulta111",cursor.getString(0));
+                Log.i("testeResultMedico-espec",cursor.getString(0)+" - "+especialidade);
             }while (cursor.moveToNext());
         }
 
         return medico;
+    }
+
+
+    public ResultModel buscarMedicosDados(String id){
+        Log.i("testeResultDados-id",id);
+        ResultModel u = null;
+        Cursor cursor;
+        String[] campos =  {"id","dt_cont","endereco1", "endereco2", "valor", "url","local", "titular", "registro"};
+        cursor = db.query("medicosDados", campos, null, null, null, null, null, null);
+        if(cursor.getCount() > 0){
+            cursor.moveToFirst();
+
+            do{
+                u = new ResultModel();
+                u.setId(cursor.getString(0));
+                u.setDt_cont(cursor.getString(1));
+                u.setEndereco1(cursor.getString(2));
+                u.setEndereco2(cursor.getString(3));
+                u.setValor(cursor.getString(4));
+                u.setUrl(cursor.getString(5));
+                u.setLocal(cursor.getString(6));
+                u.setTitular(cursor.getString(7));
+                u.setRegistro(cursor.getString(8));
+                Log.i("testeResultDados-id",cursor.getString(7));
+            }while (cursor.moveToNext());
+        }else{
+            Log.i("testeResultDados-id","seemDados");
+        }
+
+        return u;
     }
 
     public ArrayList<String> buscarEspec(){

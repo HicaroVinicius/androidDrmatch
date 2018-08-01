@@ -34,6 +34,7 @@ public class Preferencias {
     DT_CONT - Exame = dtcont_exame;
     DT_CONT - Cidade = dtcont_cidade;
     DT_CONT - Estado = dtcont_estado;
+    DT_CONT - medicoDados = dtcont_medicoDados;
 
 
     -------------ESTADO-------

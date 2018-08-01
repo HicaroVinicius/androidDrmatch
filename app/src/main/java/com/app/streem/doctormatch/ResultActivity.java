@@ -50,35 +50,6 @@ public class ResultActivity extends AppCompatActivity {
     public int contador = 0;
     public int maximo = 0;
 
-    public void atualizaMedico(){
-        final BD bd = new BD(this);
-        String dtcont_medico = preferencias.getInfo("dtcont_medico");
-        Log.i("TESTEMAIN-dtcont_medico",String.valueOf(dtcont_medico));
-
-        Firebase.getDatabaseReference().child("APP_ATUACAO").child("MEDICOS").orderByChild("dt_cont").startAt(dtcont_medico).addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                if(!dataSnapshot.hasChildren()){
-                    Log.i("testeBDvalue1","noChildMED");
-                }
-                for(DataSnapshot data : dataSnapshot.getChildren()){
-                    Medico value = data.getValue(Medico.class);
-                    Log.i("testeBDvalue2",value.getId().toString());
-                    bd.inserirMedico(value);
-
-                    Date dataA = new Date();
-                    preferencias.setInfo("dtcont_medico",String.valueOf(dataA.getTime()));
-                    Log.i("TESTEMA D-dtcont_medico",String.valueOf(dataA.getTime()));
-
-                }}
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-
-            }
-        });
-
-    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -135,13 +106,41 @@ public class ResultActivity extends AppCompatActivity {
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
-        atualizaMedico();
+        final BD bd = new BD(this);
+        String dtcont_medico = preferencias.getInfo("dtcont_medico");
+        Log.i("TESTEMAIN-dtcont_medico",String.valueOf(dtcont_medico));
 
-        try {
-            buscarMedicos(idEstado,idCidade,espec);
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
+        Firebase.getDatabaseReference().child("APP_ATUACAO").child("MEDICOS").orderByChild("dt_cont").startAt(dtcont_medico).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                if(!dataSnapshot.hasChildren()){
+                    Log.i("testeBDvalue1","noChildMED");
+                }
+                for(DataSnapshot data : dataSnapshot.getChildren()){
+                    Medico value = data.getValue(Medico.class);
+                    Log.i("testeBDvalue2",value.getId().toString());
+                    bd.inserirMedico(value);
+
+                    Date dataA = new Date();
+                    preferencias.setInfo("dtcont_medico",String.valueOf(dataA.getTime()));
+                    Log.i("TESTEMA D-dtcont_medico",String.valueOf(dataA.getTime()));
+
+
+                }
+
+                try {
+                    buscarMedicos(idEstado,idCidade,espec);
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+
         data.setText(preferencias.getCHAVE_DATA());
     }
 
@@ -181,7 +180,7 @@ public class ResultActivity extends AppCompatActivity {
             newPage.putExtra("registro",item.getRegistro().toString());
             newPage.putExtra("classif",item.getClassif().toString());
             newPage.putExtra("url",item.getUrl());
-            newPage.putExtra("key",item.getKey());
+            newPage.putExtra("key",item.getId());
             newPage.putExtra("valor",item.getValor());
             newPage.putExtra("dataFormatt",dataFormatt);
             newPage.putExtra("dataFormatt2",dataFormatt2);
@@ -200,35 +199,27 @@ public class ResultActivity extends AppCompatActivity {
         recyclerView.setAdapter(adapter);
 
         BD bd = new BD(this);
-        ArrayList<Medico> medicosSQL = bd.buscarMedicos(cidade,estado);
+        ArrayList<Medico> medicosSQL = bd.buscarMedicos(cidade,estado,espec);
         ArrayList<String> medicos = new ArrayList<>();
-
         Iterator<Medico> iterator = medicosSQL.iterator();
         while(iterator.hasNext()) {
             Medico m = iterator.next();
             Log.i("TesteMedicosBusca",m.getId());
-            medicos.add(m.getId());
-        }
-
-        maximo = 0;
-        for (String data : medicos) {
-            contador = 0;
-            final String key = data;
-            contador = 0;
-            maximo++;
-            buscaDisponibilidade(key, d, "dataAtual", dataFormatt);
+            contador = 1;
+            buscaDisponibilidade(m, d, "dataAtual", dataFormatt);
         }
 
 
     }
 
-    public Boolean buscaDisponibilidade(final String key, final Date d, final String dataFormatt, final String dataN){
-        Firebase.getDatabaseReference().child("CLIENTES").child(key).child("AGENDAMENTO").child(String.valueOf(d.getTime())).orderByChild("status").equalTo("Disponível").addListenerForSingleValueEvent(new ValueEventListener() {
+    public Boolean buscaDisponibilidade(final Medico key, final Date d, final String dataFormatt, final String dataN){
+        Log.i("TESTEinput",key.getKey_clinica()+"-"+key.getId()+"-"+String.valueOf(d.getTime()));
+        Firebase.getDatabaseReference().child("CRM").child(key.getKey_clinica()).child("AGENDAMENTO").child("MEDICO").child(key.getId()).child(String.valueOf(d.getTime())).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 if (!dataSnapshot.hasChildren()){
                     //vaga indisponível, busca o proximo o dia
-                    if(contador<=maximo*7){
+                    if(contador < 7){
 
                         String dataString = String.valueOf(d.getTime());
 
@@ -240,7 +231,7 @@ public class ResultActivity extends AppCompatActivity {
                         final String novoFormatt = format.format(novaData.getTime());
 
                         buscaDisponibilidade(key,novaData,novoFormatt,novoFormatt);
-                        Log.i("TESTEMEDnewDAta",String.valueOf(data));
+                        Log.i("TESTEMEDnewDAta",String.valueOf(novoFormatt));
                         Log.i("TESTEMEDnewDAtaCont",String.valueOf(contador));
                         contador++;
 
@@ -250,26 +241,56 @@ public class ResultActivity extends AppCompatActivity {
                     }
 
                 }else{
-                    //vaga disponível, busca os dados
-                    Firebase.getDatabaseReference().child("CLIENTES").child(key).child("DADOS").addListenerForSingleValueEvent(new ValueEventListener() {
+                    Log.i("TESTEmedRESULTdadoos",key.getKey_clinica()+"-"+key.getId());
+                    Firebase.getDatabaseReference().child("CRM").child(key.getKey_clinica()).child("CONFIG").child("DADOS_MED_LAB").orderByKey().equalTo(key.getId()).limitToFirst(1).addListenerForSingleValueEvent(new ValueEventListener() {
                         @Override
                         public void onDataChange(DataSnapshot dataSnapshot) {
-                            ResultModel med = dataSnapshot.getValue(ResultModel.class);
-                            Log.i("TESTEmedRESULT",dataSnapshot.getValue().toString());
-                            med.setKey(key);
-                            med.setValor(dataFormatt);
-                            med.setData(dataN);
-                            resultModels.add(med);
+                            Log.i("TESTEmedRESULTdadoos",dataSnapshot.toString());
+                            if(!dataSnapshot.hasChildren()){
+                                Log.i("testeBDvalue1","Medico sem Dados - CRM");
+                            }
+                            for(DataSnapshot data : dataSnapshot.getChildren()){
+                                ResultModel value = data.getValue(ResultModel.class);
+                                if(Long.valueOf(value.getDt_cont()) > Long.valueOf(preferencias.getInfo("dtcont_medicoDados"))){
+                                    BD bd = new BD(getApplicationContext());
+                                    bd.inserirMedicoDados(value);
+                                    Date dataA = new Date();
+                                    preferencias.setInfo("dtcont_medicoDados",String.valueOf(dataA.getTime()));
+                                    Log.i("TESTedtcont_medicoDados",String.valueOf(dataA.getTime()));
+                                    Log.i("testeBDdadosmedico",value.getTitular() +"antes- "+value.getDt_cont()+" -depois- "+preferencias.getInfo("dtcont_medicoDados"));
+                                }
+
+                            }
+
+
+                            BD bd = new BD(getApplicationContext());
+                            ResultModel med = bd.buscarMedicosDados(key.getId());
+                            ResultModel medico = new ResultModel();
+                            try {
+                                medico.setRegistro(med.getRegistro());
+                                medico.setTitular(med.getTitular());
+                                medico.setLocal(med.getLocal());
+                                medico.setEndereco1(med.getEndereco1());
+                                medico.setEndereco2(med.getEndereco2());
+                                medico.setUrl(med.getUrl());
+                                medico.setId(med.getId());
+                            }catch (Exception e){
+                                Log.i("TESTERESULT-ERRO",e.getMessage());
+                            }
+                            medico.setValor(dataFormatt);
+                            medico.setData(dataN);
+                            resultModels.add(medico);
                             adapter.notifyDataSetChanged();
+
                         }
 
                         @Override
                         public void onCancelled(DatabaseError databaseError) {
-                            Log.i("TESTEMED",databaseError.getDetails());
+
                         }
                     });
 
-                    return;
+
                 }
             }
 

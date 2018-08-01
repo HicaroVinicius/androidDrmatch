@@ -139,6 +139,7 @@ public class LoginActivity extends AppCompatActivity {
                             preferencias.setInfo("dtcont_exame","1");
                             preferencias.setInfo("dtcont_espec","1");
                             preferencias.setInfo("dtcont_medico","1");
+                            preferencias.setInfo("dtcont_medicoDados","1");
 
                             //USER
                             Log.i("testeUSERname",usuario.getNome());

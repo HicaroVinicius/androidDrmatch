@@ -1,6 +1,7 @@
 package com.app.streem.doctormatch.Adapter;
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -58,7 +59,11 @@ public class ResultAdapter extends RecyclerView.Adapter<ResultAdapter.ResultView
         }else {
             holder.valor.setText("Disponível a partir de " + String.valueOf(medicos.getValor()));
         }
-        Picasso.with(context).load(medicos.getUrl()).into(holder.fotoResultID);
+        if( medicos.getUrl().isEmpty() ){
+            Log.i("TesteResultAdapter","Sem URL"+medicos.getUrl());
+        }else{
+            Picasso.with(context).load(medicos.getUrl()).into(holder.fotoResultID);
+        }
       /*  holder.valor.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

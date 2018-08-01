@@ -23,6 +23,14 @@
           }
         },
         {
+          "client_id": "593070550286-a16fsjtrta22qu8n3m8p2nvmbb93tv8d.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.app.streem.doctormatch",
+            "certificate_hash": "257b3ad373296ed957fff3c0d880aabd7c47429c"
+          }
+        },
+        {
           "client_id": "593070550286-lafa5u46upc4tde3ckuvisq1dguapfbh.apps.googleusercontent.com",
           "client_type": 3
         }
