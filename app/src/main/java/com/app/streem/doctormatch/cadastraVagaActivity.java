@@ -129,8 +129,8 @@ public class cadastraVagaActivity extends AppCompatActivity {
                 }else{
 
                     String key = Firebase.getDatabaseReference().child("CLIENTES").child(Medico.getText().toString()).child("AGENDAMENTO").child(String.valueOf(d.getTime())).push().getKey();
-                    VagasModel vaga = new VagasModel("","Disponível",hora.getText().toString(),key,String.valueOf(d.getTime()),"");
-                    Firebase.getDatabaseReference().child("CLIENTES").child(Medico.getText().toString()).child("AGENDAMENTO").child(String.valueOf(d.getTime())).child(key).setValue(vaga);
+                    //VagasModel vaga = new VagasModel("","Disponível",hora.getText().toString(),key,String.valueOf(d.getTime()),"");
+                    //Firebase.getDatabaseReference().child("CLIENTES").child(Medico.getText().toString()).child("AGENDAMENTO").child(String.valueOf(d.getTime())).child(key).setValue(vaga);
 
                     Firebase.getDatabaseReference().child("VAGAS").child(Estado.getText().toString().replace(" ","")).child(Cidade.getText().toString().replace(" ","")).child(Espec.getText().toString().replace(" ","")).child(String.valueOf(d.getTime())).child(Medico.getText().toString()).child(key).setValue(hora.getText().toString());
 

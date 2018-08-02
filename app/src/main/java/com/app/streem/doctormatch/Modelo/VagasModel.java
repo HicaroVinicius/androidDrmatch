@@ -6,11 +6,27 @@ package com.app.streem.doctormatch.Modelo;
 
 public class VagasModel {
 
+    private String id;
+    private String hora;
+    private String key_pac;
+    private String key_ui_pac;
+    private String cpf;
+    private String status;
+    private String tipo;
+    private String tp_vaga;
+    private long mili;
+
     public VagasModel() {
 
     }
 
+    public String getId() {
+        return id;
+    }
 
+    public void setId(String id) {
+        this.id = id;
+    }
 
     public String getHora() {
         return hora;
@@ -20,28 +36,28 @@ public class VagasModel {
         this.hora = hora;
     }
 
-    public String getData() {
-        return data;
+    public String getKey_pac() {
+        return key_pac;
     }
 
-    public void setData(String data) {
-        this.data = data;
+    public void setKey_pac(String key_pac) {
+        this.key_pac = key_pac;
     }
 
-    public String getKey() {
-        return key;
+    public String getKey_ui_pac() {
+        return key_ui_pac;
     }
 
-    public void setKey(String key) {
-        this.key = key;
+    public void setKey_ui_pac(String key_ui_pac) {
+        this.key_ui_pac = key_ui_pac;
     }
 
-    public String getKey_cliente() {
-        return key_cliente;
+    public String getCpf() {
+        return cpf;
     }
 
-    public void setKey_cliente(String key_cliente) {
-        this.key_cliente = key_cliente;
+    public void setCpf(String cpf) {
+        this.cpf = cpf;
     }
 
     public String getStatus() {
@@ -52,30 +68,27 @@ public class VagasModel {
         this.status = status;
     }
 
-
-
-    private String key_cliente;
-    private String status;
-    private String hora;
-    private String key;
-    private String data;
-
-    public String getNome() {
-        return nome;
+    public String getTipo() {
+        return tipo;
     }
 
-    public void setNome(String nome) {
-        this.nome = nome;
+    public void setTipo(String tipo) {
+        this.tipo = tipo;
     }
 
-    private String nome;
+    public String getTp_vaga() {
+        return tp_vaga;
+    }
 
-    public VagasModel(String key_cliente, String status, String hora, String key, String data, String nome) {
-        this.key_cliente = key_cliente;
-        this.status = status;
-        this.hora = hora;
-        this.key = key;
-        this.data = data;
-        this.nome = nome;
+    public void setTp_vaga(String tp_vaga) {
+        this.tp_vaga = tp_vaga;
+    }
+
+    public long getMili() {
+        return mili;
+    }
+
+    public void setMili(long mili) {
+        this.mili = mili;
     }
 }

@@ -25,8 +25,11 @@ import com.app.streem.doctormatch.DAO.Firebase;
 import com.app.streem.doctormatch.DAO.Preferencias;
 import com.app.streem.doctormatch.Modelo.DependenteModel;
 import com.app.streem.doctormatch.Modelo.VagasModel;
+import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.makeramen.roundedimageview.RoundedImageView;
 import com.squareup.picasso.Picasso;
@@ -62,36 +65,34 @@ public class DetailActivity extends AppCompatActivity {
     private String dayWeek;
     private String dataNova;
     private String dataFormattNovo;
+    private String key_clinic;
+    private String key_medico;
+    private ChildEventListener agendaRealTime;
+    private DatabaseReference referenceAgend;
 
+    @Override
+    protected void onStop() {
+        super.onStop();
+        referenceAgend.removeEventListener(agendaRealTime);
+        Log.i("linterener removido"," ahahahah");
 
+    }
 
-    public void atualizarHorarios(final String data, String key){
-        Firebase.getDatabaseReference().child("CLIENTES").child(key).child("AGENDAMENTO").child(data).orderByChild("hora").addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                for (DataSnapshot data1 : dataSnapshot.getChildren()) {
-                    VagasModel vaga = data1.getValue(VagasModel.class);
-                        if (vaga.getStatus().equals("Disponível")) {
-                            vagasList.add(vaga);
-                            adapter.notifyDataSetChanged();
-                        }
+    public void ordenarLista(){
+        //falta fazer
+    }
 
-                    }
+    public void atualizarHorarios(final String data){
+        Log.i("add"," ahahahah");
+        referenceAgend = FirebaseDatabase.getInstance().getReference().child("CRM").child(key_clinic).child("AGENDAMENTO").child("MEDICO").child(key_medico).child(data);
 
-
-            }
-            public void onCancelled(DatabaseError databaseError) {
-
-            }
-        });
+        referenceAgend.addChildEventListener(agendaRealTime);
 
     }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-
 
         Intent dados = getIntent();
         final String titular = dados.getStringExtra("titular");
@@ -148,7 +149,79 @@ public class DetailActivity extends AppCompatActivity {
 
         weekCalendar = findViewById(R.id.weekCalendarDetails);
 
+        key_clinic = preferencias.getInfo("key_clinic");
+        key_medico = preferencias.getInfo("key_medico");
 
+        agendaRealTime = new ChildEventListener() {
+            @Override
+            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+                VagasModel vaga = dataSnapshot.getValue(VagasModel.class);
+                if(vaga.getTp_vaga().equals("2") && vaga.getStatus().equals("1")) {
+                    vagasList.add(vaga);
+                    adapter.notifyDataSetChanged();
+                }
+            }
+
+            @Override
+            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+                VagasModel vaga = dataSnapshot.getValue(VagasModel.class);
+
+                if(vaga.getTp_vaga().equals("2") && vaga.getStatus().equals("1")) {
+                    int tm = vagasList.size();
+                    if(tm > 0) {
+                        for (int i = 0; i < vagasList.size(); i++) {
+                            if (vagasList.get(i).getId().equals(vaga.getId())) {
+                                vagasList.set(i, vaga);
+                                ordenarLista();
+                                adapter.notifyItemChanged(i);
+                                tm++;
+                                break;
+                            }
+                        }
+                        if(tm == vagasList.size()){
+                            vagasList.add(vaga);
+                            ordenarLista();
+                            adapter.notifyDataSetChanged();
+                        }
+                    }else{
+                        vagasList.add(vaga);
+                        ordenarLista();
+                        adapter.notifyDataSetChanged();
+                    }
+                }else{
+                    for (int i = 0; i < vagasList.size(); i++) {
+                        if (vagasList.get(i).getId().equals(vaga.getId())) {
+                            vagasList.remove(i);
+                            ordenarLista();
+                            adapter.notifyItemRemoved(i);
+                            break;
+                        }
+                    }
+                }
+            }
+
+            @Override
+            public void onChildRemoved(DataSnapshot dataSnapshot) {
+                VagasModel vaga = dataSnapshot.getValue(VagasModel.class);
+                for (int i = 0; i < vagasList.size(); i++) {
+                    if (vagasList.get(i).getId().equals(vaga.getId())) {
+                        vagasList.remove(i);
+                        adapter.notifyItemRemoved(i);
+                        break;
+                    }
+                }
+            }
+
+            @Override
+            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        };
 
 
         horaView.setHasFixedSize(true);
@@ -172,7 +245,7 @@ public class DetailActivity extends AppCompatActivity {
 
         weekCalendar.setStartDate(dt);
         atualizaSemana(dt);
-        atualizarHorarios(String.valueOf(d.getTime()),key);
+        atualizarHorarios(String.valueOf(d.getTime()));
 
         dataFormattNovo = dataDisp;
 
@@ -195,7 +268,8 @@ public class DetailActivity extends AppCompatActivity {
                 dataNova = String.valueOf(d.getTime());
                 vagasList.clear();
                 adapter.notifyDataSetChanged();
-                atualizarHorarios(String.valueOf(d.getTime()),key);
+                referenceAgend.removeEventListener(agendaRealTime);
+                atualizarHorarios(String.valueOf(d.getTime()));
 
             }
 
@@ -241,7 +315,7 @@ public class DetailActivity extends AppCompatActivity {
 
 
                 confirmar.putExtra("hora",item.getHora());
-                confirmar.putExtra("keyHora",item.getKey());
+                confirmar.putExtra("keyHora",item.getId());
                 startActivity(confirmar);
             }
         });
