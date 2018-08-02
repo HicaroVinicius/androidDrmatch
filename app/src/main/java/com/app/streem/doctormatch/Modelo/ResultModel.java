@@ -35,6 +35,7 @@ public class ResultModel {
 
     private String key_clinic;
     private String key_medico;
+    private String dataResult;
 
     public String getDt_cont() {
         return dt_cont;

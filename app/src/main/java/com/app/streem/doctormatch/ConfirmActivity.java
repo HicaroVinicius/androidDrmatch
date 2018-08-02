@@ -26,6 +26,7 @@ import com.app.streem.doctormatch.Modelo.UsuarioRegistro;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.makeramen.roundedimageview.RoundedImageView;
 import com.squareup.picasso.Picasso;
@@ -91,6 +92,7 @@ public class ConfirmActivity extends AppCompatActivity {
             }
         }
     };
+
 
 
     @Override
@@ -313,6 +315,68 @@ public class ConfirmActivity extends AppCompatActivity {
         Intent intent = new Intent(ConfirmActivity.this,MainActivity.class);
         startActivity(intent);
         finish();
+
+    }
+
+    @Override
+    public void onBackPressed() {
+
+        AlertDialog.Builder confirm = new AlertDialog.Builder(ConfirmActivity.this);
+        confirm.setTitle("Deseja sair sem confirmar?");
+        confirm.setMessage("Saindo sem confirmar, não será possível garantir sua vaga.").setCancelable(true);
+        confirm.setNegativeButton("Não", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                Log.i("testeConfirm","mudando status");
+                return;
+            }
+        });
+
+        confirm.setPositiveButton("Sim", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+
+                Intent dados = getIntent();
+                final String data = dados.getStringExtra("data");
+                final String keyHora = dados.getStringExtra("keyHora");
+                preferencias = new Preferencias(getApplicationContext());
+                String key_clinic = preferencias.getInfo("key_clinic");
+                String key_medico = preferencias.getInfo("key_medico");
+
+                Log.i("testeConfirm","mudando status"+" - data -"+data+" - keyHora -"+keyHora+" - key_clinic -"+key_clinic+" - key_medico -"+key_medico);
+
+                FirebaseDatabase.getInstance().getReference().child("CRM").child(key_clinic).child("AGENDAMENTO").child("MEDICO").child(key_medico).child(data).child(keyHora).child("status").setValue("1");
+
+                Intent intent = new Intent(ConfirmActivity.this,MainActivity.class);
+                startActivity(intent);
+
+            }
+        });
+
+        AlertDialog alertDialog = confirm.create();
+        alertDialog.show();
+
+
+    }
+
+    @Override
+    protected void onStop() {
+        Toast.makeText(this, "Agendamento cancelado...", Toast.LENGTH_SHORT).show();
+        super.onStop();
+
+        Intent dados = getIntent();
+        final String data = dados.getStringExtra("data");
+        final String keyHora = dados.getStringExtra("keyHora");
+        preferencias = new Preferencias(getApplicationContext());
+        String key_clinic = preferencias.getInfo("key_clinic");
+        String key_medico = preferencias.getInfo("key_medico");
+
+        Log.i("testeConfirm","mudando status"+" - data -"+data+" - keyHora -"+keyHora+" - key_clinic -"+key_clinic+" - key_medico -"+key_medico);
+
+        FirebaseDatabase.getInstance().getReference().child("CRM").child(key_clinic).child("AGENDAMENTO").child("MEDICO").child(key_medico).child(data).child(keyHora).child("status").setValue("1");
+
+        Intent intent = new Intent(ConfirmActivity.this,MainActivity.class);
+        startActivity(intent);
 
     }
 

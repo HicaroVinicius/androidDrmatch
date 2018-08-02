@@ -194,6 +194,7 @@ public class ResultActivity extends AppCompatActivity {
             preferencias.setInfo("key_medico",item.getKey_medico());
 
             newPage.putExtra("data",String.valueOf(d.getTime()));
+            Log.i("TESTERESULT-data",String.valueOf(d.getTime()));
             startActivity(newPage);
 
             }} );

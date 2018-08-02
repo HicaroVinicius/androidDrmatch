@@ -111,7 +111,9 @@ public class DetailActivity extends AppCompatActivity {
         final String espec = dados.getStringExtra("espec");
         final String valor = dados.getStringExtra("valor");
 
-        dataNova = data;
+        //dataNova = data;
+
+
 
 
         setContentView(R.layout.activity_detail);
@@ -247,6 +249,8 @@ public class DetailActivity extends AppCompatActivity {
         atualizaSemana(dt);
         atualizarHorarios(String.valueOf(d.getTime()));
 
+        dataNova = String.valueOf(d.getTime());
+
         dataFormattNovo = dataDisp;
 
         weekCalendar.setOnDateClickListener(new OnDateClickListener() {
@@ -290,6 +294,10 @@ public class DetailActivity extends AppCompatActivity {
         adapter = new VagasAdapter(vagasList, getApplicationContext(), new VagasAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(VagasModel item) {
+
+                Log.i("TESTE-DETAIL-data",dataNova);
+                FirebaseDatabase.getInstance().getReference().child("CRM").child(key_clinic).child("AGENDAMENTO").child("MEDICO").child(key_medico).child(dataNova).child(item.getId()).child("status").setValue("2");
+
                 //Toast.makeText(getApplicationContext(),nome,Toast.LENGTH_SHORT).show();
                 Intent confirmar = new Intent(DetailActivity.this,ConfirmActivity.class);
                 confirmar.putExtra("titular",titular);
@@ -316,6 +324,7 @@ public class DetailActivity extends AppCompatActivity {
 
                 confirmar.putExtra("hora",item.getHora());
                 confirmar.putExtra("keyHora",item.getId());
+
                 startActivity(confirmar);
             }
         });
