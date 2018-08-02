@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    android:orientation="vertical"
+<android.support.constraint.ConstraintLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
@@ -26,16 +25,15 @@
 
             <TextView
                 android:id="@+id/textView2"
-                android:layout_width="280dp"
+                android:layout_width="300dp"
                 android:layout_height="2dp"
                 android:layout_marginBottom="8dp"
-                android:layout_marginStart="32dp"
                 android:layout_marginTop="15dp"
                 android:background="@color/colorAccent"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toStartOf="@+id/constraintLayout"
                 app:layout_constraintHorizontal_bias="1.0"
-                app:layout_constraintStart_toStartOf="@+id/fotoDetails"
+                app:layout_constraintStart_toEndOf="@+id/fotoDetails"
                 app:layout_constraintTop_toTopOf="@+id/constraintLayout"
                 app:layout_constraintVertical_bias="0.0" />
 
@@ -220,4 +218,4 @@
 
         </android.support.constraint.ConstraintLayout>
     </android.support.v7.widget.CardView>
-</LinearLayout>
+</android.support.constraint.ConstraintLayout>
