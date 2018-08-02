@@ -178,7 +178,7 @@ public class ResultActivity extends AppCompatActivity {
             newPage.putExtra("end1",item.getEndereco1().toString());
             newPage.putExtra("end2",item.getEndereco2().toString());
             newPage.putExtra("registro",item.getRegistro().toString());
-            newPage.putExtra("classif",item.getClassif().toString());
+           // newPage.putExtra("classif",item.getClassif().toString());
             newPage.putExtra("url",item.getUrl());
             newPage.putExtra("key",item.getId());
             newPage.putExtra("valor",item.getValor());
@@ -188,6 +188,10 @@ public class ResultActivity extends AppCompatActivity {
             newPage.putExtra("cidade",cidade);
             newPage.putExtra("estado",estado);
             newPage.putExtra("espec",espec);
+
+            Log.i("TESTERESULT-key_clinic",item.getKey_clinic());
+            preferencias.setInfo("key_clinic",item.getKey_clinic());
+            preferencias.setInfo("key_medico",item.getKey_medico());
 
             newPage.putExtra("data",String.valueOf(d.getTime()));
             startActivity(newPage);
@@ -279,6 +283,8 @@ public class ResultActivity extends AppCompatActivity {
                             }
                             medico.setValor(dataFormatt);
                             medico.setData(dataN);
+                            medico.setKey_clinic(key.getKey_clinica());
+                            medico.setKey_medico(key.getId());
                             resultModels.add(medico);
                             adapter.notifyDataSetChanged();
 

@@ -17,6 +17,25 @@ public class ResultModel {
     private String endereco1;
     private String endereco2;
 
+    public String getKey_clinic() {
+        return key_clinic;
+    }
+
+    public void setKey_clinic(String key_clinic) {
+        this.key_clinic = key_clinic;
+    }
+
+    public String getKey_medico() {
+        return key_medico;
+    }
+
+    public void setKey_medico(String key_medico) {
+        this.key_medico = key_medico;
+    }
+
+    private String key_clinic;
+    private String key_medico;
+
     public String getDt_cont() {
         return dt_cont;
     }
@@ -47,7 +66,7 @@ public class ResultModel {
 
     private String id;
 
-    public ResultModel(String registro, String titular, String local, String valor, String url, String classif, String endereco1, String endereco2, String dt_cont, String data, String id) {
+    public ResultModel(String registro, String titular, String local, String valor, String url, String classif, String endereco1, String endereco2, String dt_cont, String data, String id,String key_clinic,String key_medico) {
         this.registro = registro;
         this.titular = titular;
         this.local = local;
@@ -59,6 +78,8 @@ public class ResultModel {
         this.dt_cont = dt_cont;
         this.data = data;
         this.id = id;
+        this.key_clinic = key_clinic;
+        this.key_medico = key_medico;
     }
 
     public ResultModel(){
