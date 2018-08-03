@@ -22,6 +22,7 @@ import com.app.streem.doctormatch.DAO.Firebase;
 import com.app.streem.doctormatch.DAO.Preferencias;
 import com.app.streem.doctormatch.Modelo.Consulta;
 import com.app.streem.doctormatch.Modelo.DependenteModel;
+import com.app.streem.doctormatch.Modelo.ResultModel;
 import com.app.streem.doctormatch.Modelo.UsuarioRegistro;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
@@ -32,6 +33,7 @@ import com.makeramen.roundedimageview.RoundedImageView;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 public class ConfirmActivity extends AppCompatActivity {
@@ -51,7 +53,7 @@ public class ConfirmActivity extends AppCompatActivity {
     private ImageView imgAdd;
     private ImageView imgTrocar;
 
-
+    private boolean isConclusion = false;
 
     private Spinner spinner;
     private Preferencias preferencias;
@@ -71,8 +73,8 @@ public class ConfirmActivity extends AppCompatActivity {
         public void onCheckedChanged(RadioGroup group, int checkedId) {
             switch (checkedId) {
                 case R.id.proprioConfirm:
-                    nomeDep = preferencias.getCHAVE_NOME_USUARIO();
-                    //Toast.makeText(ConfirmActivity.this, nomeDep, Toast.LENGTH_SHORT).show();
+                    nomeDep = preferencias.getInfo("nome");
+                    Log.i("TESTE-confirmNome",nomeDep);
                     nomeProprio.setVisibility(View.VISIBLE);
                     fotoProprio.setVisibility(View.VISIBLE);
                     spinner.setVisibility(View.INVISIBLE);
@@ -148,8 +150,8 @@ public class ConfirmActivity extends AppCompatActivity {
         nomeProprio = findViewById(R.id.nomeProprioConfirm);
         fotoProprio = findViewById(R.id.fotoPacienteConfirm);
 
-        nomeProprio.setText(preferencias.getCHAVE_NOME_USUARIO());
-        nomeDep = preferencias.getCHAVE_NOME_USUARIO();
+        nomeProprio.setText(preferencias.getInfo("nome"));
+        nomeDep = preferencias.getInfo("nome");
         preferencias = new Preferencias(this);
 
         titularDetails = findViewById(R.id.nomeMedicoConfirm);
@@ -171,6 +173,7 @@ public class ConfirmActivity extends AppCompatActivity {
         final String url = dados.getStringExtra("url");
         final String hora = dados.getStringExtra("hora");
         final String keyHora = dados.getStringExtra("keyHora");
+        final String KEY_AGEND = dados.getStringExtra("KEY_AGEND");
         final String nome = dados.getStringExtra("nome");
         final String cidade = dados.getStringExtra("cidade");
         final String estado = dados.getStringExtra("estado");
@@ -261,7 +264,7 @@ public class ConfirmActivity extends AppCompatActivity {
                     confirm.setPositiveButton("Confirmar", new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
-                            confirmar(data,keyMedico,cidade,estado,espec,keyHora,nomeDep,titular,inf);
+                            confirmar(data,keyMedico,cidade,estado,espec,keyHora,nomeDep,titular,inf,hora);
                             Log.i("testeConfirm",data+keyMedico+cidade+estado+espec+keyHora+nomeDep+titular+hora+dataFormatt);
                             Intent intent = new Intent(ConfirmActivity.this,AgendConcluido.class);
                             startActivity(intent);
@@ -281,38 +284,39 @@ public class ConfirmActivity extends AppCompatActivity {
 
     }
 
-    public void confirmar(String data, String keyMedico, String cidade, String estado, String espec, String keyHora, final String nomeUser,String nomeMedico, String info){
+    public void confirmar(String data, String keyMedico, String cidade, String estado, String espec, String keyHora, final String nomeUser,String nomeMedico, String info,String hora){
 
         Log.i("testeRemove",estado+"-"+cidade+"-"+espec+"-"+data+"-"+keyMedico+"-"+keyHora);
+        preferencias = new Preferencias(getApplicationContext());
+        String key_clinic = preferencias.getInfo("key_clinic");
+        String key_medico = preferencias.getInfo("key_medico");
+        String especialidade = preferencias.getCHAVE_ESPECIALIDADE();
+        String tipo = preferencias.getInfo("tipo");
 
-       // Firebase.getDatabaseReference().child("VAGAS").child(estado).child(cidade).child(espec).child(data).child(keyMedico).child(keyHora).removeValue();
+        Date dataA = new Date();
 
-        Firebase.getDatabaseReference().child("CLIENTES").child(keyMedico).child("AGENDAMENTO").child(data).child(keyHora).child("status").addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                dataSnapshot.getRef().setValue("Indisponível");
-                Log.i("testeStatus",dataSnapshot.toString());
-            }
+        String uid = preferencias.getInfo("id");
+        String cpf = preferencias.getInfo("cpf");
 
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
+        Firebase.getDatabaseReference().child("CRM").child(key_clinic).child("AGENDAMENTO").child("GERAL").child(keyHora).child("status").setValue("2");
+        //ResultModel result = new ResultModel();
+        Firebase.getDatabaseReference().child("CRM").child(key_clinic).child("AGENDAMENTO").child("MEDICO").child(key_medico).child(data).child(keyHora).child("cpf").setValue(cpf);
+        Firebase.getDatabaseReference().child("CRM").child(key_clinic).child("AGENDAMENTO").child("MEDICO").child(key_medico).child(data).child(keyHora).child("key_ui_app").setValue(uid);
+        Firebase.getDatabaseReference().child("CRM").child(key_clinic).child("AGENDAMENTO").child("MEDICO").child(key_medico).child(data).child(keyHora).child("status").setValue("2");
 
-            }
-        });
+        String key = Firebase.getDatabaseReference().child("APP_USUARIOS").child("CONSULTAS").child(uid).push().getKey();
+        //KEY,  KEY_CLINIC,  KEY_MEDICO,  NOME_MEDICO,  DT_AGEND,  KEY_AGEND,  HORA,  ESPECIALIDADE,  STATUS,  DT_CONT
+        Consulta nova = new Consulta(key,key_clinic,key_medico,nomeMedico,data,keyHora,hora,especialidade,"1",String.valueOf(dataA.getTime()));
 
-        final BD bd = new BD(this);
-
-        Firebase.getDatabaseReference().child("CLIENTES").child(keyMedico).child("AGENDAMENTO").child(data).child(keyHora).child("key_cliente").setValue(preferencias.getCHAVE_INDENTIFICADOR());
-
-        Firebase.getDatabaseReference().child("CLIENTES").child(keyMedico).child("AGENDAMENTO").child(data).child(keyHora).child("nome").setValue(nomeUser);
-
-        String key = Firebase.getDatabaseReference().child("USUARIO").child(preferencias.getCHAVE_INDENTIFICADOR()).child("CONSULTA").push().getKey();
-        Consulta nova = new Consulta(keyMedico,data,keyHora,nomeUser,nomeMedico,info,key,preferencias.getCHAVE_ESPECIALIDADE());
         //inserindo no Sqlite
+        BD bd = new BD(getApplicationContext());
         bd.inserirConsulta(nova);
-        Firebase.getDatabaseReference().child("USUARIO").child(preferencias.getCHAVE_INDENTIFICADOR()).child("CONSULTA").child(key).setValue(nova);
 
-        Intent intent = new Intent(ConfirmActivity.this,MainActivity.class);
+        Firebase.getDatabaseReference().child("APP_USUARIOS").child("CONSULTAS").child(uid).child(key).setValue(nova);
+
+        isConclusion = true;
+
+        Intent intent = new Intent(ConfirmActivity.this,AgendConcluido.class);
         startActivity(intent);
         finish();
 
@@ -361,22 +365,28 @@ public class ConfirmActivity extends AppCompatActivity {
 
     @Override
     protected void onStop() {
-        Toast.makeText(this, "Agendamento cancelado...", Toast.LENGTH_SHORT).show();
+
         super.onStop();
 
-        Intent dados = getIntent();
-        final String data = dados.getStringExtra("data");
-        final String keyHora = dados.getStringExtra("keyHora");
-        preferencias = new Preferencias(getApplicationContext());
-        String key_clinic = preferencias.getInfo("key_clinic");
-        String key_medico = preferencias.getInfo("key_medico");
+        if(isConclusion==false){
 
-        Log.i("testeConfirm","mudando status"+" - data -"+data+" - keyHora -"+keyHora+" - key_clinic -"+key_clinic+" - key_medico -"+key_medico);
+            Toast.makeText(this, "Agendamento cancelado...", Toast.LENGTH_SHORT).show();
 
-        FirebaseDatabase.getInstance().getReference().child("CRM").child(key_clinic).child("AGENDAMENTO").child("MEDICO").child(key_medico).child(data).child(keyHora).child("status").setValue("1");
+            Intent dados = getIntent();
+            final String data = dados.getStringExtra("data");
+            final String keyHora = dados.getStringExtra("keyHora");
+            preferencias = new Preferencias(getApplicationContext());
+            String key_clinic = preferencias.getInfo("key_clinic");
+            String key_medico = preferencias.getInfo("key_medico");
 
-        Intent intent = new Intent(ConfirmActivity.this,MainActivity.class);
-        startActivity(intent);
+            Log.i("testeConfirm","mudando status"+" - data -"+data+" - keyHora -"+keyHora+" - key_clinic -"+key_clinic+" - key_medico -"+key_medico);
+
+            FirebaseDatabase.getInstance().getReference().child("CRM").child(key_clinic).child("AGENDAMENTO").child("MEDICO").child(key_medico).child(data).child(keyHora).child("status").setValue("1");
+
+            Intent intent = new Intent(ConfirmActivity.this,MainActivity.class);
+            startActivity(intent);
+        }
+
 
     }
 

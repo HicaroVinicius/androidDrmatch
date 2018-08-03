@@ -117,15 +117,20 @@ public class BD {
 
     public void inserirConsulta(Consulta consulta){
         ContentValues valores = new ContentValues();
-        valores.put("keyConsulta",consulta.getKeyConsulta().toString());
-        valores.put("medico",consulta.getMedico().toString());
-        valores.put("data",consulta.getData().toString());
-        valores.put("hora",consulta.getHora().toString());
-        valores.put("nome",consulta.getNome().toString());
-        valores.put("nomeMedico",consulta.getNomeMedico().toString());
-        valores.put("info",consulta.getInfo().toString());
-        valores.put("espec",consulta.getEspec().toString());
-        db.insert("consultas",null,valores);
+        valores.put("id",consulta.getKEY().toString());
+        valores.put("KEY_CLINIC",consulta.getKEY_CLINIC().toString());
+        valores.put("KEY_MEDICO",consulta.getKEY_MEDICO().toString());
+        valores.put("NOME_MEDICO",consulta.getNOME_MEDICO().toString());
+        valores.put("DT_AGEND",consulta.getDT_AGEND().toString());
+        valores.put("KEY_AGEND",consulta.getKEY_AGEND().toString());
+        valores.put("HORA",consulta.getHORA().toString());
+        valores.put("ESPECIALIDADE",consulta.getESPECIALIDADE().toString());
+        valores.put("STATUS",consulta.getSTATUS().toString());
+        valores.put("DT_CONT",consulta.getDT_CONT().toString());
+        int id = (int) db.insertWithOnConflict("consultas",null,valores,SQLiteDatabase.CONFLICT_IGNORE);
+        if (id == -1) {
+            db.update("consultas", valores, "id=?", new String[] {consulta.getKEY()});
+        }
     }
 
     public void deleteEspec(){
@@ -282,27 +287,30 @@ public class BD {
         return exames;
     }
 
+
     public ArrayList<Consulta> buscarConsulta(){
         ArrayList<Consulta> consultas = new ArrayList();
         //String[] colunas = new String[]{"nome"};
-        Cursor cursor = db.query("consultas",null,null,null,null,null,"nome ASC");
+        Cursor cursor = db.query("consultas",null,null,null,null,null,"DT_AGEND ASC");
 
         if(cursor.getCount() > 0){
             cursor.moveToFirst();
 
             do{
                 Consulta consulta = new Consulta();
-                consulta.setKeyConsulta(cursor.getString(0));
-                consulta.setMedico(cursor.getString(1));
-                consulta.setData(cursor.getString(2));
-                consulta.setHora(cursor.getString(3));
-                consulta.setNome(cursor.getString(4));
-                consulta.setNomeMedico(cursor.getString(5));
-                consulta.setInfo(cursor.getString(6));
-                consulta.setEspec(cursor.getString(7));
+                consulta.setKEY(cursor.getString(0));
+                consulta.setKEY_CLINIC(cursor.getString(1));
+                consulta.setKEY_MEDICO(cursor.getString(2));
+                consulta.setNOME_MEDICO(cursor.getString(3));
+                consulta.setDT_AGEND(cursor.getString(4));
+                consulta.setKEY_AGEND(cursor.getString(5));
+                consulta.setHORA(cursor.getString(6));
+                consulta.setESPECIALIDADE(cursor.getString(7));
+                consulta.setSTATUS(cursor.getString(8));
+                consulta.setDT_CONT(cursor.getString(9));
 
                 consultas.add(consulta);
-                Log.i("testeBD_cons",consultas.get(0).getNomeMedico());
+                Log.i("testeBD_cons",consultas.get(0).getNOME_MEDICO());
             }while (cursor.moveToNext());
         }
 

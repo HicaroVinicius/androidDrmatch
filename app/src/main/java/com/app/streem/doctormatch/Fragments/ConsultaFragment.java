@@ -59,12 +59,12 @@ public class ConsultaFragment extends Fragment {
         preferencias = new Preferencias(view.getContext());
         atualiza = view.findViewById(R.id.imageView6);
 
-        atualiza.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                buscaConsulta();
-            }
-        });
+//        atualiza.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                buscaConsulta();
+//            }
+//        });
         //=======================================================================
 
         //=========================== Adapter ====================================
@@ -147,27 +147,27 @@ public class ConsultaFragment extends Fragment {
         }
     }
 
-    public void buscaConsulta(){
-
-        final BD bd = new BD(getApplicationContext());
-        bd.deleteConsulta();
-
-        Firebase.getDatabaseReference().child("USUARIO").child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child("CONSULTA").addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-
-                for (DataSnapshot data : dataSnapshot.getChildren()) {
-                    Consulta consulta = data.getValue(Consulta.class);
-                    Log.i("testeBDvalueConsulta",consulta.getKeyConsulta().toString());
-                    Log.i("testeBDvalueConsulta",consulta.getNomeMedico().toString());
-                    bd.inserirConsulta(consulta);
-                }
-
-            }
-            public void onCancelled(DatabaseError databaseError) {
-
-            }
-        });
-    }
+//    public void buscaConsulta(){
+//
+//        final BD bd = new BD(getApplicationContext());
+//        bd.deleteConsulta();
+//
+//        Firebase.getDatabaseReference().child("USUARIO").child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child("CONSULTA").addListenerForSingleValueEvent(new ValueEventListener() {
+//            @Override
+//            public void onDataChange(DataSnapshot dataSnapshot) {
+//
+//                for (DataSnapshot data : dataSnapshot.getChildren()) {
+//                    Consulta consulta = data.getValue(Consulta.class);
+//                    Log.i("testeBDvalueConsulta",consulta.getKeyConsulta().toString());
+//                    Log.i("testeBDvalueConsulta",consulta.getNomeMedico().toString());
+//                    bd.inserirConsulta(consulta);
+//                }
+//
+//            }
+//            public void onCancelled(DatabaseError databaseError) {
+//
+//            }
+//        });
+//    }
 
 }

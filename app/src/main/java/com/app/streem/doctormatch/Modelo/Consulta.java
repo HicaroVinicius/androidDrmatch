@@ -6,117 +6,113 @@ package com.app.streem.doctormatch.Modelo;
 
 public class Consulta {
 
-    public Consulta(String medico, String data, String hora,String nome,String nomeMedico,String info,String keyConsulta,String espec) {
-        this.medico = medico;
-        this.data = data;
-        this.hora = hora;
-        this.nome = nome;
-        this.nomeMedico = nomeMedico;
-        this.info = info;
-        this.keyConsulta = keyConsulta;
-        this.espec = espec;
+    private String KEY;
+
+    public String getKEY() {
+        return KEY;
     }
 
     public Consulta(){
 
+
     }
 
-
-    private String medico;
-
-    public String getMedico() {
-        return medico;
+    public Consulta(String KEY, String KEY_CLINIC, String KEY_MEDICO, String NOME_MEDICO, String DT_AGEND, String KEY_AGEND, String HORA, String ESPECIALIDADE, String STATUS, String DT_CONT) {
+        this.KEY = KEY;
+        this.KEY_CLINIC = KEY_CLINIC;
+        this.KEY_MEDICO = KEY_MEDICO;
+        this.NOME_MEDICO = NOME_MEDICO;
+        this.DT_AGEND = DT_AGEND;
+        this.KEY_AGEND = KEY_AGEND;
+        this.HORA = HORA;
+        this.ESPECIALIDADE = ESPECIALIDADE;
+        this.STATUS = STATUS;
+        this.DT_CONT = DT_CONT;
     }
 
-    public void setMedico(String medico) {
-        this.medico = medico;
+    public void setKEY(String KEY) {
+        this.KEY = KEY;
     }
 
-    public String getData() {
-        return data;
+    public String getKEY_CLINIC() {
+        return KEY_CLINIC;
     }
 
-    public void setData(String data) {
-        this.data = data;
+    public void setKEY_CLINIC(String KEY_CLINIC) {
+        this.KEY_CLINIC = KEY_CLINIC;
     }
 
-    public String getHora() {
-        return hora;
+    public String getKEY_MEDICO() {
+        return KEY_MEDICO;
     }
 
-    public void setHora(String hora) {
-        this.hora = hora;
+    public void setKEY_MEDICO(String KEY_MEDICO) {
+        this.KEY_MEDICO = KEY_MEDICO;
     }
 
-    private String data;
-    private String hora;
-
-    public String getNome() {
-        return nome;
+    public String getNOME_MEDICO() {
+        return NOME_MEDICO;
     }
 
-    public void setNome(String nome) {
-        this.nome = nome;
+    public void setNOME_MEDICO(String NOME_MEDICO) {
+        this.NOME_MEDICO = NOME_MEDICO;
     }
 
-    private String nome;
-    private String nomeMedico;
-
-    public String getNomeMedico() {
-        return nomeMedico;
+    public String getDT_AGEND() {
+        return DT_AGEND;
     }
 
-    public void setNomeMedico(String nomeMedico) {
-        this.nomeMedico = nomeMedico;
+    public void setDT_AGEND(String DT_AGEND) {
+        this.DT_AGEND = DT_AGEND;
     }
 
-    public String getHoraFormat() {
-        return horaFormat;
+    public String getKEY_AGEND() {
+        return KEY_AGEND;
     }
 
-    public void setHoraFormat(String horaFormat) {
-        this.horaFormat = horaFormat;
+    public void setKEY_AGEND(String KEY_AGEND) {
+        this.KEY_AGEND = KEY_AGEND;
     }
 
-    private String horaFormat;
-
-    public String getDataFormat() {
-        return dataFormat;
+    public String getHORA() {
+        return HORA;
     }
 
-    public void setDataFormat(String dataFormat) {
-        this.dataFormat = dataFormat;
+    public void setHORA(String HORA) {
+        this.HORA = HORA;
     }
 
-    private String dataFormat;
-
-    public String getKeyConsulta() {
-        return keyConsulta;
+    public String getESPECIALIDADE() {
+        return ESPECIALIDADE;
     }
 
-    public void setKeyConsulta(String keyConsulta) {
-        this.keyConsulta = keyConsulta;
+    public void setESPECIALIDADE(String ESPECIALIDADE) {
+        this.ESPECIALIDADE = ESPECIALIDADE;
     }
 
-    private String keyConsulta;
-
-    public String getInfo() {
-        return info;
+    public String getSTATUS() {
+        return STATUS;
     }
 
-    public void setInfo(String info) {
-        this.info = info;
+    public void setSTATUS(String STATUS) {
+        this.STATUS = STATUS;
     }
 
-    private String info;
-
-    public String getEspec() {
-        return espec;
+    public String getDT_CONT() {
+        return DT_CONT;
     }
 
-    public void setEspec(String espec) {
-        this.espec = espec;
+    public void setDT_CONT(String DT_CONT) {
+        this.DT_CONT = DT_CONT;
     }
 
-    private String espec;
+    private String KEY_CLINIC;
+    private String KEY_MEDICO;
+    private String NOME_MEDICO;
+    private String DT_AGEND;
+    private String KEY_AGEND;
+    private String HORA;
+    private String ESPECIALIDADE;
+    private String STATUS;
+    private String DT_CONT;
 }

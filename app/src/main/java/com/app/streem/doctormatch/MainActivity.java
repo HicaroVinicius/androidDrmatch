@@ -60,23 +60,6 @@ public class MainActivity extends AppCompatActivity
 
 
 
-        Firebase.getDatabaseReference().child("USUARIO").child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child("CONSULTA").addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-
-                for (DataSnapshot data : dataSnapshot.getChildren()) {
-                    Consulta consulta = data.getValue(Consulta.class);
-                    Log.i("testeBDvalueConsulta",consulta.getKeyConsulta().toString());
-                    Log.i("testeBDvalueConsulta",consulta.getNomeMedico().toString());
-                    bd.inserirConsulta(consulta);
-                }
-
-            }
-            public void onCancelled(DatabaseError databaseError) {
-
-            }
-        });
-
          /*
 
         preferencias = new Preferencias(this);
