@@ -1,7 +1,10 @@
 package com.app.streem.doctormatch;
 
+import android.content.Context;
 import android.content.Intent;
 import android.icu.util.Calendar;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -295,8 +298,6 @@ public class DetailActivity extends AppCompatActivity {
             @Override
             public void onItemClick(VagasModel item) {
 
-                Log.i("TESTE-DETAIL-data",dataNova);
-                FirebaseDatabase.getInstance().getReference().child("CRM").child(key_clinic).child("AGENDAMENTO").child("MEDICO").child(key_medico).child(dataNova).child(item.getId()).child("status").setValue("2");
 
                 //Toast.makeText(getApplicationContext(),nome,Toast.LENGTH_SHORT).show();
                 Intent confirmar = new Intent(DetailActivity.this,ConfirmActivity.class);
@@ -325,7 +326,24 @@ public class DetailActivity extends AppCompatActivity {
                 confirmar.putExtra("hora",item.getHora());
                 confirmar.putExtra("keyHora",item.getId());
 
-                startActivity(confirmar);
+                ConnectivityManager cm =
+                        (ConnectivityManager)DetailActivity.this.getSystemService(Context.CONNECTIVITY_SERVICE);
+
+                NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
+                boolean isConnected = activeNetwork != null &&
+                        activeNetwork.isConnectedOrConnecting();
+
+                if(isConnected){
+                    Log.i("TESTE-DETAIL-data",dataNova);
+                    FirebaseDatabase.getInstance().getReference().child("CRM").child(key_clinic).child("AGENDAMENTO").child("MEDICO").child(key_medico).child(dataNova).child(item.getId()).child("status").setValue("2");
+                    startActivity(confirmar);
+                    finish();
+                }else{
+                    Toast.makeText(DetailActivity.this, "Necessário conexão com a internet", Toast.LENGTH_SHORT).show();
+                    vagasList.clear();
+                    adapter.notifyDataSetChanged();
+                }
+
             }
         });
 

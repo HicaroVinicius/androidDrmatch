@@ -90,7 +90,7 @@ public class ConsultaFragment extends Fragment {
 
         adapter.notifyDataSetChanged();
         consultaView.setAdapter(adapter);
-        getSqlite();
+        //getSqlite();
         final BD bd = new BD(getApplicationContext());
         String uid = preferencias.getInfo("id");
         String dtcont_consulta = preferencias.getInfo("dtcont_consulta");
@@ -114,6 +114,17 @@ public class ConsultaFragment extends Fragment {
 
                     }
                 }
+
+                ArrayList<Consulta> consultas = bd.buscarConsulta();
+                consultaList.clear();
+                for (Consulta consulta:consultas) {
+                    consultaList.add(consulta);
+                    Log.i("testeBDvalueCon_Frag",consulta.toString());
+                    adapter.notifyDataSetChanged();
+                }
+
+                loadControle();
+
             }
 
             @Override
@@ -135,15 +146,7 @@ public class ConsultaFragment extends Fragment {
     }
 
     public void getSqlite(){
-        final BD bd = new BD(getApplicationContext());
-        ArrayList<Consulta> consultas = bd.buscarConsulta();
-        for (Consulta consulta:consultas) {
-            consultaList.add(consulta);
-            Log.i("testeBDvalueCon_Frag",consulta.toString());
-            adapter.notifyDataSetChanged();
-        }
 
-        loadControle();
     }
 
     //========================= Get Firebase =====================================

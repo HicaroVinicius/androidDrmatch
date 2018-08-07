@@ -8,6 +8,16 @@ public class Consulta {
 
     private String KEY;
 
+    public String getCpf() {
+        return cpf;
+    }
+
+    public void setCpf(String cpf) {
+        this.cpf = cpf;
+    }
+
+    private String cpf;
+
     public String getKEY() {
         return KEY;
     }
@@ -17,7 +27,7 @@ public class Consulta {
 
     }
 
-    public Consulta(String KEY, String KEY_CLINIC, String KEY_MEDICO, String NOME_MEDICO, String DT_AGEND, String KEY_AGEND, String HORA, String ESPECIALIDADE, String STATUS, String DT_CONT) {
+    public Consulta(String KEY, String KEY_CLINIC, String KEY_MEDICO, String NOME_MEDICO, String DT_AGEND, String KEY_AGEND, String HORA, String ESPECIALIDADE, String STATUS, String DT_CONT, String cpf) {
         this.KEY = KEY;
         this.KEY_CLINIC = KEY_CLINIC;
         this.KEY_MEDICO = KEY_MEDICO;
@@ -28,6 +38,7 @@ public class Consulta {
         this.ESPECIALIDADE = ESPECIALIDADE;
         this.STATUS = STATUS;
         this.DT_CONT = DT_CONT;
+        this.cpf = cpf;
     }
 
     public void setKEY(String KEY) {

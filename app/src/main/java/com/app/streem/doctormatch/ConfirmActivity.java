@@ -25,6 +25,7 @@ import com.app.streem.doctormatch.Modelo.AgendamentoMedico;
 import com.app.streem.doctormatch.Modelo.Consulta;
 import com.app.streem.doctormatch.Modelo.DependenteModel;
 import com.app.streem.doctormatch.Modelo.Estado;
+import com.app.streem.doctormatch.Modelo.Medico;
 import com.app.streem.doctormatch.Modelo.ResultModel;
 import com.app.streem.doctormatch.Modelo.UsuarioRegistro;
 import com.google.firebase.auth.FirebaseAuth;
@@ -71,6 +72,10 @@ public class ConfirmActivity extends AppCompatActivity {
     private RoundedImageView fotoProprio;
 
 
+    private boolean dependente = false;
+    private String cpfDependente;
+
+
     RadioGroup.OnCheckedChangeListener onCheckedChangeListener = new RadioGroup.OnCheckedChangeListener() {
 
         @Override
@@ -78,6 +83,7 @@ public class ConfirmActivity extends AppCompatActivity {
             switch (checkedId) {
                 case R.id.proprioConfirm:
                     nomeDep = preferencias.getInfo("nome");
+                    dependente = false;
                     Log.i("TESTE-confirmNome",nomeDep);
                     nomeProprio.setVisibility(View.VISIBLE);
                     fotoProprio.setVisibility(View.VISIBLE);
@@ -88,6 +94,8 @@ public class ConfirmActivity extends AppCompatActivity {
                     break;
                 case R.id.outroConfirm:
                     nomeDep = nomeDependente;
+                    cpfDependente = arrayDependentes.get(0).getCpf();
+                    dependente = true;
                         //Toast.makeText(ConfirmActivity.this, nomeDep, Toast.LENGTH_SHORT).show();
                         spinner.setVisibility(View.VISIBLE);
                         nomeProprio.setVisibility(View.INVISIBLE);
@@ -226,7 +234,8 @@ public class ConfirmActivity extends AppCompatActivity {
                     }
                 }
                 BD bd = new BD(getApplicationContext());
-                arrayDependentes = bd.buscarDependente();
+                arrayDependentes.clear();
+                arrayDependentes.addAll(bd.buscarDependente()) ;
                 if(!arrayDependentes.isEmpty()){
                     if(buttonProprio.isEnabled()) {
                         buttonDependente.setEnabled(true);
@@ -234,6 +243,13 @@ public class ConfirmActivity extends AppCompatActivity {
                     }
                 }
                 spinnerAdapter.notifyDataSetChanged();
+
+//
+//                Iterator<DependenteModel> iterator = arrayDependentes.iterator();
+//                while(iterator.hasNext()) {
+//                    DependenteModel m = iterator.next();
+//                    Log.i("TesteDepBusca",m.getNome());
+//                }
 
             }
             public void onCancelled(DatabaseError databaseError) {
@@ -247,7 +263,9 @@ public class ConfirmActivity extends AppCompatActivity {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 nomeDependente = arrayDependentes.get(position).getNome();
+                Log.i("TESTEDEP-click",arrayDependentes.get(position).getNome());
                 nomeDep = nomeDependente;
+                cpfDependente = arrayDependentes.get(position).getCpf();
                 // Toast.makeText(DetailActivity.this,nome, Toast.LENGTH_SHORT).show();
             }
 
@@ -281,7 +299,7 @@ public class ConfirmActivity extends AppCompatActivity {
                     confirm.setPositiveButton("Confirmar", new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
-                            confirmar(data,keyMedico,cidade,estado,espec,keyHora,nomeDep,titular,inf,hora);
+                            confirmar(data,keyMedico,cidade,estado,espec,keyHora,cpfDependente,titular,inf,hora);
                             Log.i("testeConfirm",data+keyMedico+cidade+estado+espec+keyHora+nomeDep+titular+hora+dataFormatt);
                             Intent intent = new Intent(ConfirmActivity.this,AgendConcluido.class);
                             startActivity(intent);
@@ -301,7 +319,7 @@ public class ConfirmActivity extends AppCompatActivity {
 
     }
 
-    public void confirmar(String data, String keyMedico, String cidade, String estado, String espec, String keyHora, final String nomeUser,String nomeMedico, String info,String hora){
+    public void confirmar(String data, String keyMedico, String cidade, String estado, String espec, String keyHora, String cpfDep,String nomeMedico, String info,String hora){
 
         Log.i("testeRemove",estado+"-"+cidade+"-"+espec+"-"+data+"-"+keyMedico+"-"+keyHora);
         preferencias = new Preferencias(getApplicationContext());
@@ -313,7 +331,13 @@ public class ConfirmActivity extends AppCompatActivity {
         Date dataA = new Date();
 
         String uid = preferencias.getInfo("id");
-        String cpf = preferencias.getInfo("cpf");
+        String cpf;
+        if(dependente == true){
+            cpf = cpfDep;
+            Log.i("testeConfirmDependente","Agendando para Dependente - "+cpf);
+        }else {
+            cpf = preferencias.getInfo("cpf");
+        }
 
         AgendamentoGeral agendamentoGeral = new AgendamentoGeral(String.valueOf(dataA.getTime()),keyHora,key_medico,"","2");
         Firebase.getDatabaseReference().child("CRM").child(key_clinic).child("AGENDAMENTO").child("GERAL").child(keyHora).setValue(agendamentoGeral);
@@ -323,7 +347,7 @@ public class ConfirmActivity extends AppCompatActivity {
 
         String key = Firebase.getDatabaseReference().child("APP_USUARIOS").child("CONSULTAS").child(uid).push().getKey();
         //KEY,  KEY_CLINIC,  KEY_MEDICO,  NOME_MEDICO,  DT_AGEND,  KEY_AGEND,  HORA,  ESPECIALIDADE,  STATUS,  DT_CONT
-        Consulta nova = new Consulta(key,key_clinic,key_medico,nomeMedico,data,keyHora,hora,especialidade,"1",String.valueOf(dataA.getTime()));
+        Consulta nova = new Consulta(key,key_clinic,key_medico,nomeMedico,data,keyHora,hora,especialidade,"1",String.valueOf(dataA.getTime()),cpf);
 
         //inserindo no Sqlite
         BD bd = new BD(getApplicationContext());
@@ -368,8 +392,9 @@ public class ConfirmActivity extends AppCompatActivity {
 
                 FirebaseDatabase.getInstance().getReference().child("CRM").child(key_clinic).child("AGENDAMENTO").child("MEDICO").child(key_medico).child(data).child(keyHora).child("status").setValue("1");
 
-                Intent intent = new Intent(ConfirmActivity.this,MainActivity.class);
+                Intent intent = new Intent(ConfirmActivity.this,DetailActivity.class);
                 startActivity(intent);
+                finish();
 
             }
         });
@@ -402,6 +427,7 @@ public class ConfirmActivity extends AppCompatActivity {
 
             Intent intent = new Intent(ConfirmActivity.this,MainActivity.class);
             startActivity(intent);
+            finish();
         }
 
 

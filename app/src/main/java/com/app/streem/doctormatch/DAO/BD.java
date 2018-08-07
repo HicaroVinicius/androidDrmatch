@@ -128,6 +128,7 @@ public class BD {
         valores.put("ESPECIALIDADE",consulta.getESPECIALIDADE().toString());
         valores.put("STATUS",consulta.getSTATUS().toString());
         valores.put("DT_CONT",consulta.getDT_CONT().toString());
+        valores.put("cpf",consulta.getCpf().toString());
         int id = (int) db.insertWithOnConflict("consultas",null,valores,SQLiteDatabase.CONFLICT_IGNORE);
         if (id == -1) {
             db.update("consultas", valores, "id=?", new String[] {consulta.getKEY()});
@@ -326,6 +327,7 @@ public class BD {
                 consulta.setESPECIALIDADE(cursor.getString(7));
                 consulta.setSTATUS(cursor.getString(8));
                 consulta.setDT_CONT(cursor.getString(9));
+                consulta.setCpf(cursor.getString(10));
 
                 consultas.add(consulta);
                 Log.i("testeBD_cons",consultas.get(0).getNOME_MEDICO());
