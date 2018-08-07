@@ -8,6 +8,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.TextView;
 
+import com.app.streem.doctormatch.DAO.SDFormat;
 import com.app.streem.doctormatch.Modelo.Consulta;
 import com.app.streem.doctormatch.R;
 
@@ -48,9 +49,11 @@ public class AdapterConsultas extends RecyclerView.Adapter<AdapterConsultas.Resu
     @Override
     public void onBindViewHolder(ResultViewHolder holder, int position) {
         Consulta consultas = consulta.get(position);
+        SDFormat sdFormat = new SDFormat();
+        String data = sdFormat.miliToDate(consultas.getDT_AGEND());
         holder.bind(consulta.get(position), (OnItemLongClickListener) listener);
         holder.nome.setText(String.valueOf(consultas.getNOME_MEDICO()));
-        holder.info.setText(String.valueOf(consultas.getHORA()));
+        holder.info.setText(String.valueOf(data+" às "+consultas.getHORA()));
         holder.espec.setText(String.valueOf(consultas.getESPECIALIDADE()));
     }
 

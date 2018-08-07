@@ -20,8 +20,11 @@ import com.app.streem.doctormatch.Adapter.SpinnerDependenteAdapter;
 import com.app.streem.doctormatch.DAO.BD;
 import com.app.streem.doctormatch.DAO.Firebase;
 import com.app.streem.doctormatch.DAO.Preferencias;
+import com.app.streem.doctormatch.Modelo.AgendamentoGeral;
+import com.app.streem.doctormatch.Modelo.AgendamentoMedico;
 import com.app.streem.doctormatch.Modelo.Consulta;
 import com.app.streem.doctormatch.Modelo.DependenteModel;
+import com.app.streem.doctormatch.Modelo.Estado;
 import com.app.streem.doctormatch.Modelo.ResultModel;
 import com.app.streem.doctormatch.Modelo.UsuarioRegistro;
 import com.google.firebase.auth.FirebaseAuth;
@@ -34,6 +37,7 @@ import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Iterator;
 import java.util.List;
 
 public class ConfirmActivity extends AppCompatActivity {
@@ -189,34 +193,47 @@ public class ConfirmActivity extends AppCompatActivity {
 
         spinner = findViewById(R.id.spinnerDependenteConfirm);
 
+
         final SpinnerDependenteAdapter spinnerAdapter = new SpinnerDependenteAdapter(this,arrayDependentes);
 
         spinner.setAdapter(spinnerAdapter);
 
-        Firebase.getDatabaseReference().child("USUARIO").child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child("DEPENDENTES").addListenerForSingleValueEvent(new ValueEventListener() {
+        String uid = preferencias.getInfo("id");
+        String dtcont_dependente = preferencias.getInfo("dtcont_dependente");
+        Log.i("TESTcont_dependente",dtcont_dependente);
+        Firebase.getDatabaseReference().child("APP_USUARIOS").child("DEPENDENTES").child(uid).orderByChild("dt_cont").startAt(dtcont_dependente).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-
+                Log.i("TESTEDEP",dataSnapshot.toString());
 
                 if (!dataSnapshot.hasChildren()){
                     buttonDependente.setEnabled(false);
+                    Log.i("TESTEDEP","2");
                 }else{
                     for (DataSnapshot data : dataSnapshot.getChildren()) {
 
-                        if(buttonProprio.isEnabled()) {
-                            buttonDependente.setEnabled(true);
-                        }
-
-                        Log.i("TESTE",data.getValue().toString());
                         DependenteModel dep = data.getValue(DependenteModel.class);
-                        Log.i("TESTEDEP",dep.getKEY()+"-"+dep.getNOME());
-                        arrayDependentes.add(dep);
-                        nomeDependente = dep.getNOME();
-                        spinnerAdapter.notifyDataSetChanged();
+                        Log.i("TESTEDEP",dep.getId()+"-"+dep.getNome());
+                        BD bd = new BD(getApplicationContext());
+                        bd.inserirDependente(dep);
+//                        arrayDependentes.add(dep);
+//                        nomeDependente = dep.getNome();
+//                        spinnerAdapter.notifyDataSetChanged();
+                        Date dataA = new Date();
+                        preferencias.setInfo("dtcont_dependente", String.valueOf(dataA.getTime()));
+                        Log.i("TESTEdtcont_dependente", String.valueOf(dataA.getTime()));
 
                     }
                 }
-
+                BD bd = new BD(getApplicationContext());
+                arrayDependentes = bd.buscarDependente();
+                if(!arrayDependentes.isEmpty()){
+                    if(buttonProprio.isEnabled()) {
+                        buttonDependente.setEnabled(true);
+                        Log.i("TESTEDEP","1");
+                    }
+                }
+                spinnerAdapter.notifyDataSetChanged();
 
             }
             public void onCancelled(DatabaseError databaseError) {
@@ -229,7 +246,7 @@ public class ConfirmActivity extends AppCompatActivity {
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                nomeDependente = arrayDependentes.get(position).getNOME();
+                nomeDependente = arrayDependentes.get(position).getNome();
                 nomeDep = nomeDependente;
                 // Toast.makeText(DetailActivity.this,nome, Toast.LENGTH_SHORT).show();
             }
@@ -298,11 +315,11 @@ public class ConfirmActivity extends AppCompatActivity {
         String uid = preferencias.getInfo("id");
         String cpf = preferencias.getInfo("cpf");
 
-        Firebase.getDatabaseReference().child("CRM").child(key_clinic).child("AGENDAMENTO").child("GERAL").child(keyHora).child("status").setValue("2");
-        //ResultModel result = new ResultModel();
-        Firebase.getDatabaseReference().child("CRM").child(key_clinic).child("AGENDAMENTO").child("MEDICO").child(key_medico).child(data).child(keyHora).child("cpf").setValue(cpf);
-        Firebase.getDatabaseReference().child("CRM").child(key_clinic).child("AGENDAMENTO").child("MEDICO").child(key_medico).child(data).child(keyHora).child("key_ui_app").setValue(uid);
-        Firebase.getDatabaseReference().child("CRM").child(key_clinic).child("AGENDAMENTO").child("MEDICO").child(key_medico).child(data).child(keyHora).child("status").setValue("2");
+        AgendamentoGeral agendamentoGeral = new AgendamentoGeral(String.valueOf(dataA.getTime()),keyHora,key_medico,"","2");
+        Firebase.getDatabaseReference().child("CRM").child(key_clinic).child("AGENDAMENTO").child("GERAL").child(keyHora).setValue(agendamentoGeral);
+
+        AgendamentoMedico agendamentoMedico = new AgendamentoMedico(cpf,hora,keyHora,"",uid,Long.valueOf(1),"2",tipo,"2");
+        Firebase.getDatabaseReference().child("CRM").child(key_clinic).child("AGENDAMENTO").child("MEDICO").child(key_medico).child(data).child(keyHora).setValue(agendamentoMedico);
 
         String key = Firebase.getDatabaseReference().child("APP_USUARIOS").child("CONSULTAS").child(uid).push().getKey();
         //KEY,  KEY_CLINIC,  KEY_MEDICO,  NOME_MEDICO,  DT_AGEND,  KEY_AGEND,  HORA,  ESPECIALIDADE,  STATUS,  DT_CONT

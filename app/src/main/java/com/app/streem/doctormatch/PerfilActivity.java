@@ -85,7 +85,7 @@ public class PerfilActivity extends AppCompatActivity {
             public void onClick(View view) {
                 Log.i("testePerfil","perfil");
 
-                SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy h:mm a", Locale.ENGLISH);
+                SimpleDateFormat sdf = new SimpleDateFormat("dd/mm/yyyy", Locale.ENGLISH);
                 Date date = null;
                 UsuarioDados dados = new UsuarioDados(telefone.getText().toString(),sexo.getText().toString(),"","erro");
                 try {

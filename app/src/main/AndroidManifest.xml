@@ -68,6 +68,8 @@
         <activity android:name=".AgendConcluido" />
         <activity android:name=".cadastraVagaActivity" />
         <activity android:name=".ServicoSeletorActivity" />
+        <activity android:name=".DependenteListActivity" />
+        <activity android:name=".DependenteActivity" />
         <activity android:name=".PerfilActivity"></activity>
     </application>
 

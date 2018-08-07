@@ -17,8 +17,8 @@
         <item
             android:id="@+id/nav_manage"
             android:icon="@drawable/ic_menu_manage"
-            android:title="Configurações"
-            android:visible="false"/>
+            android:title="Dependentes"
+            android:visible="true"/>
     </group>
     <item android:title="Communicate">
         <menu>

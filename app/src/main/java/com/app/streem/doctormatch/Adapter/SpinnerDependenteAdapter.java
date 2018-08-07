@@ -54,7 +54,7 @@ public class SpinnerDependenteAdapter extends BaseAdapter {
         TextView nomeDep = row.findViewById(R.id.spinnerDepRow);
 
         DependenteModel dep = dependenteModels.get(position);
-        nomeDep.setText(dep.getNOME());
+        nomeDep.setText(dep.getNome());
         return row;
     }
 }

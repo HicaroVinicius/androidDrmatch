@@ -89,7 +89,7 @@ public class ExameTab extends Fragment {
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                preferencias.setInfo("tipo","exame");
+                preferencias.setInfo("tipo","2");
                 Toast.makeText(getContext(), "Em breve poderá agendar seu exame!", Toast.LENGTH_SHORT).show();
             }
         });

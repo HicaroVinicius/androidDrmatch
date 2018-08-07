@@ -20,6 +20,7 @@ import com.app.streem.doctormatch.DAO.BD;
 import com.app.streem.doctormatch.DAO.Firebase;
 import com.app.streem.doctormatch.DAO.Preferencias;
 import com.app.streem.doctormatch.Modelo.Consulta;
+import com.app.streem.doctormatch.Modelo.Estado;
 import com.app.streem.doctormatch.R;
 import com.app.streem.doctormatch.ServicoSeletorActivity;
 import com.google.firebase.auth.FirebaseAuth;
@@ -28,6 +29,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import static com.facebook.FacebookSdk.getApplicationContext;
@@ -88,13 +90,45 @@ public class ConsultaFragment extends Fragment {
 
         adapter.notifyDataSetChanged();
         consultaView.setAdapter(adapter);
+        getSqlite();
+        final BD bd = new BD(getApplicationContext());
+        String uid = preferencias.getInfo("id");
+        String dtcont_consulta = preferencias.getInfo("dtcont_consulta");
+        Log.i("TESTE-dtcont_consultaAn", dtcont_consulta);
+        Firebase.getDatabaseReference().child("APP_USUARIOS").child("CONSULTAS").child(uid).orderByChild("dt_CONT").startAt(dtcont_consulta).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                Log.i("testeBDvalue1",dataSnapshot.toString());
+                if(!dataSnapshot.hasChildren()){
+                    Log.i("testeBDvalue","noChildConsulta");
+                }else {
+                    for (DataSnapshot data : dataSnapshot.getChildren()) {
+                        Consulta value = data.getValue(Consulta.class);
+                        Log.i("testeBDConsulta", value.getNOME_MEDICO().toString());
+                        bd.inserirConsulta(value);
+                        consultaList.add(value);
+                        adapter.notifyDataSetChanged();
+                        Date dataA = new Date();
+                        preferencias.setInfo("dtcont_consulta", String.valueOf(dataA.getTime()));
+                        Log.i("TESTE-dtcont_consulta", String.valueOf(dataA.getTime()));
+
+                    }
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+
         //========================================================================
 
 
         // validar disponibilidade de novos dados no fire e jogar em sqlite
         //=========================  SQLite ======================================
         //getFirebase();
-        getSqlite();
+        //getSqlite();
 
 
         return view;

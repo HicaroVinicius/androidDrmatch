@@ -97,7 +97,7 @@ public class ConsultaTab extends Fragment {
                 String espec = parent.getItemAtPosition(position).toString();
                 Intent intent = new Intent(getContext(), FiltroBuscaActivity.class);
                 preferencias.setCHAVE_ESPECIALIDADE(espec);
-                preferencias.setInfo("tipo","consulta");
+                preferencias.setInfo("tipo","1");
                 startActivity(intent);
             }
         });

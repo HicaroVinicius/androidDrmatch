@@ -8,6 +8,7 @@ import android.util.Log;
 
 import com.app.streem.doctormatch.Modelo.Cidade;
 import com.app.streem.doctormatch.Modelo.Consulta;
+import com.app.streem.doctormatch.Modelo.DependenteModel;
 import com.app.streem.doctormatch.Modelo.Especialidade;
 import com.app.streem.doctormatch.Modelo.Estado;
 import com.app.streem.doctormatch.Modelo.Exame;
@@ -133,6 +134,22 @@ public class BD {
         }
     }
 
+    public void inserirDependente(DependenteModel model){
+        ContentValues valores = new ContentValues();
+        valores.put("id",model.getId().toString());
+        valores.put("nome",model.getNome().toString());
+        valores.put("idade",model.getIdade().toString());
+        valores.put("sexo",model.getSexo().toString());
+        valores.put("cpf",model.getCpf().toString());
+        valores.put("dt_cont",model.getDt_cont().toString());
+        Log.i("testeDepBD-insert/ ",model.getNome());
+        int id = (int) db.insertWithOnConflict("dependente",null,valores,SQLiteDatabase.CONFLICT_IGNORE);
+        if (id == -1) {
+            db.update("dependente", valores, "id=?", new String[] {model.getId()});
+        }
+        Log.i("testeDepBD-insertFim/ ",model.getNome());
+    }
+
     public void deleteEspec(){
         db.delete("especialidades",null,null);
     }
@@ -146,6 +163,7 @@ public class BD {
     public void deleteExame(){ db.delete("exames",null,null); }
     public void deleteMedico(){ db.delete("medicos",null,null); }
     public void deleteMedicoDados(){ db.delete("medicosDados",null,null); }
+    public void deleteDependente(){ db.delete("dependente",null,null); }
 
     public ArrayList<Medico> buscarMedicos(String cidade,String estado, String especialidade){
         Log.i("testeResultMedico",cidade+" - "+estado+" - "+especialidade);
@@ -315,6 +333,30 @@ public class BD {
         }
 
         return consultas;
+    }
+
+    public ArrayList<DependenteModel> buscarDependente(){
+        ArrayList<DependenteModel> dependenteModels = new ArrayList();
+        Cursor cursor = db.query("dependente",null,null,null,null,null,"nome ASC");
+
+        if(cursor.getCount() > 0){
+            cursor.moveToFirst();
+
+            do{
+                DependenteModel dep = new DependenteModel();
+                dep.setId(cursor.getString(0));
+                dep.setNome(cursor.getString(1));
+                dep.setIdade(cursor.getString(2));
+                dep.setSexo(cursor.getString(3));
+                dep.setCpf(cursor.getString(4));
+                dep.setDt_cont(cursor.getString(5));
+
+                dependenteModels.add(dep);
+                Log.i("testeBD_depBusca",dependenteModels.get(0).getNome());
+            }while (cursor.moveToNext());
+        }
+
+        return dependenteModels;
     }
 
 

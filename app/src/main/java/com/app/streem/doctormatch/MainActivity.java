@@ -146,6 +146,10 @@ public class MainActivity extends AppCompatActivity
                 intent = new Intent(MainActivity.this,PerfilActivity.class);
                 startActivity(intent);
                 break;
+            case R.id.nav_manage:
+                intent = new Intent(MainActivity.this,DependenteListActivity.class);
+                startActivity(intent);
+                break;
             case R.id.nav_logout:
                 AlertDialog.Builder confirm = new AlertDialog.Builder(MainActivity.this);
                 confirm.setTitle("Deseja sair da sua conta?");
@@ -187,6 +191,7 @@ public class MainActivity extends AppCompatActivity
             bd.deleteExame();
             bd.deleteMedico();
             bd.deleteMedicoDados();
+            bd.deleteDependente();
             //NESSE MOMENTO -> ALTERAR CHAVE PARA AVISAR QUE DEVE BAIXAR NÓ DE CONSULTAS
             Intent intent = new Intent(MainActivity.this,LoginActivity.class);
             startActivity(intent);
