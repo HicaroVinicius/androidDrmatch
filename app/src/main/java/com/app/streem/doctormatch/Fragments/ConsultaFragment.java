@@ -1,6 +1,9 @@
 package com.app.streem.doctormatch.Fragments;
 
+import android.content.Context;
 import android.content.Intent;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.constraint.ConstraintLayout;
@@ -14,6 +17,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
+import android.widget.Toast;
 
 import com.app.streem.doctormatch.Adapter.AdapterConsultas;
 import com.app.streem.doctormatch.DAO.BD;
@@ -71,13 +75,6 @@ public class ConsultaFragment extends Fragment {
 
         //=========================== Adapter ====================================
         agendar = view.findViewById(R.id.agendarConsultaButton2);
-        agendar.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(v.getContext(), ServicoSeletorActivity.class);
-                startActivity(intent);
-            }
-        });
 
         consultaView.setHasFixedSize(true);
         consultaView.setLayoutManager(new LinearLayoutManager(view.getContext()));
@@ -88,10 +85,41 @@ public class ConsultaFragment extends Fragment {
             }
         });
 
+        ConnectivityManager cm =
+                (ConnectivityManager) container.getContext().getSystemService(Context.CONNECTIVITY_SERVICE);
+
+        NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
+        final boolean isConnected = activeNetwork != null &&
+                activeNetwork.isConnectedOrConnecting();
+
+        agendar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(isConnected){
+                    Intent intent = new Intent(v.getContext(), ServicoSeletorActivity.class);
+                    startActivity(intent);
+                }else{
+                    Toast.makeText(getApplicationContext(), "Necessário conexão com a internet", Toast.LENGTH_LONG).show();
+                }
+            }
+        });
+
+        final BD bd = new BD(getApplicationContext());
+
+        if(!isConnected){
+            ArrayList<Consulta> consultas = bd.buscarConsulta();
+            consultaList.clear();
+            for (Consulta consulta:consultas) {
+                consultaList.add(consulta);
+                Log.i("testeBDvalueCon_Frag",consulta.toString());
+                adapter.notifyDataSetChanged();
+            }
+        }
+
         adapter.notifyDataSetChanged();
         consultaView.setAdapter(adapter);
         //getSqlite();
-        final BD bd = new BD(getApplicationContext());
+
         String uid = preferencias.getInfo("id");
         String dtcont_consulta = preferencias.getInfo("dtcont_consulta");
         Log.i("TESTE-dtcont_consultaAn", dtcont_consulta);

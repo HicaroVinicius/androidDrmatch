@@ -219,7 +219,7 @@ public class ResultActivity extends AppCompatActivity {
 
     public Boolean buscaDisponibilidade(final Medico key, final Date d, final String dataFormatt, final String dataN){
         Log.i("TESTEinput",key.getKey_clinica()+"-"+key.getId()+"-"+String.valueOf(d.getTime()));
-        Firebase.getDatabaseReference().child("CRM").child(key.getKey_clinica()).child("AGENDAMENTO").child("MEDICO").child(key.getId()).child(String.valueOf(d.getTime())).addListenerForSingleValueEvent(new ValueEventListener() {
+        Firebase.getDatabaseReference().child("CRM").child(key.getKey_clinica()).child("AGENDAMENTO").child("MEDICO").child(key.getId()).child(String.valueOf(d.getTime())).orderByChild("status").equalTo("1").addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 if (!dataSnapshot.hasChildren()){

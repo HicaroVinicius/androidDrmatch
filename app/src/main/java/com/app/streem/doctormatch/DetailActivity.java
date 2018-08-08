@@ -339,9 +339,12 @@ public class DetailActivity extends AppCompatActivity {
                     startActivity(confirmar);
                     finish();
                 }else{
-                    Toast.makeText(DetailActivity.this, "Necessário conexão com a internet", Toast.LENGTH_SHORT).show();
-                    vagasList.clear();
-                    adapter.notifyDataSetChanged();
+                    Toast.makeText(DetailActivity.this, "Necessário conexão com a internet", Toast.LENGTH_LONG).show();
+                    Intent intent = new Intent(DetailActivity.this,MainActivity.class);
+                    startActivity(intent);
+                    finish();
+//                    vagasList.clear();
+//                    adapter.notifyDataSetChanged();
                 }
 
             }

@@ -1,7 +1,10 @@
 package com.app.streem.doctormatch;
 
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -299,10 +302,21 @@ public class ConfirmActivity extends AppCompatActivity {
                     confirm.setPositiveButton("Confirmar", new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
-                            confirmar(data,keyMedico,cidade,estado,espec,keyHora,cpfDependente,titular,inf,hora);
-                            Log.i("testeConfirm",data+keyMedico+cidade+estado+espec+keyHora+nomeDep+titular+hora+dataFormatt);
-                            Intent intent = new Intent(ConfirmActivity.this,AgendConcluido.class);
-                            startActivity(intent);
+                            ConnectivityManager cm =
+                                    (ConnectivityManager) getApplicationContext().getSystemService(Context.CONNECTIVITY_SERVICE);
+
+                            NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
+                            final boolean isConnected = activeNetwork != null &&
+                                    activeNetwork.isConnectedOrConnecting();
+
+                            if(isConnected){
+                                confirmar(data,keyMedico,cidade,estado,espec,keyHora,cpfDependente,titular,inf,hora);
+                                Log.i("testeConfirm",data+keyMedico+cidade+estado+espec+keyHora+nomeDep+titular+hora+dataFormatt);
+                                Intent intent = new Intent(ConfirmActivity.this,AgendConcluido.class);
+                                startActivity(intent);
+                            }else{
+                                Toast.makeText(getApplicationContext(), "Necessário conexão com a internet", Toast.LENGTH_LONG).show();
+                            }
 
                         }
                     });
