@@ -32,6 +32,7 @@ public class BD {
 
     public void inserirMedico(Medico value){
         ContentValues valores = new ContentValues();
+        Log.i("testeInsereMedicDados",value.getId());
         valores.put("id",value.getId());
         valores.put("status",value.getStatus());
         valores.put("dt_cont",value.getDt_cont());
@@ -47,6 +48,7 @@ public class BD {
 
     public void inserirMedicoDados(ResultModel value){
         ContentValues valores = new ContentValues();
+        Log.i("testeInsereMedicDados2",value.getId());
         valores.put("id",value.getId());
         valores.put("endereco1",value.getEndereco1());
         valores.put("dt_cont",value.getDt_cont());
@@ -160,7 +162,8 @@ public class BD {
     public void deleteCidade(){
         db.delete("cidades",null,null);
     }
-    public void deleteConsulta(){ db.delete("consultas",null,null); }
+    public void deleteConsulta(){ db.delete("consultas",null,null);}
+    public void deleteConsultaPorId(String id){ db.delete("consultas","id=?", new String[] { id }); }
     public void deleteExame(){ db.delete("exames",null,null); }
     public void deleteMedico(){ db.delete("medicos",null,null); }
     public void deleteMedicoDados(){ db.delete("medicosDados",null,null); }
@@ -199,7 +202,7 @@ public class BD {
         ResultModel u = null;
         Cursor cursor;
         String[] campos =  {"id","dt_cont","endereco1", "endereco2", "valor", "url","local", "titular", "registro"};
-        cursor = db.query("medicosDados", campos, null, null, null, null, null, null);
+        cursor = db.query("medicosDados", campos, "id=?",  new String[] { id }, null, null, null, "1");
         if(cursor.getCount() > 0){
             cursor.moveToFirst();
 

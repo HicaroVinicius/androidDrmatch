@@ -1,6 +1,10 @@
 <resources>
     <string name="app_name">Doctor Match</string>
 
+    <string name="facebook_app_id">219243075432065</string>
+    <string name="fb_login_protocol_scheme">fb219243075432065</string>
+
+
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
 
@@ -11,8 +15,6 @@
     <string name="dummy_content">DUMMY\nCONTENT</string>
     <string name="title_activity_select__city_">Select_City_Activity</string>
     <string name="search">Search</string>
-    <string name="facebook_app_id">339095896583817</string>
-    <string name="fb_login_protocol_scheme">fb339095896583817</string>
     <string name="nomeConsultaID">nomeConsultaID</string>
     <string name="title_activity_main2">Main2Activity</string>
     <string name="title_home">Agendamento</string>

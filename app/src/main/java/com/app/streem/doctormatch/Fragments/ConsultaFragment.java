@@ -23,6 +23,7 @@ import com.app.streem.doctormatch.Adapter.AdapterConsultas;
 import com.app.streem.doctormatch.DAO.BD;
 import com.app.streem.doctormatch.DAO.Firebase;
 import com.app.streem.doctormatch.DAO.Preferencias;
+import com.app.streem.doctormatch.Modelo.AgendamentoMedico;
 import com.app.streem.doctormatch.Modelo.Consulta;
 import com.app.streem.doctormatch.Modelo.Estado;
 import com.app.streem.doctormatch.R;
@@ -65,6 +66,8 @@ public class ConsultaFragment extends Fragment {
         preferencias = new Preferencias(view.getContext());
         atualiza = view.findViewById(R.id.imageView6);
 
+        final String uid = preferencias.getInfo("id");
+
 //        atualiza.setOnClickListener(new View.OnClickListener() {
 //            @Override
 //            public void onClick(View view) {
@@ -81,7 +84,18 @@ public class ConsultaFragment extends Fragment {
 
         adapter = new AdapterConsultas(consultaList,getApplicationContext(),new AdapterConsultas.OnItemLongClickListener(){
             @Override public void onItemLongClick(Consulta item) {
-                //implementar detail da consulta e chamada de chat
+                BD bd = new BD(getApplicationContext());
+                bd.deleteConsultaPorId(item.getKEY());
+                consultaList.remove(item);
+                adapter.notifyDataSetChanged();
+                if(consultaList.isEmpty()){
+                    semDados.setVisibility(View.VISIBLE);
+                }
+                AgendamentoMedico agendamentoMedico = new AgendamentoMedico("",item.getHORA(),item.getKEY_AGEND(),"",uid,Long.valueOf(1),"1","1","2");
+                Firebase.getDatabaseReference().child("CRM").child(item.getKEY_CLINIC()).child("AGENDAMENTO").child("MEDICO").child(item.getKEY_MEDICO()).child(item.getDT_AGEND()).child(item.getKEY_AGEND()).setValue(agendamentoMedico);
+                Firebase.getDatabaseReference().child("APP_USUARIOS").child("CONSULTAS").child(uid).child(item.getKEY()).removeValue();
+                Log.i("TESTE-dtcont_consultaIt", String.valueOf(item.getKEY())+"/"+item.getKEY_AGEND());
+                Toast.makeText(getApplicationContext(), "Consulta removida!", Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -120,7 +134,6 @@ public class ConsultaFragment extends Fragment {
         consultaView.setAdapter(adapter);
         //getSqlite();
 
-        String uid = preferencias.getInfo("id");
         String dtcont_consulta = preferencias.getInfo("dtcont_consulta");
         Log.i("TESTE-dtcont_consultaAn", dtcont_consulta);
         Firebase.getDatabaseReference().child("APP_USUARIOS").child("CONSULTAS").child(uid).orderByChild("dt_CONT").startAt(dtcont_consulta).addListenerForSingleValueEvent(new ValueEventListener() {

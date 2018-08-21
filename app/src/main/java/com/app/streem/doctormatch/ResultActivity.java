@@ -120,7 +120,7 @@ public class ResultActivity extends AppCompatActivity {
                     Medico value = data.getValue(Medico.class);
                     Log.i("testeBDvalue2",value.getId().toString());
                     bd.inserirMedico(value);
-
+                    Log.i("TESTEMA_medico",value.getId());
                     Date dataA = new Date();
                     preferencias.setInfo("dtcont_medico",String.valueOf(dataA.getTime()));
                     Log.i("TESTEMA D-dtcont_medico",String.valueOf(dataA.getTime()));
@@ -256,6 +256,7 @@ public class ResultActivity extends AppCompatActivity {
                             }
                             for(DataSnapshot data : dataSnapshot.getChildren()){
                                 ResultModel value = data.getValue(ResultModel.class);
+                                Log.i("testeBDvalue3",value.getTitular()+" - cont: "+value.getDt_cont()+" - Pref: "+preferencias.getInfo("dtcont_medicoDados"));
                                 if(Long.valueOf(value.getDt_cont()) > Long.valueOf(preferencias.getInfo("dtcont_medicoDados"))){
                                     BD bd = new BD(getApplicationContext());
                                     bd.inserirMedicoDados(value);
