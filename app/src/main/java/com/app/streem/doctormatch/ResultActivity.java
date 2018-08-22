@@ -207,24 +207,25 @@ public class ResultActivity extends AppCompatActivity {
         ArrayList<Medico> medicosSQL = bd.buscarMedicos(cidade,estado,espec);
         ArrayList<String> medicos = new ArrayList<>();
         Iterator<Medico> iterator = medicosSQL.iterator();
+        int tamanhoArray = medicosSQL.size();
         while(iterator.hasNext()) {
             Medico m = iterator.next();
             Log.i("TesteMedicosBusca",m.getId());
             contador = 1;
-            buscaDisponibilidade(m, d, "dataAtual", dataFormatt);
+            buscaDisponibilidade(m, d, "dataAtual", dataFormatt,tamanhoArray);
         }
 
 
     }
 
-    public Boolean buscaDisponibilidade(final Medico key, final Date d, final String dataFormatt, final String dataN){
+    public Boolean buscaDisponibilidade(final Medico key, final Date d, final String dataFormatt, final String dataN,final int tamanhoArray){
         Log.i("TESTEinput",key.getKey_clinica()+"-"+key.getId()+"-"+String.valueOf(d.getTime()));
         Firebase.getDatabaseReference().child("CRM").child(key.getKey_clinica()).child("AGENDAMENTO").child("MEDICO").child(key.getId()).child(String.valueOf(d.getTime())).orderByChild("status").equalTo("1").addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 if (!dataSnapshot.hasChildren()){
                     //vaga indisponível, busca o proximo o dia
-                    if(contador < 7){
+                    if(contador < (7*tamanhoArray)){
 
                         String dataString = String.valueOf(d.getTime());
 
@@ -235,7 +236,7 @@ public class ResultActivity extends AppCompatActivity {
 
                         final String novoFormatt = format.format(novaData.getTime());
 
-                        buscaDisponibilidade(key,novaData,novoFormatt,novoFormatt);
+                        buscaDisponibilidade(key,novaData,novoFormatt,novoFormatt,tamanhoArray);
                         Log.i("TESTEMEDnewDAta",String.valueOf(novoFormatt));
                         Log.i("TESTEMEDnewDAtaCont",String.valueOf(contador));
                         contador++;
