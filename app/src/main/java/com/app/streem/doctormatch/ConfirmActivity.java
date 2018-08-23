@@ -67,7 +67,7 @@ public class ConfirmActivity extends AppCompatActivity {
     private Preferencias preferencias;
 
     private String nomeDep;
-    private String nomeDependente = null;
+    private String nomeDependente;
 
     private boolean hasDependente = false;
 
@@ -97,6 +97,7 @@ public class ConfirmActivity extends AppCompatActivity {
                     break;
                 case R.id.outroConfirm:
                     nomeDep = nomeDependente;
+                    Log.i("TESTE-confirmNome",nomeDep);
                     cpfDependente = arrayDependentes.get(0).getCpf();
                     dependente = true;
                         //Toast.makeText(ConfirmActivity.this, nomeDep, Toast.LENGTH_SHORT).show();
@@ -238,8 +239,11 @@ public class ConfirmActivity extends AppCompatActivity {
                 }
                 BD bd = new BD(getApplicationContext());
                 arrayDependentes.clear();
+                DependenteModel dependenteModel = new DependenteModel("","-Selecione um Dependente-","","","","");
+                arrayDependentes.add(0,dependenteModel);
                 arrayDependentes.addAll(bd.buscarDependente()) ;
-                if(!arrayDependentes.isEmpty()){
+                if(arrayDependentes.size()>1){
+                    nomeDependente = arrayDependentes.get(1).getNome();
                     if(buttonProprio.isEnabled()) {
                         buttonDependente.setEnabled(true);
                         Log.i("TESTEDEP","1");
@@ -265,11 +269,16 @@ public class ConfirmActivity extends AppCompatActivity {
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                nomeDependente = arrayDependentes.get(position).getNome();
-                Log.i("TESTEDEP-click",arrayDependentes.get(position).getNome());
-                nomeDep = nomeDependente;
-                cpfDependente = arrayDependentes.get(position).getCpf();
-                // Toast.makeText(DetailActivity.this,nome, Toast.LENGTH_SHORT).show();
+                if(position>0){
+                    nomeDependente = arrayDependentes.get(position).getNome();
+                    Log.i("TESTEDEP-click",arrayDependentes.get(position).getNome());
+                    nomeDep = nomeDependente;
+                    cpfDependente = arrayDependentes.get(position).getCpf();
+                    // Toast.makeText(DetailActivity.this,nome, Toast.LENGTH_SHORT).show();
+                    hasDependente = true;
+                }else{
+                    hasDependente = false;
+                }
             }
 
             @Override
@@ -286,7 +295,7 @@ public class ConfirmActivity extends AppCompatActivity {
             public void onClick(View v) {
                 //Toast.makeText(ConfirmActivity.this, nomeDep, Toast.LENGTH_SHORT).show();
 
-                if(buttonProprio.isChecked()||buttonDependente.isChecked()){
+                if(buttonProprio.isChecked()||hasDependente){
 
 
                     AlertDialog.Builder confirm = new AlertDialog.Builder(ConfirmActivity.this);
@@ -310,7 +319,7 @@ public class ConfirmActivity extends AppCompatActivity {
                                     activeNetwork.isConnectedOrConnecting();
 
                             if(isConnected){
-                                confirmar(data,keyMedico,cidade,estado,espec,keyHora,cpfDependente,titular,inf,hora);
+                                confirmar(data,keyMedico,cidade,estado,espec,keyHora,cpfDependente,titular,inf,hora,nomeDep);
                                 Log.i("testeConfirm",data+keyMedico+cidade+estado+espec+keyHora+nomeDep+titular+hora+dataFormatt);
                                 Intent intent = new Intent(ConfirmActivity.this,AgendConcluido.class);
                                 startActivity(intent);
@@ -333,7 +342,7 @@ public class ConfirmActivity extends AppCompatActivity {
 
     }
 
-    public void confirmar(String data, String keyMedico, String cidade, String estado, String espec, String keyHora, String cpfDep,String nomeMedico, String info,String hora){
+    public void confirmar(String data, String keyMedico, String cidade, String estado, String espec, String keyHora, String cpfDep,String nomeMedico, String info,String hora,String nomeDep){
 
         Log.i("testeRemove",estado+"-"+cidade+"-"+espec+"-"+data+"-"+keyMedico+"-"+keyHora);
         preferencias = new Preferencias(getApplicationContext());
@@ -356,7 +365,7 @@ public class ConfirmActivity extends AppCompatActivity {
         AgendamentoGeral agendamentoGeral = new AgendamentoGeral(String.valueOf(dataA.getTime()),keyHora,key_medico,"","2");
         Firebase.getDatabaseReference().child("CRM").child(key_clinic).child("AGENDAMENTO").child("GERAL").child(keyHora).setValue(agendamentoGeral);
 
-        AgendamentoMedico agendamentoMedico = new AgendamentoMedico(cpf,hora,keyHora,"",uid,Long.valueOf(1),"2",tipo,"2");
+        AgendamentoMedico agendamentoMedico = new AgendamentoMedico(cpf,hora,keyHora,nomeDep,uid,Long.valueOf(2),"2",tipo,"2");
         Firebase.getDatabaseReference().child("CRM").child(key_clinic).child("AGENDAMENTO").child("MEDICO").child(key_medico).child(data).child(keyHora).setValue(agendamentoMedico);
 
         String key = Firebase.getDatabaseReference().child("APP_USUARIOS").child("CONSULTAS").child(uid).push().getKey();
@@ -406,7 +415,7 @@ public class ConfirmActivity extends AppCompatActivity {
 
                 FirebaseDatabase.getInstance().getReference().child("CRM").child(key_clinic).child("AGENDAMENTO").child("MEDICO").child(key_medico).child(data).child(keyHora).child("status").setValue("1");
 
-                Intent intent = new Intent(ConfirmActivity.this,DetailActivity.class);
+                Intent intent = new Intent(ConfirmActivity.this,MainActivity.class);
                 startActivity(intent);
                 finish();
 
