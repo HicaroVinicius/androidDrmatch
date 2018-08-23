@@ -44,6 +44,7 @@ import org.joda.time.format.DateTimeFormatter;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
@@ -82,7 +83,9 @@ public class DetailActivity extends AppCompatActivity {
     }
 
     public void ordenarLista(){
-        //falta fazer
+        Log.i("testeOrdena","ordenando");
+        Collections.sort(vagasList);
+        adapter.notifyDataSetChanged();
     }
 
     public void atualizarHorarios(final String data){
@@ -163,6 +166,7 @@ public class DetailActivity extends AppCompatActivity {
                 VagasModel vaga = dataSnapshot.getValue(VagasModel.class);
                 if(vaga.getTp_vaga().equals("2") && vaga.getStatus().equals("1")) {
                     vagasList.add(vaga);
+                    ordenarLista();
                     adapter.notifyDataSetChanged();
                 }
             }

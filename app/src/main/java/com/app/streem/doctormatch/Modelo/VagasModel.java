@@ -1,10 +1,12 @@
 package com.app.streem.doctormatch.Modelo;
 
+import android.support.annotation.NonNull;
+
 /**
  * Created by Hicaro on 13/03/2018.
  */
 
-public class VagasModel {
+public class VagasModel implements Comparable<VagasModel> {
 
     private String id;
     private String hora;
@@ -90,5 +92,10 @@ public class VagasModel {
 
     public void setMili(long mili) {
         this.mili = mili;
+    }
+
+    @Override
+    public int compareTo(@NonNull VagasModel vagasModel) {
+        return this.getHora().compareTo(vagasModel.getHora());
     }
 }
