@@ -7,11 +7,13 @@ public class UsuarioDados {
 
     }
 
-    public UsuarioDados(String tel,String sexo, String ano_nasc,  String dt_nasc) {
+    public UsuarioDados(String cidade,String sexo, String ano_nasc,  String dt_nasc, String nome,String url) {
         this.sexo = sexo;
         this.ano_nasc = ano_nasc;
-        this.tel = tel;
+        this.cidade = cidade;
         this.dt_nasc = dt_nasc;
+        this.nome = nome;
+        this.url = url;
     }
 
     public String getSexo() {
@@ -30,12 +32,12 @@ public class UsuarioDados {
         this.ano_nasc = ano_nasc;
     }
 
-    public String getTel() {
-        return tel;
+    public String getCidade() {
+        return cidade;
     }
 
-    public void setTel(String tel) {
-        this.tel = tel;
+    public void setCidade(String cidade) {
+        this.cidade = cidade;
     }
 
     public String getDt_nasc() {
@@ -48,7 +50,24 @@ public class UsuarioDados {
 
     private String sexo;
     private String ano_nasc;
-    private String tel;
+    private String cidade;
     private String dt_nasc;
+    private String nome;
+    private String url;
 
+    public String getUrl() {
+        return url;
+    }
+
+    public void setUrl(String url) {
+        this.url = url;
+    }
+
+    public String getNome() {
+        return nome;
+    }
+
+    public void setNome(String nome) {
+        this.nome = nome;
+    }
 }

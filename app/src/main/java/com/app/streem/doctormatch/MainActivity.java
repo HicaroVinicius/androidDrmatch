@@ -184,6 +184,7 @@ public class MainActivity extends AppCompatActivity
         final BD bd = new BD(this);
         try {
             Firebase.getFirebaseAuth().signOut();
+            preferencias.clearDados();
             bd.deleteEstado();
             bd.deleteCidade();
             bd.deleteConsulta();

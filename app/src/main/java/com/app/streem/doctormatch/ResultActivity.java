@@ -47,6 +47,7 @@ public class ResultActivity extends AppCompatActivity {
     private Calendar myCalendar;
     private TextView data;
     private DatePickerDialog dataPicker;
+    private ResultModel  value;
     public int contador = 0;
     public int maximo = 0;
 
@@ -251,45 +252,38 @@ public class ResultActivity extends AppCompatActivity {
                     Firebase.getDatabaseReference().child("CRM").child(key.getKey_clinica()).child("CONFIG").child("DADOS_MED_LAB").orderByKey().equalTo(key.getId()).limitToFirst(1).addListenerForSingleValueEvent(new ValueEventListener() {
                         @Override
                         public void onDataChange(DataSnapshot dataSnapshot) {
-                            Log.i("TESTEmedRESULTdadoos",dataSnapshot.toString());
-                            if(!dataSnapshot.hasChildren()){
-                                Log.i("testeBDvalue1","Medico sem Dados - CRM");
-                            }
-                            for(DataSnapshot data : dataSnapshot.getChildren()){
-                                ResultModel value = data.getValue(ResultModel.class);
-                                Log.i("testeBDvalue3",value.getTitular()+" - cont: "+value.getDt_cont()+" - Pref: "+preferencias.getInfo("dtcont_medicoDados"));
-                                if(Long.valueOf(value.getDt_cont()) > Long.valueOf(preferencias.getInfo("dtcont_medicoDados"))){
-                                    BD bd = new BD(getApplicationContext());
-                                    bd.inserirMedicoDados(value);
-                                    Date dataA = new Date();
-                                    preferencias.setInfo("dtcont_medicoDados",String.valueOf(dataA.getTime()));
-                                    Log.i("TESTedtcont_medicoDados",String.valueOf(dataA.getTime()));
-                                    Log.i("testeBDdadosmedico",value.getTitular() +"antes- "+value.getDt_cont()+" -depois- "+preferencias.getInfo("dtcont_medicoDados"));
+                            Log.i("TESTEmedRESULTdadoos", dataSnapshot.toString());
+                            if (!dataSnapshot.hasChildren()) {
+                                Log.i("testeBDvalue1", "Medico sem Dados - CRM");
+                            } else {
+
+                                for (DataSnapshot data : dataSnapshot.getChildren()) {
+                                    value = data.getValue(ResultModel.class);
+                                    Log.i("testeBDvalue3", value.getTitular() + " - cont: " + value.getDt_cont() + " - Pref: " + preferencias.getInfo("dtcont_medicoDados"));
+
                                 }
 
-                            }
+                                ResultModel med = value;
+                                ResultModel medico = new ResultModel();
+                                try {
+                                    medico.setRegistro(med.getRegistro());
+                                    medico.setTitular(med.getTitular());
+                                    medico.setLocal(med.getLocal());
+                                    medico.setEndereco1(med.getEndereco1());
+                                    medico.setEndereco2(med.getEndereco2());
+                                    medico.setUrl(med.getUrl());
+                                    medico.setId(med.getId());
+                                } catch (Exception e) {
+                                    Log.i("TESTERESULT-ERRO", e.getMessage());
+                                }
+                                medico.setValor(dataFormatt);
+                                medico.setData(dataN);
+                                medico.setKey_clinic(key.getKey_clinica());
+                                medico.setKey_medico(key.getId());
+                                resultModels.add(medico);
+                                adapter.notifyDataSetChanged();
 
-
-                            BD bd = new BD(getApplicationContext());
-                            ResultModel med = bd.buscarMedicosDados(key.getId());
-                            ResultModel medico = new ResultModel();
-                            try {
-                                medico.setRegistro(med.getRegistro());
-                                medico.setTitular(med.getTitular());
-                                medico.setLocal(med.getLocal());
-                                medico.setEndereco1(med.getEndereco1());
-                                medico.setEndereco2(med.getEndereco2());
-                                medico.setUrl(med.getUrl());
-                                medico.setId(med.getId());
-                            }catch (Exception e){
-                                Log.i("TESTERESULT-ERRO",e.getMessage());
                             }
-                            medico.setValor(dataFormatt);
-                            medico.setData(dataN);
-                            medico.setKey_clinic(key.getKey_clinica());
-                            medico.setKey_medico(key.getId());
-                            resultModels.add(medico);
-                            adapter.notifyDataSetChanged();
 
                         }
 

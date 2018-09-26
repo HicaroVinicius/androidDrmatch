@@ -17,6 +17,12 @@ public class Preferencias {
     private final String CHAVE_INDENTIFICADOR = "logadoKey";
     private final String CHAVE_NOME_USUARIO = "logadoNome";
     private final String CHAVE_TEL = "logadoTelefone";
+    private final String CHAVE_CIDADE_USER = "cidadeUsuario";
+
+    public String getCHAVE_CIDADE_USER() {
+        return preferences.getString(CHAVE_CIDADE_USER, "Erro!");
+    }
+
     private final String CHAVE_DATABASE = "offline";
 
     private final String CHAVE_TIPO_BUSCA = "tipoBusca"; // para tela de seletor
@@ -114,10 +120,10 @@ public class Preferencias {
         editor = preferences.edit();
     }
 
-    public void setUsuarioLogado(String keyUsuario, String nomeUsurio, String tel){
+    public void setUsuarioLogado(String keyUsuario, String nomeUsuario, String cidadeUsuario){
         editor.putString(CHAVE_INDENTIFICADOR, keyUsuario);
-        editor.putString(CHAVE_NOME_USUARIO, nomeUsurio);
-        editor.putString(CHAVE_TEL, tel);
+        editor.putString(CHAVE_NOME_USUARIO, nomeUsuario);
+        editor.putString(CHAVE_CIDADE_USER, cidadeUsuario);
         editor.commit();
     }
 

@@ -27,7 +27,7 @@ public class Consulta {
 
     }
 
-    public Consulta(String KEY, String KEY_CLINIC, String KEY_MEDICO, String NOME_MEDICO, String DT_AGEND, String KEY_AGEND, String HORA, String ESPECIALIDADE, String STATUS, String DT_CONT, String cpf) {
+    public Consulta(String KEY, String KEY_CLINIC, String KEY_MEDICO, String NOME_MEDICO, String DT_AGEND, String KEY_AGEND, String HORA, String ESPECIALIDADE, String STATUS, String DT_CONT, String cpf,String cartao,String dinheiro,String cheque,String plano) {
         this.KEY = KEY;
         this.KEY_CLINIC = KEY_CLINIC;
         this.KEY_MEDICO = KEY_MEDICO;
@@ -39,6 +39,10 @@ public class Consulta {
         this.STATUS = STATUS;
         this.DT_CONT = DT_CONT;
         this.cpf = cpf;
+        this.cartao = cartao;
+        this.dinheiro = dinheiro;
+        this.cheque = cheque;
+        this.plano = plano;
     }
 
     public void setKEY(String KEY) {
@@ -125,5 +129,42 @@ public class Consulta {
     private String HORA;
     private String ESPECIALIDADE;
     private String STATUS;
+
+    public String getCartao() {
+        return cartao;
+    }
+
+    public void setCartao(String cartao) {
+        this.cartao = cartao;
+    }
+
+    public String getDinheiro() {
+        return dinheiro;
+    }
+
+    public void setDinheiro(String dinheiro) {
+        this.dinheiro = dinheiro;
+    }
+
+    public String getCheque() {
+        return cheque;
+    }
+
+    public void setCheque(String cheque) {
+        this.cheque = cheque;
+    }
+
+    public String getPlano() {
+        return plano;
+    }
+
+    public void setPlano(String plano) {
+        this.plano = plano;
+    }
+
     private String DT_CONT;
+    private String cartao;
+    private String dinheiro;
+    private String cheque;
+    private String plano;
 }

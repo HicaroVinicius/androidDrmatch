@@ -329,6 +329,10 @@ public class DetailActivity extends AppCompatActivity {
 
                 confirmar.putExtra("hora",item.getHora());
                 confirmar.putExtra("keyHora",item.getId());
+                confirmar.putExtra("cartao",item.getCartao());
+                confirmar.putExtra("dinheiro",item.getDinheiro());
+                confirmar.putExtra("cheque",item.getCheque());
+                confirmar.putExtra("plano",item.getPlano());
 
                 ConnectivityManager cm =
                         (ConnectivityManager)DetailActivity.this.getSystemService(Context.CONNECTIVITY_SERVICE);

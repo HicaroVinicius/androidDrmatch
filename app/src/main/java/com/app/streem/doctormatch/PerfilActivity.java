@@ -45,7 +45,7 @@ import br.com.jansenfelipe.androidmask.MaskEditTextChangedListener;
 public class PerfilActivity extends AppCompatActivity {
 
     private EditText dataNasc;
-    private EditText telefone;
+    private EditText cidade;
     private EditText nome;
     private EditText email;
     private EditText sexo;
@@ -72,7 +72,7 @@ public class PerfilActivity extends AppCompatActivity {
         final String idUser = FirebaseAuth.getInstance().getCurrentUser().getUid();
 
         dataNasc = findViewById(R.id.dataPerfil);
-        telefone = findViewById(R.id.telefonePerfil);
+        cidade = findViewById(R.id.cidadePerfil);
         nome = findViewById(R.id.nomePerfil);
         email = findViewById(R.id.emailPerfil);
         cpf = findViewById(R.id.cpfPerfil);
@@ -87,10 +87,10 @@ public class PerfilActivity extends AppCompatActivity {
 
                 SimpleDateFormat sdf = new SimpleDateFormat("dd/mm/yyyy", Locale.ENGLISH);
                 Date date = null;
-                UsuarioDados dados = new UsuarioDados(telefone.getText().toString(),sexo.getText().toString(),"","erro");
+                UsuarioDados dados = new UsuarioDados(cidade.getText().toString(),sexo.getText().toString(),"","erro",nome.getText().toString(),"");
                 try {
                     date = sdf.parse(dataNasc.getText().toString());
-                    dados = new UsuarioDados(telefone.getText().toString(),sexo.getText().toString(),"",String.valueOf(date.getTime()));
+                    dados = new UsuarioDados(cidade.getText().toString(),sexo.getText().toString(),"",String.valueOf(date.getTime()),nome.getText().toString(),"");
                 } catch (ParseException e) {
                     e.printStackTrace();
                 }
@@ -108,13 +108,23 @@ public class PerfilActivity extends AppCompatActivity {
         Firebase.getDatabaseReference().child("APP_USUARIOS").child("REGISTRO").child(idUser).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                usuarioRegistro = dataSnapshot.getValue(UsuarioRegistro.class);
+                if(dataSnapshot.hasChildren()) {
+                    usuarioRegistro = dataSnapshot.getValue(UsuarioRegistro.class);
 
-                //USER
-                Log.i("testeUSERname",usuarioRegistro.getNome());
-                nome.setText(usuarioRegistro.getNome());
-                email.setText(usuarioRegistro.getEmail());
-                cpf.setText(usuarioRegistro.getCpf());
+                    //USER
+                    //Log.i("testeUSERname",usuarioRegistro.getNome());
+
+                    if (!usuarioRegistro.getNome().isEmpty()) {
+                        nome.setText(usuarioRegistro.getNome());
+                    }
+                    if (!usuarioRegistro.getEmail().isEmpty()) {
+                        email.setText(usuarioRegistro.getEmail());
+                    }
+                    if (!usuarioRegistro.getCpf().isEmpty()) {
+                        cpf.setText(usuarioRegistro.getCpf());
+                    }
+
+                }
 
             }
             public void onCancelled(DatabaseError databaseError) {
@@ -128,8 +138,7 @@ public class PerfilActivity extends AppCompatActivity {
                 usuarioDados = dataSnapshot.getValue(UsuarioDados.class);
 
                 //USER
-
-                telefone.setText(usuarioDados.getTel());
+                cidade.setText(usuarioDados.getCidade());
 
                 if (usuarioDados.getSexo() == "m") {
                     sexo.setText("Masculino");

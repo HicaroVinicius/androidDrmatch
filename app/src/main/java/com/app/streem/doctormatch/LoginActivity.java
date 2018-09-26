@@ -228,6 +228,7 @@ public class LoginActivity extends AppCompatActivity {
 
                             //USER
                             Log.i("testeUSERname",usuario.getNome());
+                            Log.i("testeUSERnameemail",usuario.getEmail());
                             preferencias.setInfo("cpf",usuario.getCpf());
                             preferencias.setInfo("dt_alt",usuario.getDt_alt());
                             preferencias.setInfo("email",usuario.getEmail());

@@ -14,7 +14,7 @@ public class AgendamentoMedico {
         return cpf;
     }
 
-    public AgendamentoMedico(String cpf, String hora, String id, String key_pac, String key_ui_app, Long mili, String status, String tipo, String tp_vaga) {
+    public AgendamentoMedico(String cpf, String hora, String id, String key_pac, String key_ui_app, Long mili, String status, String tipo, String tp_vaga,String cartao, String dinheiro,String cheque,String plano) {
         this.cpf = cpf;
         this.hora = hora;
         this.id = id;
@@ -24,6 +24,10 @@ public class AgendamentoMedico {
         this.status = status;
         this.tipo = tipo;
         this.tp_vaga = tp_vaga;
+        this.cartao = cartao;
+        this.dinheiro = dinheiro;
+        this.cheque = cheque;
+        this.plano = plano;
     }
 
     public void setCpf(String cpf) {
@@ -99,5 +103,42 @@ public class AgendamentoMedico {
     private String status;
     private String tipo;
     private String tp_vaga;
+    private String cartao;
+    private String cheque;
+    private String plano;
+
+    public String getCheque() {
+        return cheque;
+    }
+
+    public void setCheque(String cheque) {
+        this.cheque = cheque;
+    }
+
+    public String getPlano() {
+        return plano;
+    }
+
+    public void setPlano(String plano) {
+        this.plano = plano;
+    }
+
+    public String getCartao() {
+        return cartao;
+    }
+
+    public void setCartao(String cartao) {
+        this.cartao = cartao;
+    }
+
+    public String getDinheiro() {
+        return dinheiro;
+    }
+
+    public void setDinheiro(String dinheiro) {
+        this.dinheiro = dinheiro;
+    }
+
+    private String dinheiro;
 
 }

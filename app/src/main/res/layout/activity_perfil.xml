@@ -111,10 +111,10 @@
                     android:id="@+id/textView13"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Telefone:" />
+                    android:text="Cidade:" />
 
                 <EditText
-                    android:id="@+id/telefonePerfil"
+                    android:id="@+id/cidadePerfil"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content" />
 

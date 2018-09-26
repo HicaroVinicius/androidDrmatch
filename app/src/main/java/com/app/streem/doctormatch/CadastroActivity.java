@@ -16,6 +16,8 @@ import android.widget.Toast;
 
 import com.app.streem.doctormatch.DAO.Firebase;
 import com.app.streem.doctormatch.DAO.Preferencias;
+import com.app.streem.doctormatch.DAO.SDFormat;
+import com.app.streem.doctormatch.Modelo.UsuarioDados;
 import com.app.streem.doctormatch.Modelo.UsuarioRegistro;
 import com.app.streem.doctormatch.Modelo.UsuarioRegistro;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -36,6 +38,7 @@ public class CadastroActivity extends AppCompatActivity {
 
     private TextInputEditText dataNasc;
     private TextInputEditText telefone;
+    private TextInputEditText cidade;
     private TextInputEditText nome;
     private TextInputEditText senha;
     private TextInputEditText email;
@@ -54,15 +57,16 @@ public class CadastroActivity extends AppCompatActivity {
         preferencias = new Preferencias(this);
         auth = Firebase.getFirebaseAuth();
         dataNasc = findViewById(R.id.dataCadastroID);
-        telefone = findViewById(R.id.telefoneCadastroID);
+        cidade = findViewById(R.id.cidadeCadastroID);
+        //telefone = findViewById(R.id.telefoneCadastroID);
         nome = findViewById(R.id.nomeCadastroID);
         senha = findViewById(R.id.senhaCadastroID);
         email = findViewById(R.id.emailCadastroID);
 
         MaskEditTextChangedListener maskData = new MaskEditTextChangedListener("##/##/####", dataNasc);
-        MaskEditTextChangedListener maskTel = new MaskEditTextChangedListener("(##)#########", telefone);
+        //MaskEditTextChangedListener maskTel = new MaskEditTextChangedListener("(##)#########", telefone);
         dataNasc.addTextChangedListener(maskData);
-        telefone.addTextChangedListener(maskTel);
+        //telefone.addTextChangedListener(maskTel);
 
         myCalendar = Calendar.getInstance();
 
@@ -106,10 +110,11 @@ public class CadastroActivity extends AppCompatActivity {
         buttonRegistro.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                Toast.makeText(CadastroActivity.this,"Aguarde...",Toast.LENGTH_SHORT).show();
                 if(sexo.equals("null") | nome.getText().toString().isEmpty() |
                         dataNasc.getText().toString().isEmpty() | (dataNasc.getText().toString().length() < 10)
                         | email.getText().toString().isEmpty() | senha.getText().toString().isEmpty()
-                        | telefone.getText().toString().isEmpty()){
+                        | cidade.getText().toString().isEmpty()){
                     Toast.makeText(CadastroActivity.this,"Dados incompletos!",Toast.LENGTH_LONG).show();
                 }else {
                     showLoadingAnimation();
@@ -127,12 +132,26 @@ public class CadastroActivity extends AppCompatActivity {
                                                 apelido = nomeC[0];
                                             }
 
-
+                                            SDFormat sdFormat = new SDFormat();
                                             //UsuarioRegistro usuario = new UsuarioRegistro(nome.getText().toString(),apelido,sexo);
                                             //Firebase.getDatabaseReference().child("APP_USUARIO").child(Firebase.getFirebaseAuth().getCurrentUser().getUid()).child("REGISTRO").setValue(usuario);
+                                            String uid = Firebase.getFirebaseAuth().getCurrentUser().getUid();
+                                            preferencias.setUsuarioLogado(uid,
+                                                    apelido, cidade.getText().toString());
+                                            UsuarioDados usuarioDados = new UsuarioDados(cidade.getText().toString(),sexo,"",sdFormat.dateToMili(dataNasc.getText().toString()),nome.getText().toString(),"");
+                                            Firebase.getDatabaseReference().child("APP_USUARIOS").child("DADOS").child(uid).setValue(usuarioDados);
+                                            preferencias.setInfo("dtcont_cidade","1");
+                                            preferencias.setInfo("dtcont_estado","1");
+                                            preferencias.setInfo("dtcont_exame","1");
+                                            preferencias.setInfo("dtcont_espec","1");
+                                            preferencias.setInfo("dtcont_medico","1");
+                                            preferencias.setInfo("dtcont_medicoDados","1");
+                                            preferencias.setInfo("dtcont_consulta","1");
+                                            preferencias.setInfo("dtcont_dependente","1");
 
-                                            preferencias.setUsuarioLogado(Firebase.getFirebaseAuth().getCurrentUser().getUid(),
-                                                    apelido, telefone.getText().toString());
+                                            preferencias.setInfo("email",email.getText().toString());
+                                            preferencias.setInfo("nome",apelido);
+                                            preferencias.setInfo("id",uid);
                                             Intent i = new Intent(CadastroActivity.this, MainActivity.class);
                                             startActivity(i);
                                             finish();
