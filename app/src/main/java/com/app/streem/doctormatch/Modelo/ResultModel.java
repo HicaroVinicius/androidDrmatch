@@ -17,6 +17,43 @@ public class ResultModel {
     private String endereco1;
     private String endereco2;
 
+    public String getCartao() {
+        return cartao;
+    }
+
+    public void setCartao(String cartao) {
+        this.cartao = cartao;
+    }
+
+    public String getDinheiro() {
+        return dinheiro;
+    }
+
+    public void setDinheiro(String dinheiro) {
+        this.dinheiro = dinheiro;
+    }
+
+    public String getCheque() {
+        return cheque;
+    }
+
+    public void setCheque(String cheque) {
+        this.cheque = cheque;
+    }
+
+    public String getPlano() {
+        return plano;
+    }
+
+    public void setPlano(String plano) {
+        this.plano = plano;
+    }
+
+    private String cartao;
+    private String dinheiro;
+    private String cheque;
+    private String plano;
+
     public String getKey_clinic() {
         return key_clinic;
     }
@@ -67,7 +104,7 @@ public class ResultModel {
 
     private String id;
 
-    public ResultModel(String registro, String titular, String local, String valor, String url, String classif, String endereco1, String endereco2, String dt_cont, String data, String id,String key_clinic,String key_medico) {
+    public ResultModel(String registro, String titular, String local, String valor, String url, String classif, String endereco1, String endereco2, String dt_cont, String data, String id,String key_clinic,String key_medico,String cartao,String dinheiro,String cheque, String plano) {
         this.registro = registro;
         this.titular = titular;
         this.local = local;
@@ -81,6 +118,10 @@ public class ResultModel {
         this.id = id;
         this.key_clinic = key_clinic;
         this.key_medico = key_medico;
+        this.cartao = cartao;
+        this.dinheiro = dinheiro;
+        this.cheque = cheque;
+        this.plano = plano;
     }
 
     public ResultModel(){

@@ -74,6 +74,12 @@ public class DetailActivity extends AppCompatActivity {
     private ChildEventListener agendaRealTime;
     private DatabaseReference referenceAgend;
 
+    private ImageView dinheiro;
+    private ImageView cheque;
+    private ImageView plano;
+    private ImageView cartao;
+
+
     @Override
     protected void onStop() {
         super.onStop();
@@ -117,12 +123,35 @@ public class DetailActivity extends AppCompatActivity {
         final String espec = dados.getStringExtra("espec");
         final String valor = dados.getStringExtra("valor");
 
+        final String dinheiroStatus = dados.getStringExtra("valor");
+        final String chequeStatus = dados.getStringExtra("cheque");
+        final String planoStatus = dados.getStringExtra("plano");
+        final String cartaoStatus = dados.getStringExtra("cartao");
+
         //dataNova = data;
 
 
 
 
         setContentView(R.layout.activity_detail);
+
+        dinheiro = findViewById(R.id.dinheiro);
+        cheque = findViewById(R.id.cheque);
+        plano = findViewById(R.id.plano);
+        cartao = findViewById(R.id.cartao);
+
+        if(dinheiroStatus.equals("0")){
+            dinheiro.setVisibility(View.GONE);
+        }
+        if(chequeStatus.equals("0")){
+            cheque.setVisibility(View.GONE);
+        }
+        if(planoStatus.equals("0")){
+            plano.setVisibility(View.GONE);
+        }
+        if(cartaoStatus.equals("0")){
+            cartao.setVisibility(View.GONE);
+        }
 
         ImageView voltar = findViewById(R.id.imageView10);
         voltar.setOnClickListener(new View.OnClickListener() {
@@ -149,8 +178,8 @@ public class DetailActivity extends AppCompatActivity {
         titularDetails = findViewById(R.id.nomeDetails);
         registroDetails = findViewById(R.id.registroDetails);
         fotoMedico = findViewById(R.id.fotoDetails);
-        end1Details = findViewById(R.id.end1Details);
-        end2Details = findViewById(R.id.end2Details);
+        //end1Details = findViewById(R.id.end1Details);
+        //end2Details = findViewById(R.id.end2Details);
         especialidade = findViewById(R.id.especialidadeDetails);
 
         horaView = findViewById(R.id.recyclerViewHoraDetails);
@@ -293,8 +322,8 @@ public class DetailActivity extends AppCompatActivity {
 
         titularDetails.setText(titular);
         registroDetails.setText(registro);
-        end1Details.setText(end1);
-        end2Details.setText(end2);
+        //end1Details.setText(end1);
+        //end2Details.setText(end2);
         especialidade.setText(preferencias.getCHAVE_ESPECIALIDADE().toUpperCase());
 
 
@@ -329,10 +358,9 @@ public class DetailActivity extends AppCompatActivity {
 
                 confirmar.putExtra("hora",item.getHora());
                 confirmar.putExtra("keyHora",item.getId());
-                confirmar.putExtra("cartao",item.getCartao());
-                confirmar.putExtra("dinheiro",item.getDinheiro());
-                confirmar.putExtra("cheque",item.getCheque());
-                confirmar.putExtra("plano",item.getPlano());
+                confirmar.putExtra("fpag",item.getFpag());
+                confirmar.putExtra("valor",item.getValor());
+                confirmar.putExtra("mili",item.getMili());
 
                 ConnectivityManager cm =
                         (ConnectivityManager)DetailActivity.this.getSystemService(Context.CONNECTIVITY_SERVICE);

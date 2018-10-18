@@ -16,45 +16,30 @@ public class VagasModel implements Comparable<VagasModel> {
     private String status;
     private String tipo;
 
-    public String getCartao() {
-        return cartao;
+    public String getFpag() {
+        return fpag;
     }
 
-    public void setCartao(String cartao) {
-        this.cartao = cartao;
+    public void setFpag(String fpag) {
+        this.fpag = fpag;
     }
 
-    public String getDinheiro() {
-        return dinheiro;
+    public String getValor() {
+        return valor;
     }
 
-    public void setDinheiro(String dinheiro) {
-        this.dinheiro = dinheiro;
+    public void setValor(String valor) {
+        this.valor = valor;
     }
+
+    private String fpag;
+    private String valor;
+
 
     private String tp_vaga;
-    private String cartao;
-    private String dinheiro;
-    private String cheque;
-    private String plano;
 
-    public String getCheque() {
-        return cheque;
-    }
 
-    public void setCheque(String cheque) {
-        this.cheque = cheque;
-    }
-
-    public String getPlano() {
-        return plano;
-    }
-
-    public void setPlano(String plano) {
-        this.plano = plano;
-    }
-
-    private long mili;
+    private String mili;
 
     public VagasModel() {
 
@@ -124,11 +109,11 @@ public class VagasModel implements Comparable<VagasModel> {
         this.tp_vaga = tp_vaga;
     }
 
-    public long getMili() {
+    public String getMili() {
         return mili;
     }
 
-    public void setMili(long mili) {
+    public void setMili(String mili) {
         this.mili = mili;
     }
 

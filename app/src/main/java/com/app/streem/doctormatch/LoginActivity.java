@@ -227,13 +227,23 @@ public class LoginActivity extends AppCompatActivity {
                             preferencias.setInfo("dtcont_dependente","1");
 
                             //USER
-                            Log.i("testeUSERname",usuario.getNome());
-                            Log.i("testeUSERnameemail",usuario.getEmail());
-                            preferencias.setInfo("cpf",usuario.getCpf());
-                            preferencias.setInfo("dt_alt",usuario.getDt_alt());
-                            preferencias.setInfo("email",usuario.getEmail());
-                            preferencias.setInfo("nome",usuario.getNome());
-                            preferencias.setInfo("id",usuario.getId());
+                            Log.i("testeUSERID",user.getUid());
+                            //Log.i("testeUSERname",usuario.getNome());
+                            //Log.i("testeUSERnameemail",usuario.getEmail());
+                            String cpf = "";
+                            String email = "";
+                            String dt_alt = "";
+                            if (usuario != null) {
+                                cpf = usuario.getCpf();
+                                dt_alt = usuario.getDt_alt();
+                                email = usuario.getEmail();
+                            }
+
+                            preferencias.setInfo("cpf",cpf);
+                            preferencias.setInfo("dt_alt",dt_alt);
+                            preferencias.setInfo("email",email);
+                            preferencias.setInfo("nome",user.getDisplayName());
+                            preferencias.setInfo("id",user.getUid());
 
                         }
                         public void onCancelled(DatabaseError databaseError) {

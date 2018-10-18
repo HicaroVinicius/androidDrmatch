@@ -91,7 +91,7 @@ public class ConsultaFragment extends Fragment {
                 if(consultaList.isEmpty()){
                     semDados.setVisibility(View.VISIBLE);
                 }
-                AgendamentoMedico agendamentoMedico = new AgendamentoMedico("",item.getHORA(),item.getKEY_AGEND(),"","",Long.valueOf(1),"1","1","2",item.getCartao(),item.getDinheiro(),item.getCheque(),item.getPlano());
+                AgendamentoMedico agendamentoMedico = new AgendamentoMedico("",item.getHORA(),item.getKEY_AGEND(),"","","0","1","1","2",item.getValor(),"0");
                 Firebase.getDatabaseReference().child("CRM").child(item.getKEY_CLINIC()).child("AGENDAMENTO").child("MEDICO").child(item.getKEY_MEDICO()).child(item.getDT_AGEND()).child(item.getKEY_AGEND()).setValue(agendamentoMedico);
                 Firebase.getDatabaseReference().child("APP_USUARIOS").child("CONSULTAS").child(uid).child(item.getKEY()).removeValue();
                 Log.i("TESTE-dtcont_consultaIt", String.valueOf(item.getKEY())+"/"+item.getKEY_AGEND());

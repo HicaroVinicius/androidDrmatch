@@ -58,6 +58,10 @@ public class BD {
         valores.put("url",value.getUrl());
         valores.put("valor",value.getValor());
         valores.put("local",value.getLocal());
+        valores.put("cartao",value.getCartao());
+        valores.put("dinheiro",value.getDinheiro());
+        valores.put("cheque",value.getCheque());
+        valores.put("plano",value.getPlano());
         int id = (int) db.insertWithOnConflict("medicosDados",null,valores,SQLiteDatabase.CONFLICT_IGNORE);
         if (id == -1) {
             db.update("medicosDados", valores, "id=?", new String[] {value.getId()});
@@ -131,10 +135,7 @@ public class BD {
         valores.put("STATUS",consulta.getSTATUS().toString());
         valores.put("DT_CONT",consulta.getDT_CONT().toString());
         valores.put("cpf",consulta.getCpf().toString());
-        valores.put("cartao",consulta.getCartao().toString());
-        valores.put("dinheiro",consulta.getDinheiro().toString());
-        valores.put("cheque",consulta.getCheque().toString());
-        valores.put("plano",consulta.getPlano().toString());
+        valores.put("valor",consulta.getValor().toString());
         int id = (int) db.insertWithOnConflict("consultas",null,valores,SQLiteDatabase.CONFLICT_IGNORE);
         if (id == -1) {
             db.update("consultas", valores, "id=?", new String[] {consulta.getKEY()});
@@ -205,7 +206,7 @@ public class BD {
         Log.i("testeResultDados-id",id);
         ResultModel u = null;
         Cursor cursor;
-        String[] campos =  {"id","dt_cont","endereco1", "endereco2", "valor", "url","local", "titular", "registro"};
+        String[] campos =  {"id","dt_cont","endereco1", "endereco2", "valor", "url","local", "titular", "registro","cartao","dinheiro","cheque","plano"};
         cursor = db.query("medicosDados", campos, "id=?",  new String[] { id }, null, null, null, "1");
         if(cursor.getCount() > 0){
             cursor.moveToFirst();
@@ -221,6 +222,10 @@ public class BD {
                 u.setLocal(cursor.getString(6));
                 u.setTitular(cursor.getString(7));
                 u.setRegistro(cursor.getString(8));
+                u.setCartao(cursor.getString(9));
+                u.setDinheiro(cursor.getString(10));
+                u.setCheque(cursor.getString(11));
+                u.setPlano(cursor.getString(12));
                 Log.i("testeResultDados-id",cursor.getString(7));
             }while (cursor.moveToNext());
         }else{
@@ -335,10 +340,7 @@ public class BD {
                 consulta.setSTATUS(cursor.getString(8));
                 consulta.setDT_CONT(cursor.getString(9));
                 consulta.setCpf(cursor.getString(10));
-                consulta.setCartao(cursor.getString(11));
-                consulta.setDinheiro(cursor.getString(12));
-                consulta.setCheque(cursor.getString(13));
-                consulta.setPlano(cursor.getString(14));
+                consulta.setValor(cursor.getString(11));
 
                 consultas.add(consulta);
                 Log.i("testeBD_cons",consultas.get(0).getNOME_MEDICO());

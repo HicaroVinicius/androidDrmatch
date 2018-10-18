@@ -14,7 +14,7 @@ public class AgendamentoMedico {
         return cpf;
     }
 
-    public AgendamentoMedico(String cpf, String hora, String id, String key_pac, String key_ui_app, Long mili, String status, String tipo, String tp_vaga,String cartao, String dinheiro,String cheque,String plano) {
+    public AgendamentoMedico(String cpf, String hora, String id, String key_pac, String key_ui_app, String mili, String status, String tipo, String tp_vaga,String valor, String fpag) {
         this.cpf = cpf;
         this.hora = hora;
         this.id = id;
@@ -24,10 +24,8 @@ public class AgendamentoMedico {
         this.status = status;
         this.tipo = tipo;
         this.tp_vaga = tp_vaga;
-        this.cartao = cartao;
-        this.dinheiro = dinheiro;
-        this.cheque = cheque;
-        this.plano = plano;
+        this.valor = valor;
+        this.fpag = fpag;
     }
 
     public void setCpf(String cpf) {
@@ -66,11 +64,11 @@ public class AgendamentoMedico {
         this.key_ui_app = key_ui_app;
     }
 
-    public Long getMili() {
+    public String getMili() {
         return mili;
     }
 
-    public void setMili(Long mili) {
+    public void setMili(String mili) {
         this.mili = mili;
     }
 
@@ -99,46 +97,29 @@ public class AgendamentoMedico {
     }
 
     private String key_ui_app;
-    private Long mili;
+    private String mili;
     private String status;
     private String tipo;
     private String tp_vaga;
-    private String cartao;
-    private String cheque;
-    private String plano;
 
-    public String getCheque() {
-        return cheque;
+    public String getFpag() {
+        return fpag;
     }
 
-    public void setCheque(String cheque) {
-        this.cheque = cheque;
+    public void setFpag(String fpag) {
+        this.fpag = fpag;
     }
 
-    public String getPlano() {
-        return plano;
+    public String getValor() {
+        return valor;
     }
 
-    public void setPlano(String plano) {
-        this.plano = plano;
+    public void setValor(String valor) {
+        this.valor = valor;
     }
 
-    public String getCartao() {
-        return cartao;
-    }
+    private String fpag;
+    private String valor;
 
-    public void setCartao(String cartao) {
-        this.cartao = cartao;
-    }
-
-    public String getDinheiro() {
-        return dinheiro;
-    }
-
-    public void setDinheiro(String dinheiro) {
-        this.dinheiro = dinheiro;
-    }
-
-    private String dinheiro;
 
 }

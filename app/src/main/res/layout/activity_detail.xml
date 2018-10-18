@@ -45,6 +45,47 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
+        <LinearLayout
+            android:id="@+id/linearLayout5"
+            android:layout_width="368dp"
+            android:layout_height="58dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:orientation="vertical"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textView21">
+
+            <ImageView
+                android:id="@+id/plano"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                app:srcCompat="@drawable/ic_healing_black_24dp" />
+
+            <ImageView
+                android:id="@+id/cheque"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                app:srcCompat="@drawable/ic_email_black_24dp" />
+
+            <ImageView
+                android:id="@+id/cartao"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                app:srcCompat="@drawable/ic_credit_card_black_24dp" />
+
+            <ImageView
+                android:id="@+id/dinheiro"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                app:srcCompat="@drawable/ic_attach_money_black_24dp" />
+        </LinearLayout>
+
         <TextView
             android:id="@+id/textView15"
             android:layout_width="0dp"
@@ -151,30 +192,12 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
-            android:text="ENDEREÇO:"
+            android:text="FORMAS DE PAGAMENTOS:"
             android:textColor="@color/colorAccent"
             android:textStyle="bold"
             app:layout_constraintBottom_toBottomOf="@+id/imageView25"
             app:layout_constraintStart_toEndOf="@+id/imageView25"
             app:layout_constraintTop_toTopOf="@+id/imageView25" />
-
-        <TextView
-            android:id="@+id/end1Details"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:text="Rua Conselheiro José Julio"
-            app:layout_constraintStart_toStartOf="@+id/textView21"
-            app:layout_constraintTop_toBottomOf="@+id/textView21" />
-
-        <TextView
-            android:id="@+id/end2Details"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:text="N. 300, Centro, 62.340-000"
-            app:layout_constraintStart_toStartOf="@+id/end1Details"
-            app:layout_constraintTop_toBottomOf="@+id/end1Details" />
 
         <noman.weekcalendar.WeekCalendar
             android:id="@+id/weekCalendarDetails"
@@ -197,10 +220,10 @@
             android:id="@+id/imageView26"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="24dp"
+            android:layout_marginTop="8dp"
             app:layout_constraintEnd_toEndOf="@+id/imageView25"
             app:layout_constraintStart_toStartOf="@+id/imageView25"
-            app:layout_constraintTop_toBottomOf="@+id/end2Details"
+            app:layout_constraintTop_toBottomOf="@+id/linearLayout5"
             app:srcCompat="@drawable/app_data_filtro_24dp" />
 
         <TextView
@@ -210,7 +233,7 @@
             android:layout_marginBottom="8dp"
             android:layout_marginStart="8dp"
             android:layout_marginTop="8dp"
-            android:text="DATA e HORÁRIO:"
+            android:text="DATA / HORÁRIO:"
             android:textColor="@color/colorAccent"
             android:textStyle="bold"
             app:layout_constraintBottom_toBottomOf="@+id/imageView26"

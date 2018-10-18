@@ -97,6 +97,9 @@ public class PerfilActivity extends AppCompatActivity {
 
                 Firebase.getDatabaseReference().child("APP_USUARIOS").child("DADOS").child(idUser).setValue(dados);
 
+                UsuarioRegistro registro = new UsuarioRegistro(cpf.getText().toString(),"1",email.getText().toString(),idUser,nome.getText().toString());
+                Firebase.getDatabaseReference().child("APP_USUARIOS").child("REGISTRO").child(idUser).setValue(registro);
+
                 Toast.makeText(PerfilActivity.this, "Informações Salvas com Sucesso", Toast.LENGTH_LONG).show();
                 Intent i = new Intent(PerfilActivity.this, MainActivity.class);
                 startActivity(i);
@@ -138,7 +141,11 @@ public class PerfilActivity extends AppCompatActivity {
                 usuarioDados = dataSnapshot.getValue(UsuarioDados.class);
 
                 //USER
-                cidade.setText(usuarioDados.getCidade());
+                if(usuarioDados.getCidade() == null){
+                    cidade.setText("");
+                }else {
+                    cidade.setText(usuarioDados.getCidade());
+                }
 
                 if (usuarioDados.getSexo() == "m") {
                     sexo.setText("Masculino");

@@ -189,10 +189,9 @@ public class ConfirmActivity extends AppCompatActivity {
         final String url = dados.getStringExtra("url");
         final String hora = dados.getStringExtra("hora");
         final String keyHora = dados.getStringExtra("keyHora");
-        final String cartao = dados.getStringExtra("cartao");
-        final String dinheiro = dados.getStringExtra("dinheiro");
-        final String cheque = dados.getStringExtra("cheque");
-        final String plano = dados.getStringExtra("plano");
+        final String fpag = dados.getStringExtra("fpag");
+        final String valor = dados.getStringExtra("valor");
+        final String mili = dados.getStringExtra("mili");
         final String KEY_AGEND = dados.getStringExtra("KEY_AGEND");
         final String nome = dados.getStringExtra("nome");
         final String cidade = dados.getStringExtra("cidade");
@@ -323,7 +322,7 @@ public class ConfirmActivity extends AppCompatActivity {
                                     activeNetwork.isConnectedOrConnecting();
 
                             if(isConnected){
-                                confirmar(data,keyMedico,cidade,estado,espec,keyHora,cpfDependente,titular,inf,hora,nomeDep,cartao,dinheiro,cheque,plano);
+                                confirmar(data,keyMedico,cidade,estado,espec,keyHora,cpfDependente,titular,inf,hora,nomeDep,fpag,valor,mili);
                                 Log.i("testeConfirm",data+keyMedico+cidade+estado+espec+keyHora+nomeDep+titular+hora+dataFormatt);
                                 Intent intent = new Intent(ConfirmActivity.this,AgendConcluido.class);
                                 startActivity(intent);
@@ -346,7 +345,7 @@ public class ConfirmActivity extends AppCompatActivity {
 
     }
 
-    public void confirmar(String data, String keyMedico, String cidade, String estado, String espec, String keyHora, String cpfDep,String nomeMedico, String info,String hora,String nomeDep,String cartao,String dinheiro,String cheque, String plano){
+    public void confirmar(String data, String keyMedico, String cidade, String estado, String espec, String keyHora, String cpfDep,String nomeMedico, String info,String hora,String nomeDep,String fpag,String valor, String mili){
 
         Log.i("testeRemove",estado+"-"+cidade+"-"+espec+"-"+data+"-"+keyMedico+"-"+keyHora);
         preferencias = new Preferencias(getApplicationContext());
@@ -369,12 +368,12 @@ public class ConfirmActivity extends AppCompatActivity {
         AgendamentoGeral agendamentoGeral = new AgendamentoGeral(String.valueOf(dataA.getTime()),keyHora,key_medico,"","2");
         Firebase.getDatabaseReference().child("CRM").child(key_clinic).child("AGENDAMENTO").child("GERAL").child(keyHora).setValue(agendamentoGeral);
 
-        AgendamentoMedico agendamentoMedico = new AgendamentoMedico(cpf,hora,keyHora,nomeDep,uid,Long.valueOf(2),"2",tipo,"2",cartao,dinheiro,cheque,plano);
+        AgendamentoMedico agendamentoMedico = new AgendamentoMedico(cpf,hora,keyHora,nomeDep,uid,mili,"2",tipo,"2",valor,fpag);
         Firebase.getDatabaseReference().child("CRM").child(key_clinic).child("AGENDAMENTO").child("MEDICO").child(key_medico).child(data).child(keyHora).setValue(agendamentoMedico);
 
         String key = Firebase.getDatabaseReference().child("APP_USUARIOS").child("CONSULTAS").child(uid).push().getKey();
         //KEY,  KEY_CLINIC,  KEY_MEDICO,  NOME_MEDICO,  DT_AGEND,  KEY_AGEND,  HORA,  ESPECIALIDADE,  STATUS,  DT_CONT
-        Consulta nova = new Consulta(key,key_clinic,key_medico,nomeMedico,data,keyHora,hora,especialidade,"1",String.valueOf(dataA.getTime()),cpf,cartao,dinheiro,cheque,plano);
+        Consulta nova = new Consulta(key,key_clinic,key_medico,nomeMedico,data,keyHora,hora,especialidade,"1",String.valueOf(dataA.getTime()),cpf,valor);
 
         //inserindo no Sqlite
         BD bd = new BD(getApplicationContext());

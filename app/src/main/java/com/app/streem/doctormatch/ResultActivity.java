@@ -175,10 +175,15 @@ public class ResultActivity extends AppCompatActivity {
 
            //Toast.makeText(getApplicationContext(),"KEY: "+item.getKEY()+"/DATA: "+preferencias.getCHAVE_DATA(),Toast.LENGTH_SHORT).show();
             Intent newPage = new Intent(ResultActivity.this,DetailActivity.class);
+            Log.i("testeResultModel",item.toString());
             newPage.putExtra("titular",item.getTitular().toString());
             newPage.putExtra("end1",item.getEndereco1().toString());
             newPage.putExtra("end2",item.getEndereco2().toString());
             newPage.putExtra("registro",item.getRegistro().toString());
+            newPage.putExtra("cartao",item.getCartao().toString());
+            newPage.putExtra("cheque",item.getCheque().toString());
+            newPage.putExtra("dinheiro",item.getDinheiro().toString());
+            newPage.putExtra("plano",item.getPlano().toString());
            // newPage.putExtra("classif",item.getClassif().toString());
             newPage.putExtra("url",item.getUrl());
             newPage.putExtra("key",item.getId());
@@ -273,6 +278,10 @@ public class ResultActivity extends AppCompatActivity {
                                     medico.setEndereco2(med.getEndereco2());
                                     medico.setUrl(med.getUrl());
                                     medico.setId(med.getId());
+                                    medico.setPlano(med.getPlano());
+                                    medico.setCheque(med.getCheque());
+                                    medico.setDinheiro(med.getDinheiro());
+                                    medico.setCartao(med.getCartao());
                                 } catch (Exception e) {
                                     Log.i("TESTERESULT-ERRO", e.getMessage());
                                 }
