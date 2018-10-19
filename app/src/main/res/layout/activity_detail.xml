@@ -62,28 +62,28 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                app:srcCompat="@drawable/ic_healing_black_24dp" />
+                app:srcCompat="@drawable/ic_access_time_black_24dp" />
 
             <ImageView
                 android:id="@+id/cheque"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                app:srcCompat="@drawable/ic_email_black_24dp" />
+                app:srcCompat="@drawable/ic_access_time_black_24dp" />
 
             <ImageView
                 android:id="@+id/cartao"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                app:srcCompat="@drawable/ic_credit_card_black_24dp" />
+                app:srcCompat="@drawable/ic_access_time_black_24dp" />
 
             <ImageView
                 android:id="@+id/dinheiro"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                app:srcCompat="@drawable/ic_attach_money_black_24dp" />
+                app:srcCompat="@drawable/ic_access_time_black_24dp" />
         </LinearLayout>
 
         <TextView
