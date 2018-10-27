@@ -18,9 +18,10 @@ public class Preferencias {
     private final String CHAVE_NOME_USUARIO = "logadoNome";
     private final String CHAVE_TEL = "logadoTelefone";
     private final String CHAVE_CIDADE_USER = "cidadeUsuario";
+    private final String CHAVE_SOBREMOME_USER = "sobrenomeUsuario";
 
-    public String getCHAVE_CIDADE_USER() {
-        return preferences.getString(CHAVE_CIDADE_USER, "Erro!");
+    public String getCHAVE_SOBREMOME_USER() {
+        return preferences.getString(CHAVE_SOBREMOME_USER, "Erro!");
     }
 
     private final String CHAVE_DATABASE = "offline";
@@ -120,10 +121,10 @@ public class Preferencias {
         editor = preferences.edit();
     }
 
-    public void setUsuarioLogado(String keyUsuario, String nomeUsuario, String cidadeUsuario){
+    public void setUsuarioLogado(String keyUsuario, String nomeUsuario, String sobrenomeUsuario){
         editor.putString(CHAVE_INDENTIFICADOR, keyUsuario);
         editor.putString(CHAVE_NOME_USUARIO, nomeUsuario);
-        editor.putString(CHAVE_CIDADE_USER, cidadeUsuario);
+        editor.putString(CHAVE_SOBREMOME_USER, sobrenomeUsuario);
         editor.commit();
     }
 

@@ -13,6 +13,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.app.streem.doctormatch.Adapter.TabAdapter;
@@ -36,6 +37,7 @@ public class ServicoSeletorActivity extends AppCompatActivity implements Consult
 
     private Preferencias preferencias;
     private BD bd;
+    private TextView tituloServico;
 
 
     @Override
@@ -49,6 +51,8 @@ public class ServicoSeletorActivity extends AppCompatActivity implements Consult
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_servico_seletor);
+
+        tituloServico = findViewById(R.id.tituloServico);
 
         ImageView voltar = findViewById(R.id.voltaservsel);
         voltar.setOnClickListener(new View.OnClickListener() {
@@ -148,6 +152,7 @@ public class ServicoSeletorActivity extends AppCompatActivity implements Consult
         autoCompleteTextView.setDropDownHeight(0);
         autoCompleteTextView.setThreshold(1);
         autoCompleteTextView.setHint("Especialidade");
+        tituloServico.setText("Especialidade");
         autoCompleteTextView.setAdapter(adapterAuto[0]);
 
         final TabLayout tabLayout = findViewById(R.id.tabSeletor);
@@ -171,6 +176,7 @@ public class ServicoSeletorActivity extends AppCompatActivity implements Consult
                         autoCompleteTextView.setText(autoCompleteTextView.getText());
                         autoCompleteTextView.setSelection(autoCompleteTextView.getText().length());
                         autoCompleteTextView.setHint("Especialidade");
+                        tituloServico.setText("Especialidade");
                         viewPager.setAdapter(new TabAdapter(getSupportFragmentManager(),tabLayout.getTabCount(), adapterAuto[0]));
                         viewPager.setCurrentItem(tab.getPosition());
                         viewPager.getAdapter().notifyDataSetChanged();
@@ -181,6 +187,7 @@ public class ServicoSeletorActivity extends AppCompatActivity implements Consult
                         autoCompleteTextView.setText(autoCompleteTextView.getText());
                         autoCompleteTextView.setSelection(autoCompleteTextView.getText().length());
                         autoCompleteTextView.setHint("Exames");
+                        tituloServico.setText("Exames");
                         viewPager.setAdapter(new TabAdapter(getSupportFragmentManager(),tabLayout.getTabCount(), adapterAuto[1]));
                         viewPager.setCurrentItem(tab.getPosition());
                         viewPager.getAdapter().notifyDataSetChanged();
@@ -188,6 +195,7 @@ public class ServicoSeletorActivity extends AppCompatActivity implements Consult
                     case 2:
                         autoCompleteTextView.clearComposingText();
                         autoCompleteTextView.setHint("");
+                        tituloServico.setText("");
                         break;
                 }
 

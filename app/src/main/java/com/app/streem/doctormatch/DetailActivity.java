@@ -79,6 +79,11 @@ public class DetailActivity extends AppCompatActivity {
     private ImageView plano;
     private ImageView cartao;
 
+    private TextView dinheiroText;
+    private TextView chequeText;
+    private TextView planoText;
+    private TextView cartaoText;
+
 
     @Override
     protected void onStop() {
@@ -140,17 +145,26 @@ public class DetailActivity extends AppCompatActivity {
         plano = findViewById(R.id.plano);
         cartao = findViewById(R.id.cartao);
 
+        dinheiroText = findViewById(R.id.dinheiroText);
+        chequeText = findViewById(R.id.chequeText);
+        planoText = findViewById(R.id.planoText);
+        cartaoText = findViewById(R.id.cartaoText);
+
         if(dinheiroStatus.equals("0")){
             dinheiro.setVisibility(View.GONE);
+            dinheiroText.setVisibility(View.GONE);
         }
         if(chequeStatus.equals("0")){
             cheque.setVisibility(View.GONE);
+            chequeText.setVisibility(View.GONE);
         }
         if(planoStatus.equals("0")){
             plano.setVisibility(View.GONE);
+            planoText.setVisibility(View.GONE);
         }
         if(cartaoStatus.equals("0")){
             cartao.setVisibility(View.GONE);
+            cartaoText.setVisibility(View.GONE);
         }
 
         ImageView voltar = findViewById(R.id.imageView10);

@@ -13,6 +13,30 @@
         android:background="@color/colorPrimaryDark">
 
         <TextView
+            android:id="@+id/textView42"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="36dp"
+            android:text="Voltar"
+            android:textColor="@android:color/white"
+            app:layout_constraintBottom_toBottomOf="@+id/imageView10"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/imageView10" />
+
+        <TextView
+            android:id="@+id/textView43"
+            android:layout_width="0dp"
+            android:layout_height="1dp"
+
+            android:layout_marginEnd="32dp"
+            android:layout_marginStart="34dp"
+            android:background="@android:color/white"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.7"
+            app:layout_constraintStart_toStartOf="parent" />
+
+        <TextView
             android:id="@+id/textView20"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -33,7 +57,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginBottom="8dp"
-            android:layout_marginStart="16dp"
+            android:layout_marginStart="8dp"
             android:layout_marginTop="8dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -86,6 +110,17 @@
                     android:layout_height="wrap_content" />
 
                 <TextView
+                    android:id="@+id/textView13"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Sobrenome:" />
+
+                <EditText
+                    android:id="@+id/sobrenomePerfil"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+
+                <TextView
                     android:id="@+id/textView22"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -94,7 +129,8 @@
                 <EditText
                     android:id="@+id/emailPerfil"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content" />
+                    android:layout_height="wrap_content"
+                    android:editable="false" />
 
                 <TextView
                     android:id="@+id/textView18"
@@ -105,18 +141,8 @@
                 <EditText
                     android:id="@+id/cpfPerfil"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content" />
-
-                <TextView
-                    android:id="@+id/textView13"
-                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Cidade:" />
-
-                <EditText
-                    android:id="@+id/cidadePerfil"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content" />
+                    android:editable="false" />
 
                 <TextView
                     android:id="@+id/textView23"
@@ -124,10 +150,36 @@
                     android:layout_height="wrap_content"
                     android:text="Sexo:" />
 
-                <EditText
-                    android:id="@+id/sexoPerfil"
+                <android.support.design.widget.TextInputLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content" />
+                    android:layout_height="match_parent"
+                    android:layout_marginBottom="8dp"
+                    android:layout_marginEnd="16dp"
+                    android:layout_marginStart="16dp">
+
+                    <RadioGroup
+                        android:id="@+id/radioGroupCadID"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:orientation="horizontal"
+                        tools:layout_editor_absoluteX="97dp"
+                        tools:layout_editor_absoluteY="236dp">
+
+                        <RadioButton
+                            android:id="@+id/radioButtonMasculinoCadID"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="Masculino" />
+
+                        <RadioButton
+                            android:id="@+id/radioButtonFeminidoCadID"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="Feminino" />
+                    </RadioGroup>
+                </android.support.design.widget.TextInputLayout>
 
                 <TextView
                     android:id="@+id/textView32"

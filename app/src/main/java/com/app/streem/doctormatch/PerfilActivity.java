@@ -12,6 +12,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -45,11 +46,14 @@ import br.com.jansenfelipe.androidmask.MaskEditTextChangedListener;
 public class PerfilActivity extends AppCompatActivity {
 
     private EditText dataNasc;
-    private EditText cidade;
+    private EditText sobrenome;
     private EditText nome;
     private EditText email;
     private EditText sexo;
+    private String sex;
     private EditText cpf;
+
+    private RadioGroup radioGroup;
 
     private Calendar myCalendar;
     private DatePickerDialog.OnDateSetListener date;
@@ -66,93 +70,88 @@ public class PerfilActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_perfil);
-
+        sex = "null";
         preferencias = new Preferencias(this);
 
         final String idUser = FirebaseAuth.getInstance().getCurrentUser().getUid();
 
         dataNasc = findViewById(R.id.dataPerfil);
-        cidade = findViewById(R.id.cidadePerfil);
+        sobrenome = findViewById(R.id.sobrenomePerfil);
         nome = findViewById(R.id.nomePerfil);
         email = findViewById(R.id.emailPerfil);
         cpf = findViewById(R.id.cpfPerfil);
-        sexo = findViewById(R.id.sexoPerfil);
 
+        RadioButton masculino = findViewById(R.id.radioButtonMasculinoCadID);
+        RadioButton feminino = findViewById(R.id.radioButtonFeminidoCadID);
+
+        radioGroup = findViewById(R.id.radioGroupCadID);
+        radioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(RadioGroup radioGroup, int i) {
+                switch (i){
+                    case R.id.radioButtonMasculinoCadID:
+                        sex = "Masculino";
+                        break;
+                    case R.id.radioButtonFeminidoCadID:
+                        sex = "Feminino";
+                        break;
+                }
+            }
+        });
+
+        email.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(PerfilActivity.this, "Você não pode alterar o seu Email", Toast.LENGTH_SHORT).show();
+            }
+        });
+        cpf.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(PerfilActivity.this, "Você não pode alterar o CPF", Toast.LENGTH_SHORT).show();
+            }
+        });
 
         button = findViewById(R.id.editarPerfil);
-        button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Log.i("testePerfil","perfil");
-
-                SimpleDateFormat sdf = new SimpleDateFormat("dd/mm/yyyy", Locale.ENGLISH);
-                Date date = null;
-                UsuarioDados dados = new UsuarioDados(cidade.getText().toString(),sexo.getText().toString(),"","erro",nome.getText().toString(),"");
-                try {
-                    date = sdf.parse(dataNasc.getText().toString());
-                    dados = new UsuarioDados(cidade.getText().toString(),sexo.getText().toString(),"",String.valueOf(date.getTime()),nome.getText().toString(),"");
-                } catch (ParseException e) {
-                    e.printStackTrace();
-                }
-
-                Firebase.getDatabaseReference().child("APP_USUARIOS").child("DADOS").child(idUser).setValue(dados);
-
-                UsuarioRegistro registro = new UsuarioRegistro(cpf.getText().toString(),"1",email.getText().toString(),idUser,nome.getText().toString());
-                Firebase.getDatabaseReference().child("APP_USUARIOS").child("REGISTRO").child(idUser).setValue(registro);
-
-                Toast.makeText(PerfilActivity.this, "Informações Salvas com Sucesso", Toast.LENGTH_LONG).show();
-                Intent i = new Intent(PerfilActivity.this, MainActivity.class);
-                startActivity(i);
-                finish();
-            }
-        });
 
 
-        Firebase.getDatabaseReference().child("APP_USUARIOS").child("REGISTRO").child(idUser).addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                if(dataSnapshot.hasChildren()) {
-                    usuarioRegistro = dataSnapshot.getValue(UsuarioRegistro.class);
 
-                    //USER
-                    //Log.i("testeUSERname",usuarioRegistro.getNome());
-
-                    if (!usuarioRegistro.getNome().isEmpty()) {
-                        nome.setText(usuarioRegistro.getNome());
-                    }
-                    if (!usuarioRegistro.getEmail().isEmpty()) {
-                        email.setText(usuarioRegistro.getEmail());
-                    }
-                    if (!usuarioRegistro.getCpf().isEmpty()) {
-                        cpf.setText(usuarioRegistro.getCpf());
-                    }
-
-                }
-
-            }
-            public void onCancelled(DatabaseError databaseError) {
-
-            }
-        });
-
-        Firebase.getDatabaseReference().child("APP_USUARIOS").child("DADOS").child(idUser).addListenerForSingleValueEvent(new ValueEventListener() {
+        Firebase.getDatabaseReference().child("APP_USUARIOS").child("DADOS").child(idUser).child("DADOS").addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 usuarioDados = dataSnapshot.getValue(UsuarioDados.class);
 
                 //USER
-                if(usuarioDados.getCidade() == null){
-                    cidade.setText("");
+                if(usuarioDados.getNome() == null){
+                    nome.setText("");
                 }else {
-                    cidade.setText(usuarioDados.getCidade());
+                    nome.setText(usuarioDados.getNome());
                 }
 
-                if (usuarioDados.getSexo() == "m") {
-                    sexo.setText("Masculino");
-                }else if(usuarioDados.getSexo() == "f"){
-                    sexo.setText("Feminino");
+                if(usuarioDados.getEmail() == null){
+                    email.setText("");
+                }else {
+                    email.setText(usuarioDados.getEmail());
+                }
+
+                if(usuarioDados.getCpf() == null){
+                    cpf.setText("");
+                }else {
+                    cpf.setText(usuarioDados.getCpf());
+                }
+
+                if(usuarioDados.getSobrenome() == null){
+                    sobrenome.setText("");
+                }else {
+                    sobrenome.setText(usuarioDados.getSobrenome());
+                }
+
+                if (usuarioDados.getSexo().equals("Masculino")) {
+                    radioGroup.check(R.id.radioButtonMasculinoCadID);
+                }else if(usuarioDados.getSexo().equals("Feminino")){
+                    radioGroup.check(R.id.radioButtonFeminidoCadID);
                 }else{
-                    sexo.setText(usuarioDados.getSexo());
+                    radioGroup.clearCheck();
                 }
 
                 // Create a DateFormatter object for displaying date in specified format.
@@ -170,6 +169,35 @@ public class PerfilActivity extends AppCompatActivity {
             }
         });
 
+        button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Log.i("testePerfil","perfil");
+
+                SimpleDateFormat sdf = new SimpleDateFormat("dd/mm/yyyy", Locale.ENGLISH);
+                Date date = null;
+                //String nome, String sobrenome,String sexo, String dt_nasc, String email,String dt_cont,String dt_cad,String adm,String cpf,String url
+                UsuarioDados dados = new UsuarioDados(nome.getText().toString(),sobrenome.getText().toString(),sex,usuarioDados.getDt_nasc(),usuarioDados.getEmail(),usuarioDados.getDt_cont(),usuarioDados.getDt_cad(),usuarioDados.getAdm(),usuarioDados.getCpf(),usuarioDados.getUrl());
+                try {
+                    date = sdf.parse(dataNasc.getText().toString());
+                    dados = new UsuarioDados(nome.getText().toString(),sobrenome.getText().toString(),sex,String.valueOf(date.getTime()),usuarioDados.getEmail(),usuarioDados.getDt_cont(),usuarioDados.getDt_cad(),usuarioDados.getAdm(),usuarioDados.getCpf(),usuarioDados.getUrl());
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
+
+                Firebase.getDatabaseReference().child("APP_USUARIOS").child("DADOS").child(idUser).child("DADOS").setValue(dados);
+
+//                UsuarioRegistro registro = new UsuarioRegistro(cpf.getText().toString(),"1",email.getText().toString(),idUser,nome.getText().toString());
+//                Firebase.getDatabaseReference().child("APP_USUARIOS").child("REGISTRO").child(idUser).setValue(registro);
+                preferencias.setInfo("nome",nome.getText().toString());
+                preferencias.setInfo("sexo",sex);
+
+                Toast.makeText(PerfilActivity.this, "Informações Salvas com Sucesso", Toast.LENGTH_LONG).show();
+                Intent i = new Intent(PerfilActivity.this, MainActivity.class);
+                startActivity(i);
+                finish();
+            }
+        });
 
         myCalendar = Calendar.getInstance();
 

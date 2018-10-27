@@ -21,6 +21,7 @@ import android.widget.Toast;
 import com.app.streem.doctormatch.DAO.Firebase;
 import com.app.streem.doctormatch.DAO.Preferencias;
 import com.app.streem.doctormatch.Modelo.Estado;
+import com.app.streem.doctormatch.Modelo.UsuarioDados;
 import com.app.streem.doctormatch.Modelo.UsuarioRegistro;
 import com.app.streem.doctormatch.Modelo.UsuarioRegistro;
 import com.facebook.AccessToken;
@@ -70,7 +71,7 @@ public class LoginActivity extends AppCompatActivity {
 
     private CallbackManager mCallbackManager;
 
-    private UsuarioRegistro usuario = null;
+    private UsuarioDados usuario = null;
 
     private void handleFacebookAccessToken(AccessToken token) {
         Log.d(TAG, "handleFacebookAccessToken:" + token);
@@ -212,10 +213,10 @@ public class LoginActivity extends AppCompatActivity {
 
 
 
-                    Firebase.getDatabaseReference().child("APP_USUARIOS").child("REGISTRO").child(user.getUid()).addListenerForSingleValueEvent(new ValueEventListener() {
+                    Firebase.getDatabaseReference().child("APP_USUARIOS").child("DADOS").child(user.getUid()).child("DADOS").addListenerForSingleValueEvent(new ValueEventListener() {
                         @Override
                         public void onDataChange(DataSnapshot dataSnapshot) {
-                            usuario = dataSnapshot.getValue(UsuarioRegistro.class);
+                            usuario = dataSnapshot.getValue(UsuarioDados.class);
                             preferencias.setUsuarioLogado(user.getUid(),user.getDisplayName(),user.getPhoneNumber());
                             preferencias.setInfo("dtcont_cidade","1");
                             preferencias.setInfo("dtcont_estado","1");
@@ -226,23 +227,12 @@ public class LoginActivity extends AppCompatActivity {
                             preferencias.setInfo("dtcont_consulta","1");
                             preferencias.setInfo("dtcont_dependente","1");
 
-                            //USER
-                            Log.i("testeUSERID",user.getUid());
-                            //Log.i("testeUSERname",usuario.getNome());
-                            //Log.i("testeUSERnameemail",usuario.getEmail());
-                            String cpf = "";
-                            String email = "";
-                            String dt_alt = "";
-                            if (usuario != null) {
-                                cpf = usuario.getCpf();
-                                dt_alt = usuario.getDt_alt();
-                                email = usuario.getEmail();
-                            }
 
-                            preferencias.setInfo("cpf",cpf);
-                            preferencias.setInfo("dt_alt",dt_alt);
-                            preferencias.setInfo("email",email);
-                            preferencias.setInfo("nome",user.getDisplayName());
+                            preferencias.setInfo("cpf",usuario.getCpf());
+                            preferencias.setInfo("url",usuario.getUrl());
+                            preferencias.setInfo("dt_cont",usuario.getDt_cont());
+                            preferencias.setInfo("email",usuario.getEmail());
+                            preferencias.setInfo("nome",usuario.getNome());
                             preferencias.setInfo("id",user.getUid());
 
                         }

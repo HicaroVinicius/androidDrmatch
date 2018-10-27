@@ -30,6 +30,7 @@ import com.google.firebase.auth.FirebaseAuthWeakPasswordException;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.Locale;
 
 import br.com.jansenfelipe.androidmask.MaskEditTextChangedListener;
@@ -38,7 +39,7 @@ public class CadastroActivity extends AppCompatActivity {
 
     private TextInputEditText dataNasc;
     private TextInputEditText telefone;
-    private TextInputEditText cidade;
+    private TextInputEditText sobrenome;
     private TextInputEditText nome;
     private TextInputEditText senha;
     private TextInputEditText email;
@@ -57,7 +58,7 @@ public class CadastroActivity extends AppCompatActivity {
         preferencias = new Preferencias(this);
         auth = Firebase.getFirebaseAuth();
         dataNasc = findViewById(R.id.dataCadastroID);
-        cidade = findViewById(R.id.cidadeCadastroID);
+        sobrenome = findViewById(R.id.sobrenomeCadastroID);
         //telefone = findViewById(R.id.telefoneCadastroID);
         nome = findViewById(R.id.nomeCadastroID);
         senha = findViewById(R.id.senhaCadastroID);
@@ -114,7 +115,7 @@ public class CadastroActivity extends AppCompatActivity {
                 if(sexo.equals("null") | nome.getText().toString().isEmpty() |
                         dataNasc.getText().toString().isEmpty() | (dataNasc.getText().toString().length() < 10)
                         | email.getText().toString().isEmpty() | senha.getText().toString().isEmpty()
-                        | cidade.getText().toString().isEmpty()){
+                        | sobrenome.getText().toString().isEmpty()){
                     Toast.makeText(CadastroActivity.this,"Dados incompletos!",Toast.LENGTH_LONG).show();
                 }else {
                     showLoadingAnimation();
@@ -137,9 +138,12 @@ public class CadastroActivity extends AppCompatActivity {
                                             //Firebase.getDatabaseReference().child("APP_USUARIO").child(Firebase.getFirebaseAuth().getCurrentUser().getUid()).child("REGISTRO").setValue(usuario);
                                             String uid = Firebase.getFirebaseAuth().getCurrentUser().getUid();
                                             preferencias.setUsuarioLogado(uid,
-                                                    apelido, cidade.getText().toString());
-                                            UsuarioDados usuarioDados = new UsuarioDados(cidade.getText().toString(),sexo,"",sdFormat.dateToMili(dataNasc.getText().toString()),nome.getText().toString(),"");
-                                            Firebase.getDatabaseReference().child("APP_USUARIOS").child("DADOS").child(uid).setValue(usuarioDados);
+                                                    apelido, sobrenome.getText().toString());
+                                            Date dataA = new Date();
+
+                                            //String nome, String sobrenome,String sexo,  String dt_nasc, String email,String dt_cont,String dt_cad,String adm,String cpf,String url
+                                            UsuarioDados usuarioDados = new UsuarioDados(nome.getText().toString(),sobrenome.getText().toString(),sexo,sdFormat.dateToMili(dataNasc.getText().toString()),email.getText().toString(),String.valueOf(dataA.getTime()),String.valueOf(dataA.getTime()),String.valueOf(dataA.getTime()),"","");
+                                            Firebase.getDatabaseReference().child("APP_USUARIOS").child("DADOS").child(uid).child("DADOS").setValue(usuarioDados);
                                             preferencias.setInfo("dtcont_cidade","1");
                                             preferencias.setInfo("dtcont_estado","1");
                                             preferencias.setInfo("dtcont_exame","1");
@@ -150,7 +154,10 @@ public class CadastroActivity extends AppCompatActivity {
                                             preferencias.setInfo("dtcont_dependente","1");
 
                                             preferencias.setInfo("email",email.getText().toString());
-                                            preferencias.setInfo("nome",apelido);
+                                            preferencias.setInfo("nome",nome.getText().toString());
+                                            preferencias.setInfo("sexo",sexo);
+                                            preferencias.setInfo("cpf","");
+                                            preferencias.setInfo("url","");
                                             preferencias.setInfo("id",uid);
                                             Intent i = new Intent(CadastroActivity.this, MainActivity.class);
                                             startActivity(i);

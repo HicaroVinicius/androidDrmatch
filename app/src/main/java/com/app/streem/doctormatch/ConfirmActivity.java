@@ -127,6 +127,14 @@ public class ConfirmActivity extends AppCompatActivity {
             }
         });
 
+        TextView voltarText = findViewById(R.id.textView6);
+        voltarText.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
+
 
         fotoMedico = findViewById(R.id.fotoMedicoConfirm);
 
