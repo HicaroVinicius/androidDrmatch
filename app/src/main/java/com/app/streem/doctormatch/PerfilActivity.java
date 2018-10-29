@@ -12,6 +12,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.RelativeLayout;
@@ -70,6 +71,23 @@ public class PerfilActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_perfil);
+
+        ImageView voltar = findViewById(R.id.imageView10);
+        voltar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
+
+        TextView voltarText = findViewById(R.id.textView42);
+        voltarText.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
+
         sex = "null";
         preferencias = new Preferencias(this);
 
@@ -176,11 +194,12 @@ public class PerfilActivity extends AppCompatActivity {
 
                 SimpleDateFormat sdf = new SimpleDateFormat("dd/mm/yyyy", Locale.ENGLISH);
                 Date date = null;
+                Date dataA = new Date();
                 //String nome, String sobrenome,String sexo, String dt_nasc, String email,String dt_cont,String dt_cad,String adm,String cpf,String url
-                UsuarioDados dados = new UsuarioDados(nome.getText().toString(),sobrenome.getText().toString(),sex,usuarioDados.getDt_nasc(),usuarioDados.getEmail(),usuarioDados.getDt_cont(),usuarioDados.getDt_cad(),usuarioDados.getAdm(),usuarioDados.getCpf(),usuarioDados.getUrl());
+                UsuarioDados dados = new UsuarioDados(nome.getText().toString(),sobrenome.getText().toString(),sex,usuarioDados.getDt_nasc(),usuarioDados.getEmail(),String.valueOf(dataA.getTime()),usuarioDados.getDt_cad(),usuarioDados.getAdm(),usuarioDados.getCpf(),usuarioDados.getUrl());
                 try {
                     date = sdf.parse(dataNasc.getText().toString());
-                    dados = new UsuarioDados(nome.getText().toString(),sobrenome.getText().toString(),sex,String.valueOf(date.getTime()),usuarioDados.getEmail(),usuarioDados.getDt_cont(),usuarioDados.getDt_cad(),usuarioDados.getAdm(),usuarioDados.getCpf(),usuarioDados.getUrl());
+                    dados = new UsuarioDados(nome.getText().toString(),sobrenome.getText().toString(),sex,String.valueOf(date.getTime()),usuarioDados.getEmail(),String.valueOf(dataA.getTime()),usuarioDados.getDt_cad(),usuarioDados.getAdm(),usuarioDados.getCpf(),usuarioDados.getUrl());
                 } catch (ParseException e) {
                     e.printStackTrace();
                 }

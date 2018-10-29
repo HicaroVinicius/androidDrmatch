@@ -7,6 +7,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.TextView;
 
 public class AgendConcluido extends AppCompatActivity {
 
@@ -15,6 +16,16 @@ public class AgendConcluido extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_agend_concluido);
+
+        TextView voltarText = findViewById(R.id.textView19);
+        voltarText.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(AgendConcluido.this,MainActivity.class);
+                startActivity(intent);
+                finish();
+            }
+        });
 
         buttonOkConcluido = findViewById(R.id.buttonOkConcluido);
         buttonOkConcluido.setOnClickListener(new View.OnClickListener() {

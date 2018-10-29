@@ -31,7 +31,7 @@
             android:layout_marginEnd="8dp"
             android:layout_marginStart="8dp"
             android:layout_marginTop="16dp"
-            android:text="PERFIL"
+            android:text="REGISTRO"
             android:textColor="@android:color/white"
             android:textStyle="bold"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -89,10 +89,10 @@
                     android:id="@+id/textView"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Nome:" />
+                    android:text="CPF*:" />
 
                 <EditText
-                    android:id="@+id/nomePerfil"
+                    android:id="@+id/cpfRegistro"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content" />
 
@@ -100,84 +100,50 @@
                     android:id="@+id/textView13"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Sobrenome:" />
+                    android:text="Celular*:" />
 
                 <EditText
-                    android:id="@+id/sobrenomePerfil"
+                    android:id="@+id/celularRegistro"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content" />
+                    android:layout_height="wrap_content"
+                    android:inputType="phone" />
 
                 <TextView
                     android:id="@+id/textView22"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Email:" />
+                    android:text="Telefone fixo:" />
 
                 <EditText
-                    android:id="@+id/emailPerfil"
+                    android:id="@+id/fixoRegistro"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:editable="false" />
+                    android:editable="false"
+                    android:inputType="phone" />
 
                 <TextView
                     android:id="@+id/textView18"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="CPF:" />
+                    android:text="Estado*:" />
 
                 <EditText
-                    android:id="@+id/cpfPerfil"
+                    android:id="@+id/estadoRegistro"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:editable="false" />
+                    android:inputType="text" />
 
                 <TextView
-                    android:id="@+id/textView23"
+                    android:id="@+id/textView24"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Sexo:" />
-
-                <android.support.design.widget.TextInputLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_marginBottom="8dp"
-                    android:layout_marginEnd="16dp"
-                    android:layout_marginStart="16dp">
-
-                    <RadioGroup
-                        android:id="@+id/radioGroupCadID"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:orientation="horizontal"
-                        tools:layout_editor_absoluteX="97dp"
-                        tools:layout_editor_absoluteY="236dp">
-
-                        <RadioButton
-                            android:id="@+id/radioButtonMasculinoCadID"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:text="Masculino" />
-
-                        <RadioButton
-                            android:id="@+id/radioButtonFeminidoCadID"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:text="Feminino" />
-                    </RadioGroup>
-                </android.support.design.widget.TextInputLayout>
-
-                <TextView
-                    android:id="@+id/textView32"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="Data de nascimento:" />
+                    android:text="Cidade*:" />
 
                 <EditText
-                    android:id="@+id/dataPerfil"
+                    android:id="@+id/cidadeRegistro"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content" />
+                    android:layout_height="wrap_content"
+                     />
 
                 <android.support.constraint.ConstraintLayout
                     android:layout_width="match_parent"

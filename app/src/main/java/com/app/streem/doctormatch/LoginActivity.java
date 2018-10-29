@@ -228,8 +228,16 @@ public class LoginActivity extends AppCompatActivity {
                             preferencias.setInfo("dtcont_dependente","1");
 
 
-                            preferencias.setInfo("cpf",usuario.getCpf());
-                            preferencias.setInfo("url",usuario.getUrl());
+                            if(usuario.getCpf().isEmpty()){
+                                preferencias.setInfo("cpf","");
+                            }else {
+                                preferencias.setInfo("cpf", usuario.getCpf());
+                            }
+                            if(usuario.getUrl().isEmpty()){
+                                preferencias.setInfo("url", "");
+                            }else {
+                                preferencias.setInfo("url", usuario.getUrl());
+                            }
                             preferencias.setInfo("dt_cont",usuario.getDt_cont());
                             preferencias.setInfo("email",usuario.getEmail());
                             preferencias.setInfo("nome",usuario.getNome());
