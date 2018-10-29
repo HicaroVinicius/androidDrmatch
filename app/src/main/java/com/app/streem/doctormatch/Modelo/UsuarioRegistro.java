@@ -8,59 +8,99 @@ public class UsuarioRegistro {
     }
 
 
-    public String getCpf() {
-        return cpf;
+    public UsuarioRegistro(String celular, String fixo, String cidade, String estado, String cep, String bairro, String rua, String numero, String adm) {
+        this.celular = celular;
+        this.fixo = fixo;
+        this.cidade = cidade;
+        this.estado = estado;
+        this.cep = cep;
+        this.bairro = bairro;
+        this.rua = rua;
+        this.numero = numero;
+        this.adm = adm;
     }
 
-    public void setCpf(String cpf) {
-        this.cpf = cpf;
+    private String celular;
+    private String fixo;
+    private String cidade;
+
+    public String getCelular() {
+        return celular;
     }
 
-    public String getDt_alt() {
-        return dt_alt;
+    public void setCelular(String celular) {
+        this.celular = celular;
     }
 
-    public void setDt_alt(String dt_alt) {
-        this.dt_alt = dt_alt;
+    public String getFixo() {
+        return fixo;
     }
 
-    public String getEmail() {
-        return email;
+    public void setFixo(String fixo) {
+        this.fixo = fixo;
     }
 
-    public void setEmail(String email) {
-        this.email = email;
+    public String getCidade() {
+        return cidade;
     }
 
-    public String getId() {
-        return id;
+    public void setCidade(String cidade) {
+        this.cidade = cidade;
     }
 
-    public void setId(String id) {
-        this.id = id;
+    public String getEstado() {
+        return estado;
     }
 
-    public String getNome() {
-        return nome;
+    public void setEstado(String estado) {
+        this.estado = estado;
     }
 
-    public void setNome(String nome) {
-        this.nome = nome;
+    public String getCep() {
+        return cep;
     }
 
-    private String cpf;
-    private String dt_alt;
-
-    public UsuarioRegistro(String cpf, String dt_alt, String email, String id, String nome) {
-        this.cpf = cpf;
-        this.dt_alt = dt_alt;
-        this.email = email;
-        this.id = id;
-        this.nome = nome;
+    public void setCep(String cep) {
+        this.cep = cep;
     }
 
-    private String email;
-    private String id;
-    private String nome;
+    public String getBairro() {
+        return bairro;
+    }
+
+    public void setBairro(String bairro) {
+        this.bairro = bairro;
+    }
+
+    public String getRua() {
+        return rua;
+    }
+
+    public void setRua(String rua) {
+        this.rua = rua;
+    }
+
+    public String getNumero() {
+        return numero;
+    }
+
+    public void setNumero(String numero) {
+        this.numero = numero;
+    }
+
+    public String getAdm() {
+        return adm;
+    }
+
+    public void setAdm(String adm) {
+        this.adm = adm;
+    }
+
+    private String estado;
+    private String cep;
+    private String bairro;
+    private String rua;
+    private String numero;
+    private String adm;
 
 }

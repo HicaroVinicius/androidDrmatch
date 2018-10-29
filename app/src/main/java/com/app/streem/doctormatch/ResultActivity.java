@@ -65,6 +65,14 @@ public class ResultActivity extends AppCompatActivity {
             }
         });
 
+        TextView voltarText = findViewById(R.id.textView44);
+        voltarText.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
+
         data = findViewById(R.id.dataSelResultID);
 
         myCalendar = Calendar.getInstance();

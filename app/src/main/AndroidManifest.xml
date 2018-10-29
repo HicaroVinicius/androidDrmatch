@@ -71,6 +71,7 @@
         <activity android:name=".DependenteListActivity" />
         <activity android:name=".DependenteActivity" />
         <activity android:name=".PerfilActivity"></activity>
+        <activity android:name=".RegistroActivity"></activity>
     </application>
 
 </manifest>

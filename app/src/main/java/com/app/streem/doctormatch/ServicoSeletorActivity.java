@@ -62,6 +62,14 @@ public class ServicoSeletorActivity extends AppCompatActivity implements Consult
             }
         });
 
+        TextView voltarText = findViewById(R.id.textView50);
+        voltarText.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
+
         final ArrayAdapter[] adapterAuto = new ArrayAdapter[2];
 
 

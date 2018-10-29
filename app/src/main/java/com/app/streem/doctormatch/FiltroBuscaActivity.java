@@ -1,8 +1,14 @@
 package com.app.streem.doctormatch;
 
 import android.app.DatePickerDialog;
+import android.app.Dialog;
+import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.support.design.widget.TextInputEditText;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -54,6 +60,14 @@ public class FiltroBuscaActivity extends AppCompatActivity {
 
         ImageView voltar = findViewById(R.id.imageView10);
         voltar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
+
+        TextView voltarText = findViewById(R.id.textView39);
+        voltarText.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 finish();
@@ -142,14 +156,50 @@ public class FiltroBuscaActivity extends AppCompatActivity {
                     Toast.makeText(FiltroBuscaActivity.this, "Selecione uma Cidade...", Toast.LENGTH_SHORT).show();
                 }else if(preferencias.getCHAVE_DATA().equals("")){
                     Toast.makeText(FiltroBuscaActivity.this, "Selecione uma Data...", Toast.LENGTH_SHORT).show();
-                }else{
-                    Intent intent = new Intent(FiltroBuscaActivity.this,ResultActivity.class);
-                    preferencias.setCHAVE_CIDADE(cidade);
-                    preferencias.setCHAVE_ESTADO(estado);
-                    preferencias.setInfo("idEstado",idEstado);
-                    preferencias.setInfo("idCidade",idCidade);
-                    startActivity(intent);
-                }
+                }else if(preferencias.getInfo("cpf").equals("")){
+                    AlertDialog.Builder confirm = new AlertDialog.Builder(FiltroBuscaActivity.this);
+                    confirm.setTitle("Completar cadastro");
+                    confirm.setIcon(R.drawable.ic_done_black_24dp).setMessage("É necessário completar seu cadastro para buscar por um profissional.").setCancelable(true);
+                    confirm.setNegativeButton("Cancelar", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            return;
+                        }
+                    });
+
+                    confirm.setPositiveButton("Confirmar", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            ConnectivityManager cm =
+                                    (ConnectivityManager) getApplicationContext().getSystemService(Context.CONNECTIVITY_SERVICE);
+
+                            NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
+                            final boolean isConnected = activeNetwork != null &&
+                                    activeNetwork.isConnectedOrConnecting();
+
+                            if(isConnected){
+                                Intent intent = new Intent(FiltroBuscaActivity.this,RegistroActivity.class);
+                                startActivity(intent);
+                                finish();
+                            }else{
+                                Toast.makeText(getApplicationContext(), "Necessário conexão com a internet", Toast.LENGTH_LONG).show();
+                            }
+
+                        }
+                    });
+
+                    AlertDialog alertDialog = confirm.create();
+                    alertDialog.show();
+
+                }else {
+                        Intent intent = new Intent(FiltroBuscaActivity.this,ResultActivity.class);
+                        preferencias.setCHAVE_CIDADE(cidade);
+                        preferencias.setCHAVE_ESTADO(estado);
+                        preferencias.setInfo("idEstado",idEstado);
+                        preferencias.setInfo("idCidade",idCidade);
+                        startActivity(intent);
+                    }
+
             }
         });
 

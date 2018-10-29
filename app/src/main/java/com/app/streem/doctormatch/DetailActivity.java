@@ -175,6 +175,14 @@ public class DetailActivity extends AppCompatActivity {
             }
         });
 
+        TextView voltarText = findViewById(R.id.textView36);
+        voltarText.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
+
         fotoMedico = findViewById(R.id.fotoDetails);
 
         Button buttonAgendar = findViewById(R.id.buttonDetails);

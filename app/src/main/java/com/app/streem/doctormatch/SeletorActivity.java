@@ -14,6 +14,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.app.streem.doctormatch.DAO.BD;
@@ -51,6 +52,14 @@ public class SeletorActivity extends AppCompatActivity {
 
         ImageView voltar = findViewById(R.id.imageView10);
         voltar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
+
+        TextView voltarText = findViewById(R.id.textView46);
+        voltarText.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 finish();

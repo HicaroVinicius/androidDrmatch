@@ -10,8 +10,10 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.DatePicker;
+import android.widget.ImageView;
 import android.widget.RadioGroup;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.app.streem.doctormatch.DAO.Firebase;
@@ -53,6 +55,22 @@ public class CadastroActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_cadastro);
+
+        ImageView voltar = findViewById(R.id.imageView10);
+        voltar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
+
+        TextView voltarText = findViewById(R.id.textView28);
+        voltarText.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
 
         sexo = "null";
         preferencias = new Preferencias(this);
@@ -144,6 +162,11 @@ public class CadastroActivity extends AppCompatActivity {
                                             //String nome, String sobrenome,String sexo,  String dt_nasc, String email,String dt_cont,String dt_cad,String adm,String cpf,String url
                                             UsuarioDados usuarioDados = new UsuarioDados(nome.getText().toString(),sobrenome.getText().toString(),sexo,sdFormat.dateToMili(dataNasc.getText().toString()),email.getText().toString(),String.valueOf(dataA.getTime()),String.valueOf(dataA.getTime()),String.valueOf(dataA.getTime()),"","");
                                             Firebase.getDatabaseReference().child("APP_USUARIOS").child("DADOS").child(uid).child("DADOS").setValue(usuarioDados);
+
+                                            //String celular, String fixo, String cidade, String estado, String cep, String bairro, String rua, String numero, String adm
+                                            UsuarioRegistro usuarioRegistro = new UsuarioRegistro("","","","","","","","",String.valueOf(dataA.getTime()));
+                                            Firebase.getDatabaseReference().child("APP_USUARIOS").child("DADOS").child(uid).child("REGISTRO").setValue(usuarioRegistro);
+
                                             preferencias.setInfo("dtcont_cidade","1");
                                             preferencias.setInfo("dtcont_estado","1");
                                             preferencias.setInfo("dtcont_exame","1");
