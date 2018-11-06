@@ -4,6 +4,7 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
+import java.util.TimeZone;
 
 public class SDFormat {
     static SimpleDateFormat sdata = new SimpleDateFormat("dd/MM/yyyy", new Locale("pt","BR"));
@@ -11,6 +12,7 @@ public class SDFormat {
     static Calendar c = Calendar.getInstance();
 
     public static String miliToDate(String dt){
+        sdata.setTimeZone(TimeZone.getTimeZone("GMT-03:00"));
         Date d = new Date(Long.valueOf(dt));
         String result = sdata.format(d);
 
@@ -18,6 +20,7 @@ public class SDFormat {
     }
 
     public static String dateToMili(String dt){
+        sdata.setTimeZone(TimeZone.getTimeZone("GMT-03:00"));
         Date d = null;
         try {
             d = sdata.parse(dt);
@@ -29,6 +32,7 @@ public class SDFormat {
     }
 
     public static String dateToString(Date dt){
+        sdata.setTimeZone(TimeZone.getTimeZone("GMT-03:00"));
         String result = sdata.format(dt);
 
         return result;
@@ -42,6 +46,7 @@ public class SDFormat {
     }
 
     public static String miliToHora(String dt){
+        shora.setTimeZone(TimeZone.getTimeZone("GMT-03:00"));
         Date d = null;
         try {
             d = shora.parse(dt);

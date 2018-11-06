@@ -215,46 +215,57 @@ public class DetailActivity extends AppCompatActivity {
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
                 VagasModel vaga = dataSnapshot.getValue(VagasModel.class);
-                if(vaga.getTp_vaga().equals("2") && vaga.getStatus().equals("1")) {
-                    vagasList.add(vaga);
-                    ordenarLista();
-                    adapter.notifyDataSetChanged();
+                SimpleDateFormat sdf = new SimpleDateFormat("HH:mm");
+                Date hora = java.util.Calendar.getInstance().getTime();
+                String horaAtual = sdf.format(hora);
+                Log.i("teste horaAtual: ",horaAtual);
+                if(vaga.getHora().compareTo(horaAtual)>0) {
+                    if (vaga.getTp_vaga().equals("2") && vaga.getStatus().equals("1")) {
+                        vagasList.add(vaga);
+                        ordenarLista();
+                        adapter.notifyDataSetChanged();
+                    }
                 }
             }
 
             @Override
             public void onChildChanged(DataSnapshot dataSnapshot, String s) {
                 VagasModel vaga = dataSnapshot.getValue(VagasModel.class);
-
-                if(vaga.getTp_vaga().equals("2") && vaga.getStatus().equals("1")) {
-                    int tm = vagasList.size();
-                    if(tm > 0) {
-                        for (int i = 0; i < vagasList.size(); i++) {
-                            if (vagasList.get(i).getId().equals(vaga.getId())) {
-                                vagasList.set(i, vaga);
-                                ordenarLista();
-                                adapter.notifyItemChanged(i);
-                                tm++;
-                                break;
+                SimpleDateFormat sdf = new SimpleDateFormat("HH:mm");
+                Date hora = java.util.Calendar.getInstance().getTime();
+                String horaAtual = sdf.format(hora);
+                Log.i("teste horaAtual: ",horaAtual);
+                if(vaga.getHora().compareTo(horaAtual)>0) {
+                    if (vaga.getTp_vaga().equals("2") && vaga.getStatus().equals("1")) {
+                        int tm = vagasList.size();
+                        if (tm > 0) {
+                            for (int i = 0; i < vagasList.size(); i++) {
+                                if (vagasList.get(i).getId().equals(vaga.getId())) {
+                                    vagasList.set(i, vaga);
+                                    ordenarLista();
+                                    adapter.notifyItemChanged(i);
+                                    tm++;
+                                    break;
+                                }
                             }
-                        }
-                        if(tm == vagasList.size()){
+                            if (tm == vagasList.size()) {
+                                vagasList.add(vaga);
+                                ordenarLista();
+                                adapter.notifyDataSetChanged();
+                            }
+                        } else {
                             vagasList.add(vaga);
                             ordenarLista();
                             adapter.notifyDataSetChanged();
                         }
-                    }else{
-                        vagasList.add(vaga);
-                        ordenarLista();
-                        adapter.notifyDataSetChanged();
-                    }
-                }else{
-                    for (int i = 0; i < vagasList.size(); i++) {
-                        if (vagasList.get(i).getId().equals(vaga.getId())) {
-                            vagasList.remove(i);
-                            ordenarLista();
-                            adapter.notifyItemRemoved(i);
-                            break;
+                    } else {
+                        for (int i = 0; i < vagasList.size(); i++) {
+                            if (vagasList.get(i).getId().equals(vaga.getId())) {
+                                vagasList.remove(i);
+                                ordenarLista();
+                                adapter.notifyItemRemoved(i);
+                                break;
+                            }
                         }
                     }
                 }

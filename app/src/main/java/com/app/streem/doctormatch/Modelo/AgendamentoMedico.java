@@ -14,6 +14,10 @@ public class AgendamentoMedico {
         return cpf;
     }
 
+    public AgendamentoMedico(){
+
+    }
+
     public AgendamentoMedico(String cpf, String hora, String id, String key_pac, String key_ui_app, String mili, String status, String tipo, String tp_vaga,String valor, String fpag) {
         this.cpf = cpf;
         this.hora = hora;
