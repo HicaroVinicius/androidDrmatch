@@ -10,6 +10,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.DatePicker;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -55,6 +56,8 @@ public class ResultActivity extends AppCompatActivity {
     public int contador = 0;
     public int maximo = 0;
 
+    private ProgressBar progress_bar;
+
     private SDFormat sdFormat;
 
 
@@ -70,6 +73,8 @@ public class ResultActivity extends AppCompatActivity {
                 finish();
             }
         });
+
+        progress_bar = findViewById(R.id.progress_bar);
 
         TextView voltarText = findViewById(R.id.textView44);
         voltarText.setOnClickListener(new View.OnClickListener() {
@@ -176,13 +181,14 @@ public class ResultActivity extends AppCompatActivity {
     //carrega lista
     public void buscarMedicos(final String cidade, final String estado, final String espec) throws ParseException {
         TimeZone.setDefault(TimeZone.getTimeZone("GMT-03:00"));
-        SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy", new Locale("pt","BR"));
+        SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy, HH:mm", new Locale("pt","BR"));
         format.setTimeZone(TimeZone.getTimeZone("GMT-03:00"));
-        final Date d = format.parse(preferencias.getCHAVE_DATA());
+        Log.i("teste entrada data: ", preferencias.getCHAVE_DATA().concat(", 00:00") );
+        final Date d = format.parse( preferencias.getCHAVE_DATA().concat(", 00:00") );
         final String dataFormatt = format.format(d.getTime());
         SimpleDateFormat format2 = new SimpleDateFormat("dd/MM");
         format2.setTimeZone(TimeZone.getTimeZone("GMT-03:00"));
-        final Date d2 = format.parse(preferencias.getCHAVE_DATA());
+        final Date d2 = format.parse(preferencias.getCHAVE_DATA().concat(", 00:00"));
         final String dataFormatt2 = format2.format(d2.getTime());
 
         String dataNova = dataFormatt;
@@ -268,6 +274,7 @@ public class ResultActivity extends AppCompatActivity {
 
                     }else{
                         semRegistro.setVisibility(View.VISIBLE);
+                        progress_bar.setVisibility(View.INVISIBLE);
                         return;
                     }
 
