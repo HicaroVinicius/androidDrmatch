@@ -110,24 +110,24 @@ public class RegistroActivity extends AppCompatActivity {
             }
         });
 
-        Firebase.getDatabaseReference().child("APP_USUARIOS").child("DADOS").child(idUser).child("REGISTRO").addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                usuarioRegistro = dataSnapshot.getValue(UsuarioRegistro.class);
-                celular.setText(usuarioRegistro.getCelular());
-                fixo.setText(usuarioRegistro.getFixo());
-                estado.setText(usuarioRegistro.getEstado());
-                cidade.setText(usuarioRegistro.getCidade());
-                adm = usuarioRegistro.getAdm();
-                numero = usuarioRegistro.getNumero();
-                bairro = usuarioRegistro.getBairro();
-                rua = usuarioRegistro.getRua();
-                cep = usuarioRegistro.getCep();
-            }
-            public void onCancelled(DatabaseError databaseError) {
-
-            }
-        });
+//        Firebase.getDatabaseReference().child("APP_USUARIOS").child("DADOS").child(idUser).child("REGISTRO").addListenerForSingleValueEvent(new ValueEventListener() {
+//            @Override
+//            public void onDataChange(DataSnapshot dataSnapshot) {
+//                usuarioRegistro = dataSnapshot.getValue(UsuarioRegistro.class);
+//                celular.setText(usuarioRegistro.getCelular());
+//                fixo.setText(usuarioRegistro.getFixo());
+//                estado.setText(usuarioRegistro.getEstado());
+//                cidade.setText(usuarioRegistro.getCidade());
+//                adm = usuarioRegistro.getAdm();
+//                numero = usuarioRegistro.getNumero();
+//                bairro = usuarioRegistro.getBairro();
+//                rua = usuarioRegistro.getRua();
+//                cep = usuarioRegistro.getCep();
+//            }
+//            public void onCancelled(DatabaseError databaseError) {
+//
+//            }
+//        });
 
         button.setOnClickListener(new View.OnClickListener() {
             @Override

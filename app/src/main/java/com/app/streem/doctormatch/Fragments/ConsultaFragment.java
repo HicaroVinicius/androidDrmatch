@@ -91,13 +91,15 @@ public class ConsultaFragment extends Fragment {
                 if(consultaList.isEmpty()){
                     semDados.setVisibility(View.VISIBLE);
                 }
-                AgendamentoMedico agendamentoMedico = new AgendamentoMedico("",item.getHORA(),item.getKEY_AGEND(),"","","0","1","1","2",item.getValor(),"0");
-                Firebase.getDatabaseReference().child("CRM").child(item.getKEY_CLINIC()).child("AGENDAMENTO").child("MEDICO").child(item.getKEY_MEDICO()).child(item.getDT_AGEND()).child(item.getKEY_AGEND()).setValue(agendamentoMedico);
+                AgendamentoMedico agendamentoMedico = new AgendamentoMedico("",item.getHORA(),item.getKEY_AGEND(),"*","*","0","1","1","2",item.getValor(),"0","");
+                Firebase.getDatabaseReference().child("CRM").child(item.getKEY_CLINIC()).child("AGENDAMENTOS").child(item.getKEY_MEDICO()).child(item.getDT_AGEND()).child(item.getKEY_AGEND()).setValue(agendamentoMedico);
                 Firebase.getDatabaseReference().child("APP_USUARIOS").child("CONSULTAS").child(uid).child(item.getKEY()).removeValue();
                 Log.i("TESTE-dtcont_consultaIt", String.valueOf(item.getKEY())+"/"+item.getKEY_AGEND());
                 Toast.makeText(getApplicationContext(), "Consulta removida!", Toast.LENGTH_SHORT).show();
             }
         });
+
+        //loadControle();
 
         ConnectivityManager cm =
                 (ConnectivityManager) container.getContext().getSystemService(Context.CONNECTIVITY_SERVICE);
@@ -218,6 +220,7 @@ public class ConsultaFragment extends Fragment {
         if(adapter.getItemCount() > 0){
             progressBar.setVisibility(View.GONE);
             consultaView.setVisibility(View.VISIBLE);
+            semDados.setVisibility(View.INVISIBLE);
         }else{
             progressBar.setVisibility(View.GONE);
             consultaView.setVisibility(View.GONE);

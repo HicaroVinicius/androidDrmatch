@@ -1,10 +1,12 @@
 package com.app.streem.doctormatch.Modelo;
 
+import java.io.Serializable;
+
 /**
  * Created by Hicaro on 07/03/2018.
  */
 
-public class Consulta {
+public class Consulta implements Serializable {
 
     private String KEY;
 

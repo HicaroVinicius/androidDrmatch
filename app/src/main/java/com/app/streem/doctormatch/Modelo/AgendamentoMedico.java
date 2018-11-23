@@ -10,6 +10,16 @@ public class AgendamentoMedico {
     private String id;
     private String key_pac;
 
+    public String getNome() {
+        return nome;
+    }
+
+    public void setNome(String nome) {
+        this.nome = nome;
+    }
+
+    private String nome;
+
     public String getCpf() {
         return cpf;
     }
@@ -18,7 +28,7 @@ public class AgendamentoMedico {
 
     }
 
-    public AgendamentoMedico(String cpf, String hora, String id, String key_pac, String key_ui_app, String mili, String status, String tipo, String tp_vaga,String valor, String fpag) {
+    public AgendamentoMedico(String cpf, String hora, String id, String key_pac, String key_ui_app, String mili, String status, String tipo, String tp_vaga,String valor, String fpag, String nome) {
         this.cpf = cpf;
         this.hora = hora;
         this.id = id;
@@ -30,6 +40,7 @@ public class AgendamentoMedico {
         this.tp_vaga = tp_vaga;
         this.valor = valor;
         this.fpag = fpag;
+        this.nome = nome;
     }
 
     public void setCpf(String cpf) {

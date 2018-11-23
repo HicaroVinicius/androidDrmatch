@@ -35,6 +35,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
@@ -55,6 +56,9 @@ public class ResultActivity extends AppCompatActivity {
     private ResultModel  value;
     public int contador = 0;
     public int maximo = 0;
+    public Calendar mCalendar = new GregorianCalendar();
+    public TimeZone mTimeZone = TimeZone.getTimeZone("America/Sao_Paulo");
+            //mCalendar.getTimeZone();
 
     private ProgressBar progress_bar;
 
@@ -167,7 +171,7 @@ public class ResultActivity extends AppCompatActivity {
     public Boolean dataAtual(String data){
         Calendar calendar1 = Calendar.getInstance();
         SimpleDateFormat formatter1 = new SimpleDateFormat("dd/MM/yyyy");
-        formatter1.setTimeZone(TimeZone.getTimeZone("GMT-03:00"));
+        formatter1.setTimeZone(mTimeZone);
         String currentDate = formatter1.format(calendar1.getTime());
        // String dataSel = formatter1.format(preferencias.getCHAVE_DATA());
 
@@ -180,15 +184,14 @@ public class ResultActivity extends AppCompatActivity {
 
     //carrega lista
     public void buscarMedicos(final String cidade, final String estado, final String espec) throws ParseException {
-        TimeZone.setDefault(TimeZone.getTimeZone("GMT-03:00"));
-        SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy, HH:mm", new Locale("pt","BR"));
-        format.setTimeZone(TimeZone.getTimeZone("GMT-03:00"));
-        Log.i("teste entrada data: ", preferencias.getCHAVE_DATA().concat(", 00:00") );
-        final Date d = format.parse( preferencias.getCHAVE_DATA().concat(", 00:00") );
+        SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy", new Locale("pt","BR"));
+        format.setTimeZone(mTimeZone);
+        Log.i("teste entrada data: ", preferencias.getCHAVE_DATA());
+        final Date d = format.parse( preferencias.getCHAVE_DATA() );
         final String dataFormatt = format.format(d.getTime());
         SimpleDateFormat format2 = new SimpleDateFormat("dd/MM");
-        format2.setTimeZone(TimeZone.getTimeZone("GMT-03:00"));
-        final Date d2 = format.parse(preferencias.getCHAVE_DATA().concat(", 00:00"));
+        format2.setTimeZone(mTimeZone);
+        final Date d2 = format.parse(preferencias.getCHAVE_DATA());
         final String dataFormatt2 = format2.format(d2.getTime());
 
         String dataNova = dataFormatt;
@@ -250,7 +253,7 @@ public class ResultActivity extends AppCompatActivity {
 
     public Boolean buscaDisponibilidade(final Medico key, final Date d, final String dataFormatt, final String dataN,final int tamanhoArray){
         Log.i("TESTEinput",key.getKey_clinica()+"-"+key.getId()+"-"+String.valueOf(d.getTime()));
-        Firebase.getDatabaseReference().child("CRM").child(key.getKey_clinica()).child("AGENDAMENTO").child("MEDICO").child(key.getId()).child(String.valueOf(d.getTime())).orderByChild("status").equalTo("1").addListenerForSingleValueEvent(new ValueEventListener() {
+        Firebase.getDatabaseReference().child("CRM").child(key.getKey_clinica()).child("AGENDAMENTOS").child(key.getId()).child(String.valueOf(d.getTime())).orderByChild("status").equalTo("1").addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 if (!dataSnapshot.hasChildren()){
@@ -263,7 +266,7 @@ public class ResultActivity extends AppCompatActivity {
                         Date novaData = new Date(data);
 
                         SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy");
-                        format.setTimeZone(TimeZone.getTimeZone("GMT-03:00"));
+                        format.setTimeZone(mTimeZone);
 
                         final String novoFormatt = format.format(novaData.getTime());
 
@@ -281,63 +284,66 @@ public class ResultActivity extends AppCompatActivity {
                 }else{
                     for(DataSnapshot data : dataSnapshot.getChildren()){
                         AgendamentoMedico valueA = data.getValue(AgendamentoMedico.class);
-                        Log.i("teste Horas: ",valueA.getHora());
-                        SimpleDateFormat sdf = new SimpleDateFormat("HH:mm");
-                        Date hora = Calendar.getInstance().getTime();
-                        String horaAtual = sdf.format(hora);
-                        Log.i("teste horaAtual: ",horaAtual);
-                        if(valueA.getHora().compareTo(horaAtual)>0){
+                        if(!valueA.getHora().isEmpty()){
+                            Log.i("teste Horas: ",valueA.getHora());
+                            SimpleDateFormat sdf = new SimpleDateFormat("HH:mm");
+                            sdf.setTimeZone(TimeZone.getDefault());
+                            Date hora = new Date();
+                            String horaAtual = sdf.format(hora.getTime());
+                            Log.i("teste horaAtual /zone: ",horaAtual+" / "+mCalendar.getTimeZone().toString());
+                            if(valueA.getHora().compareTo(horaAtual)>0){
 
-                            Log.i("TESTEmedRESULTdadoos",key.getKey_clinica()+"-"+key.getId());
-                            Firebase.getDatabaseReference().child("CRM").child(key.getKey_clinica()).child("CONFIG").child("DADOS_MED_LAB").orderByKey().equalTo(key.getId()).limitToFirst(1).addListenerForSingleValueEvent(new ValueEventListener() {
-                                @Override
-                                public void onDataChange(DataSnapshot dataSnapshot) {
-                                    Log.i("TESTEmedRESULTdadoos", dataSnapshot.toString());
-                                    if (!dataSnapshot.hasChildren()) {
-                                        Log.i("testeBDvalue1", "Medico sem Dados - CRM");
-                                    } else {
+                                Log.i("TESTEmedRESULTdadoos",key.getKey_clinica()+"-"+key.getId());
+                                Firebase.getDatabaseReference().child("CRM").child(key.getKey_clinica()).child("CONFIG").child("DADOS_MED_LAB").orderByKey().equalTo(key.getId()).limitToFirst(1).addListenerForSingleValueEvent(new ValueEventListener() {
+                                    @Override
+                                    public void onDataChange(DataSnapshot dataSnapshot) {
+                                        Log.i("TESTEmedRESULTdadoos", dataSnapshot.toString());
+                                        if (!dataSnapshot.hasChildren()) {
+                                            Log.i("testeBDvalue1", "Medico sem Dados - CRM");
+                                        } else {
 
-                                        for (DataSnapshot data : dataSnapshot.getChildren()) {
-                                            value = data.getValue(ResultModel.class);
-                                            Log.i("testeBDvalue3", value.getTitular() + " - cont: " + value.getDt_cont() + " - Pref: " + preferencias.getInfo("dtcont_medicoDados"));
+                                            for (DataSnapshot data : dataSnapshot.getChildren()) {
+                                                value = data.getValue(ResultModel.class);
+                                                Log.i("testeBDvalue3", value.getTitular() + " - cont: " + value.getDt_cont() + " - Pref: " + preferencias.getInfo("dtcont_medicoDados"));
+
+                                            }
+
+                                            ResultModel med = value;
+                                            ResultModel medico = new ResultModel();
+                                            try {
+                                                medico.setRegistro(med.getRegistro());
+                                                medico.setTitular(med.getTitular());
+                                                medico.setLocal(med.getLocal());
+                                                medico.setEndereco1(med.getEndereco1());
+                                                medico.setEndereco2(med.getEndereco2());
+                                                medico.setUrl(med.getUrl());
+                                                medico.setId(med.getId());
+                                                medico.setPlano(med.getPlano());
+                                                medico.setCheque(med.getCheque());
+                                                medico.setDinheiro(med.getDinheiro());
+                                                medico.setCartao(med.getCartao());
+                                            } catch (Exception e) {
+                                                Log.i("TESTERESULT-ERRO", e.getMessage());
+                                            }
+                                            medico.setValor(dataFormatt);
+                                            medico.setData(dataN);
+                                            medico.setKey_clinic(key.getKey_clinica());
+                                            medico.setKey_medico(key.getId());
+                                            resultModels.add(medico);
+                                            adapter.notifyDataSetChanged();
 
                                         }
-
-                                        ResultModel med = value;
-                                        ResultModel medico = new ResultModel();
-                                        try {
-                                            medico.setRegistro(med.getRegistro());
-                                            medico.setTitular(med.getTitular());
-                                            medico.setLocal(med.getLocal());
-                                            medico.setEndereco1(med.getEndereco1());
-                                            medico.setEndereco2(med.getEndereco2());
-                                            medico.setUrl(med.getUrl());
-                                            medico.setId(med.getId());
-                                            medico.setPlano(med.getPlano());
-                                            medico.setCheque(med.getCheque());
-                                            medico.setDinheiro(med.getDinheiro());
-                                            medico.setCartao(med.getCartao());
-                                        } catch (Exception e) {
-                                            Log.i("TESTERESULT-ERRO", e.getMessage());
-                                        }
-                                        medico.setValor(dataFormatt);
-                                        medico.setData(dataN);
-                                        medico.setKey_clinic(key.getKey_clinica());
-                                        medico.setKey_medico(key.getId());
-                                        resultModels.add(medico);
-                                        adapter.notifyDataSetChanged();
 
                                     }
 
-                                }
+                                    @Override
+                                    public void onCancelled(DatabaseError databaseError) {
 
-                                @Override
-                                public void onCancelled(DatabaseError databaseError) {
+                                    }
+                                });
 
-                                }
-                            });
-
-                            break;
+                                break;
+                            }
                         }
 
                         }
@@ -363,7 +369,7 @@ public class ResultActivity extends AppCompatActivity {
     private void updateLabel() {
         String myFormat = "dd/MM/yyyy"; //In which you need put here
         SimpleDateFormat sdf = new SimpleDateFormat(myFormat, new Locale("pt","BR"));
-        sdf.setTimeZone(TimeZone.getTimeZone("GMT-03:00"));
+        sdf.setTimeZone(mTimeZone);
         if(!dataAtual(sdf.format(myCalendar.getTime()))){
             return;
         }else{

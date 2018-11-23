@@ -48,6 +48,7 @@ import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
+import java.util.TimeZone;
 
 import noman.weekcalendar.WeekCalendar;
 import noman.weekcalendar.listener.OnDateClickListener;
@@ -84,6 +85,8 @@ public class DetailActivity extends AppCompatActivity {
     private TextView planoText;
     private TextView cartaoText;
 
+    public TimeZone mTimeZone = TimeZone.getTimeZone("America/Sao_Paulo");
+
 
     @Override
     protected void onStop() {
@@ -101,7 +104,7 @@ public class DetailActivity extends AppCompatActivity {
 
     public void atualizarHorarios(final String data){
         Log.i("add"," ahahahah");
-        referenceAgend = FirebaseDatabase.getInstance().getReference().child("CRM").child(key_clinic).child("AGENDAMENTO").child("MEDICO").child(key_medico).child(data);
+        referenceAgend = FirebaseDatabase.getInstance().getReference().child("CRM").child(key_clinic).child("AGENDAMENTOS").child(key_medico).child(data);
 
         referenceAgend.addChildEventListener(agendaRealTime);
 
@@ -216,6 +219,7 @@ public class DetailActivity extends AppCompatActivity {
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
                 VagasModel vaga = dataSnapshot.getValue(VagasModel.class);
                 SimpleDateFormat sdf = new SimpleDateFormat("HH:mm");
+                sdf.setTimeZone(TimeZone.getDefault());
                 Date hora = java.util.Calendar.getInstance().getTime();
                 String horaAtual = sdf.format(hora);
                 Log.i("teste horaAtual: ",horaAtual);
@@ -232,6 +236,7 @@ public class DetailActivity extends AppCompatActivity {
             public void onChildChanged(DataSnapshot dataSnapshot, String s) {
                 VagasModel vaga = dataSnapshot.getValue(VagasModel.class);
                 SimpleDateFormat sdf = new SimpleDateFormat("HH:mm");
+                sdf.setTimeZone(TimeZone.getDefault());
                 Date hora = java.util.Calendar.getInstance().getTime();
                 String horaAtual = sdf.format(hora);
                 Log.i("teste horaAtual: ",horaAtual);
@@ -306,6 +311,7 @@ public class DetailActivity extends AppCompatActivity {
         DateTime dt = formatter.parseDateTime(dataDisp);
 
         SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy");
+        format.setTimeZone(mTimeZone);
         Date d = null;
         try {
             d = format.parse(dataDisp);
@@ -327,11 +333,13 @@ public class DetailActivity extends AppCompatActivity {
             public void onDateClick(DateTime dateTime) {
                 String myFormat = "dd/MM/yyyy"; //In which you need put here
                 SimpleDateFormat sdf = new SimpleDateFormat(myFormat, new Locale("pt","BR"));
+                sdf.setTimeZone(mTimeZone);
                dataFormattNovo = sdf.format(dateTime.toDate());
 
                 atualizaSemana(dateTime);
 
                 SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy");
+                format.setTimeZone(mTimeZone);
                 Date d = null;
                 try {
                     d = format.parse(dataFormattNovo);
@@ -404,7 +412,8 @@ public class DetailActivity extends AppCompatActivity {
 
                 if(isConnected){
                     Log.i("TESTE-DETAIL-data",dataNova);
-                    FirebaseDatabase.getInstance().getReference().child("CRM").child(key_clinic).child("AGENDAMENTO").child("MEDICO").child(key_medico).child(dataNova).child(item.getId()).child("status").setValue("2");
+                    Log.i("TESTE-DETAIL-id",item.getId());
+                    FirebaseDatabase.getInstance().getReference().child("CRM").child(key_clinic).child("AGENDAMENTOS").child(key_medico).child(dataNova).child(item.getId()).child("status").setValue("2");
                     startActivity(confirmar);
                     finish();
                 }else{

@@ -23,12 +23,14 @@ import com.app.streem.doctormatch.Adapter.SpinnerDependenteAdapter;
 import com.app.streem.doctormatch.DAO.BD;
 import com.app.streem.doctormatch.DAO.Firebase;
 import com.app.streem.doctormatch.DAO.Preferencias;
+import com.app.streem.doctormatch.DAO.SDFormat;
 import com.app.streem.doctormatch.Modelo.AgendamentoGeral;
 import com.app.streem.doctormatch.Modelo.AgendamentoMedico;
 import com.app.streem.doctormatch.Modelo.Consulta;
 import com.app.streem.doctormatch.Modelo.DependenteModel;
 import com.app.streem.doctormatch.Modelo.Estado;
 import com.app.streem.doctormatch.Modelo.Medico;
+import com.app.streem.doctormatch.Modelo.Notification;
 import com.app.streem.doctormatch.Modelo.ResultModel;
 import com.app.streem.doctormatch.Modelo.UsuarioRegistro;
 import com.google.firebase.auth.FirebaseAuth;
@@ -43,6 +45,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
+import java.util.TimeZone;
 
 public class ConfirmActivity extends AppCompatActivity {
 
@@ -77,6 +80,8 @@ public class ConfirmActivity extends AppCompatActivity {
 
     private boolean dependente = false;
     private String cpfDependente;
+
+    public TimeZone mTimeZone = TimeZone.getTimeZone("America/Sao_Paulo");
 
 
     RadioGroup.OnCheckedChangeListener onCheckedChangeListener = new RadioGroup.OnCheckedChangeListener() {
@@ -139,7 +144,11 @@ public class ConfirmActivity extends AppCompatActivity {
         fotoMedico = findViewById(R.id.fotoMedicoConfirm);
 
         RoundedImageView fotoPac = findViewById(R.id.fotoPacienteConfirm);
-        Picasso.with(getApplicationContext()).load("http://doctormatch.com.br/app_files/hicaro.jpg").into(fotoPac);
+        String urlPaciente = preferencias.getInfo("url");
+
+        if(!urlPaciente.isEmpty()) {
+            Picasso.with(getApplicationContext()).load(urlPaciente).into(fotoPac);
+        }
 
         Button buttonConfirmar = findViewById(R.id.buttonConfirmar);
         buttonConfirmar.setOnClickListener(new View.OnClickListener() {
@@ -376,8 +385,8 @@ public class ConfirmActivity extends AppCompatActivity {
         AgendamentoGeral agendamentoGeral = new AgendamentoGeral(String.valueOf(dataA.getTime()),keyHora,key_medico,"","2");
         Firebase.getDatabaseReference().child("CRM").child(key_clinic).child("AGENDAMENTO").child("GERAL").child(keyHora).setValue(agendamentoGeral);
 
-        AgendamentoMedico agendamentoMedico = new AgendamentoMedico(cpf,hora,keyHora,nomeDep,uid,mili,"2",tipo,"2",valor,fpag);
-        Firebase.getDatabaseReference().child("CRM").child(key_clinic).child("AGENDAMENTO").child("MEDICO").child(key_medico).child(data).child(keyHora).setValue(agendamentoMedico);
+        AgendamentoMedico agendamentoMedico = new AgendamentoMedico(cpf,hora,keyHora,nomeDep,uid,mili,"2",tipo,"2",valor,fpag,nomeDep);
+        Firebase.getDatabaseReference().child("CRM").child(key_clinic).child("AGENDAMENTOS").child(key_medico).child(data).child(keyHora).setValue(agendamentoMedico);
 
         String key = Firebase.getDatabaseReference().child("APP_USUARIOS").child("CONSULTAS").child(uid).push().getKey();
         //KEY,  KEY_CLINIC,  KEY_MEDICO,  NOME_MEDICO,  DT_AGEND,  KEY_AGEND,  HORA,  ESPECIALIDADE,  STATUS,  DT_CONT
@@ -388,6 +397,13 @@ public class ConfirmActivity extends AppCompatActivity {
         bd.inserirConsulta(nova);
 
         Firebase.getDatabaseReference().child("APP_USUARIOS").child("CONSULTAS").child(uid).child(key).setValue(nova);
+        SDFormat sdFormat = new SDFormat();
+        String dataConsulta = sdFormat.miliToDate(nova.getDT_AGEND());
+        String infoNotification = String.valueOf(dataConsulta+" às "+nova.getHORA());
+        String url = preferencias.getInfo("url");
+        Notification notification = new Notification(key,infoNotification,nomeDep,url);
+        Log.i("testeUrlConfirm",url);
+        Firebase.getDatabaseReference().child("CRM").child(key_clinic).child("NOTIFICACOES").child(data).child(key).setValue(notification);
 
         isConclusion = true;
 
@@ -424,7 +440,7 @@ public class ConfirmActivity extends AppCompatActivity {
 
                 Log.i("testeConfirm","mudando status"+" - data -"+data+" - keyHora -"+keyHora+" - key_clinic -"+key_clinic+" - key_medico -"+key_medico);
 
-                FirebaseDatabase.getInstance().getReference().child("CRM").child(key_clinic).child("AGENDAMENTO").child("MEDICO").child(key_medico).child(data).child(keyHora).child("status").setValue("1");
+                FirebaseDatabase.getInstance().getReference().child("CRM").child(key_clinic).child("AGENDAMENTOS").child(key_medico).child(data).child(keyHora).child("status").setValue("1");
 
                 Intent intent = new Intent(ConfirmActivity.this,MainActivity.class);
                 startActivity(intent);
@@ -457,7 +473,7 @@ public class ConfirmActivity extends AppCompatActivity {
 
             Log.i("testeConfirm","mudando status"+" - data -"+data+" - keyHora -"+keyHora+" - key_clinic -"+key_clinic+" - key_medico -"+key_medico);
 
-            FirebaseDatabase.getInstance().getReference().child("CRM").child(key_clinic).child("AGENDAMENTO").child("MEDICO").child(key_medico).child(data).child(keyHora).child("status").setValue("1");
+            FirebaseDatabase.getInstance().getReference().child("CRM").child(key_clinic).child("AGENDAMENTOS").child(key_medico).child(data).child(keyHora).child("status").setValue("1");
 
             Intent intent = new Intent(ConfirmActivity.this,MainActivity.class);
             startActivity(intent);
